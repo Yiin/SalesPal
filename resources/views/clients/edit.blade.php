@@ -147,7 +147,7 @@
             ->autocomplete('off')
             ->rules(
                 ['email' => 'email']
-            )->addClass('col-md-12 recieve-vat warn-on-exit')
+            )->addClass('recieve-vat warn-on-exit')
             ->method($method) !!}
 
     @include('partials.autocomplete_fix')
