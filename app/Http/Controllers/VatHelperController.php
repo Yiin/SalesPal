@@ -73,7 +73,7 @@ class VatHelperController extends Controller
                 'Vat Number' => $vNum,
                 'Search date' => $rDate,
                 'Name' => $fName,
-                'Adress' => $fAdrr
+                'Address' => $fAdrr
             ]
         ]);
 

@@ -16,9 +16,9 @@ class CreateVatChecksTable extends Migration
             $table->increments('id');
 
             $table->string('client_id');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('country_code');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('vat_number');
             $table->boolean('is_valid');
 

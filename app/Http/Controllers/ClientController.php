@@ -43,7 +43,7 @@ class ClientController extends BaseController
      */
     public function index()
     {
-        return View::make('clients.list_wrapper', [
+        return View::make('list_wrapper', [
             'entityType' => ENTITY_CLIENT,
             'datatable' => new ClientDatatable(),
             'title' => trans('texts.clients'),
@@ -87,29 +87,29 @@ class ClientController extends BaseController
 
         $actionLinks = [];
         if ($user->can('create', ENTITY_INVOICE)) {
-            $actionLinks[] = ['label' => trans('texts.new_invoice'), 'url' => URL::to('/invoices/create/' . $client->public_id)];
+            $actionLinks[] = ['label' => trans('texts.new_invoice'), 'url' => URL::to('/invoices/create/'.$client->public_id)];
         }
         if ($user->can('create', ENTITY_TASK)) {
-            $actionLinks[] = ['label' => trans('texts.new_task'), 'url' => URL::to('/tasks/create/' . $client->public_id)];
+            $actionLinks[] = ['label' => trans('texts.new_task'), 'url' => URL::to('/tasks/create/'.$client->public_id)];
         }
         if (Utils::hasFeature(FEATURE_QUOTES) && $user->can('create', ENTITY_QUOTE)) {
-            $actionLinks[] = ['label' => trans('texts.new_quote'), 'url' => URL::to('/quotes/create/' . $client->public_id)];
+            $actionLinks[] = ['label' => trans('texts.new_quote'), 'url' => URL::to('/quotes/create/'.$client->public_id)];
         }
 
-        if (!empty($actionLinks)) {
+        if (! empty($actionLinks)) {
             $actionLinks[] = \DropdownButton::DIVIDER;
         }
 
         if ($user->can('create', ENTITY_PAYMENT)) {
-            $actionLinks[] = ['label' => trans('texts.enter_payment'), 'url' => URL::to('/payments/create/' . $client->public_id)];
+            $actionLinks[] = ['label' => trans('texts.enter_payment'), 'url' => URL::to('/payments/create/'.$client->public_id)];
         }
 
         if ($user->can('create', ENTITY_CREDIT)) {
-            $actionLinks[] = ['label' => trans('texts.enter_credit'), 'url' => URL::to('/credits/create/' . $client->public_id)];
+            $actionLinks[] = ['label' => trans('texts.enter_credit'), 'url' => URL::to('/credits/create/'.$client->public_id)];
         }
 
         if ($user->can('create', ENTITY_EXPENSE)) {
-            $actionLinks[] = ['label' => trans('texts.enter_expense'), 'url' => URL::to('/expenses/create/0/' . $client->public_id)];
+            $actionLinks[] = ['label' => trans('texts.enter_expense'), 'url' => URL::to('/expenses/create/0/'.$client->public_id)];
         }
 
         $token = $client->getGatewayToken();
@@ -138,7 +138,7 @@ class ClientController extends BaseController
     public function create(ClientRequest $request)
     {
         if (Client::scope()->withTrashed()->count() > Auth::user()->getMaxNumClients()) {
-            return View::make('error', ['hideHeader' => true, 'error' => "Sorry, you've exceeded the limit of " . Auth::user()->getMaxNumClients() . ' clients']);
+            return View::make('error', ['hideHeader' => true, 'error' => "Sorry, you've exceeded the limit of ".Auth::user()->getMaxNumClients().' clients']);
         }
 
         $data = [
@@ -167,7 +167,7 @@ class ClientController extends BaseController
         $data = [
             'client' => $client,
             'method' => 'PUT',
-            'url' => 'clients/' . $client->public_id,
+            'url' => 'clients/'.$client->public_id,
             'title' => trans('texts.edit_client'),
         ];
 
@@ -216,7 +216,7 @@ class ClientController extends BaseController
         $ids = Input::get('public_id') ? Input::get('public_id') : Input::get('ids');
         $count = $this->clientService->bulk($ids, $action);
 
-        $message = Utils::pluralize($action . 'd_client', $count);
+        $message = Utils::pluralize($action.'d_client', $count);
         Session::flash('message', $message);
 
         return $this->returnBulk(ENTITY_CLIENT, $action, $ids);

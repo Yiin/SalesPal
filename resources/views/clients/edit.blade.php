@@ -12,40 +12,69 @@
 
     <!-- ------------------------------------------------- -->
 
-    <div class="col-md-12">
-			<div class="col-md-6">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">Check your vat number</h3>
-							</div>
-							<div class="panel-body">
-								<form id="recieve-vat" method="POST" action="{{ url('vat') }}">
-									{{ csrf_field() }}
-                                    <div class="form-group">
-										<input type="text" class="form-control" name="vat" id="input-vat">
-									</div>
-									<div class="form-group">
-										<input type="submit" class="btn btn-primary btn-xs" value="Check VAT">
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-12">
-				<div class="alert" id="progress-to-add">
-					<p class="test-result">
-
-					</p>
-				</div>
-			</div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Check your vat number</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="recieve-vat" method="POST" action="{{ url('vat') }}">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="vat" id="input-vat">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary btn-xs" value="Check VAT">
+                        </div>
+                    </form>
+                    <p class="test-result"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">VAT checks log</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="vat-checks list-group">
+                        @if($client)
+                            @foreach($client->vatChecks as $vatCheck)
+                                @if($vatCheck->is_valid)
+                                    <li class="list-group-item list-group-item-success">
+                                        <ul>
+                                            <li><span>VAT</span>: {{ $vatCheck->country_code . $vatCheck->vat_number }}</li>
+                                            <li><span>Address</span>: {{ $vatCheck->address }}</li>
+                                            <li><span>Name</span>: {{ $vatCheck->name }}</li>
+                                            <li><span>Checked at</span>: {{ $vatCheck->created_at }}</li>
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="list-group-item list-group-item-danger">
+                                        <ul>
+                                            <li><span>VAT</span>: {{ $vatCheck->country_code . $vatCheck->vat_number }}</li>
+                                            <li><span>Checked at</span>: {{ $vatCheck->created_at }}</li>
+                                        </ul>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @endif
+                    </ul>
+                </div>
+            </div>
+        </div>
 	</div>
 
+    <style>
+        .list-group-item span {
+            font-weight: bold;
+        }
+    </style>
 
     <script>
+        var vatChecks = [];
+
         $('#recieve-vat').submit(function (e) {
             e.preventDefault();
             var form = $('#recieve-vat'),
@@ -53,37 +82,54 @@
                 vat_value = form.find('input[name="vat"]').val();
 
             if (vat_value !== "" && vat_value.length < 20) {
-                $("#progress-to-add").removeClass();
+                $(".test-result").html('');
+
                 $.ajax({
                     url: "{{ url('vat') }}",
                     type: "POST",
                     data: form_data,
                     dataType: 'json',
                     success: function (data) {
-                        var d = $("#progress-to-add");
-
-                        var html = '';
+                        var logEntry = $('<li/>');
 
                         if (data.results.Name === "---") {
-                            d.addClass("alert-danger");
+                            vatChecks.push({
+                                is_valid: false,
+                                country_code: data.results['Country code'],
+                                vat_number: data.results['Vat Number']
+                            });
 
-                            html += "Your provided VAT number is not valid. Please Check again or try a different number.";
+                            logEntry.addClass('list-group-item list-group-item-danger').html(`
+                                <ul>
+                                    <li><span>Status</span>: INVALID</li>
+                                    <li><span>VAT</span>: ${data.results['Country code']}${data.results['Vat Number']}</li>
+                                    <li><span>Checked at</span>: now</li>
+                                </ul>
+                            `).prependTo('.vat-checks');
                         }
                         else {
-                            d.addClass("alert-success");
+                            vatChecks.push({
+                                is_valid: true,
+                                country_code: data.results['Country code'],
+                                vat_number: data.results['Vat Number'],
+                                address: data.results['Address'],
+                                name: data.results['Name']
+                            });
 
-                            html += '<ul>';
-                            for (var key in data.results) {
-                                html += '<li>' + key + ': ' + data.results[key] + '</li>';
-                            }
-                            html += '</ul>';
+                            logEntry.addClass('list-group-item list-group-item-success').html(`
+                                <ul>
+                                    <li><span>Status</span>: VALID</li>
+                                    <li><span>VAT</span>: ${data.results['Country code']}${data.results['Vat Number']}</li>
+                                    <li><span>Address</span>: ${data.results['Address']}</li>
+                                    <li><span>Name</span>: ${data.results['Name']}</li>
+                                    <li><span>Checked at</span>: now</li>
+                                </ul>
+                            `).prependTo('.vat-checks');
                         }
-                        $('.test-result').html(html);
+
+                        $('input[name="vat_checks"]').val(JSON.stringify(vatChecks));
                     },
                     error: function () {
-                        var d = $("#progress-to-add");
-                        d.addClass("alert-error");
-
                         $('.test-result').text("Your provided VAT number is not valid. Please Check again or try a different number.")
                     }
                 });
@@ -117,25 +163,7 @@
         @endif
     @endif
 
-    <div class="row">
-        <ul class="vat-checks">
-            @if($client)
-                @foreach($client->vatChecks as $vatCheck)
-                    <li>
-                        <ul>
-                            <li>Status: {{ $vatCheck->is_valid ? 'VALID' : 'INVALID' }}</li>
-                            <li>Address: {{ $vatCheck->address }}</li>
-                            <li>Country code: {{ $vatCheck->country_code }}</li>
-                            <li>Name: {{ $vatCheck->name }}</li>
-                            <li>VAT Number{{ $vatCheck->vat_number }}</li>
-                            <li>Checked at: {{ $vatCheck->created_at }}</li>
-                        </ul>
-                    </li>
-                @endforeach
-            @endif
-        </ul>
-    </div>
-    <input type="hidden" name="wat_checks" value="">
+    <input type="hidden" name="vat_checks">
 
     <div class="row">
 		<div class="col-md-6">

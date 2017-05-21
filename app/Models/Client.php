@@ -276,7 +276,7 @@ class Client extends EntityModel
      */
     public function vatChecks()
     {
-        return $this->hasMany('App\Models\VatCheck');
+        return $this->hasMany('App\Models\VatCheck')->orderBy('id', 'DESC');
     }
 
     /**
