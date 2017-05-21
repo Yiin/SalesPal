@@ -1,0 +1,78 @@
+list.blade.php 33
+form to select filter for Active/Archived/Deleted
+	<span id="statusWrapper_{{ $entityType }}" style="display:none">
+		<select class="form-control" style="width: 268px" id="statuses_{{ $entityType }}" multiple="true">
+			@if (count(\App\Models\EntityModel::getStatusesFor($entityType)))
+				<optgroup label="{{ trans('texts.entity_state') }}">
+					@foreach (\App\Models\EntityModel::getStatesFor($entityType) as $key => $value)
+						<option value="{{ $key }}">{{ $value }}</option>
+					@endforeach
+				</optgroup>
+				<optgroup label="{{ trans('texts.status') }}">
+					@foreach (\App\Models\EntityModel::getStatusesFor($entityType) as $key => $value)
+						<option value="{{ $key }}">{{ $value }}</option>
+					@endforeach
+				</optgroup>
+			@else
+				@foreach (\App\Models\EntityModel::getStatesFor($entityType) as $key => $value)
+					<option value="{{ $key }}">{{ $value }}</option>
+				@endforeach
+			@endif
+		</select>
+	</span>
+**new
+    <div class="pull-left">
+    	@can('create', 'invoice')
+    		@if ($entityType == ENTITY_TASK)
+    			{!! Button::primary(trans('texts.invoice'))->withAttributes(['class'=>'invoice', 'onclick' =>'submitForm_'.$entityType.'("invoice")'])->appendIcon(Icon::create('check')) !!}
+    		@endif
+    		@if ($entityType == ENTITY_EXPENSE)
+    			{!! Button::primary(trans('texts.invoice'))->withAttributes(['class'=>'invoice', 'onclick' =>'submitForm_'.$entityType.'("invoice")'])->appendIcon(Icon::create('check')) !!}
+    		@endif
+    	@endcan
+
+    	{!! DropdownButton::normal(trans('texts.archive'))
+    			->withContents($datatable->bulkActions())
+    			->withAttributes(['class'=>'archive'])
+    			->split() !!}
+
+    	&nbsp;
+    	<span id="statusWrapper_{{ $entityType }}" style="display:none">
+    		<select class="form-control" style="width: 220px" id="statuses_{{ $entityType }}" multiple="true">
+    			@if (count(\App\Models\EntityModel::getStatusesFor($entityType)))
+    				<optgroup label="{{ trans('texts.entity_state') }}">
+    					@foreach (\App\Models\EntityModel::getStatesFor($entityType) as $key => $value)
+    						<option value="{{ $key }}">{{ $value }}</option>
+    					@endforeach
+    				</optgroup>
+    				<optgroup label="{{ trans('texts.status') }}">
+    					@foreach (\App\Models\EntityModel::getStatusesFor($entityType) as $key => $value)
+    						<option value="{{ $key }}">{{ $value }}</option>
+    					@endforeach
+    				</optgroup>
+    			@else
+    				@foreach (\App\Models\EntityModel::getStatesFor($entityType) as $key => $value)
+    					<option value="{{ $key }}">{{ $value }}</option>
+    				@endforeach
+    			@endif
+    		</select>
+    	</span>
+    </div>
+**replaced with
+
+
+///ClientDatatable.php
+**Removed
+            54 row***
+
+            [
+                'last_login',
+                function ($model) {
+                    return Utils::timestampToDateString(strtotime($model->last_login));
+                },
+            ],
+**Replaced
+
+///
+
+

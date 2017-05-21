@@ -1,0 +1,100 @@
+///////////////////////////////
+//// ANTANAS LAURINAVICIUS ////
+///////////////////////////////
+
+//* 2017 05 17 *//
+/* App\Ninja\Datatables\ProductDatatable.php
+        nuo 36 iki 42 uzkomentuota
+        panaikinti tax rate
+
+///////////////////////////////
+//// ANTANAS LAURINAVICIUS ////
+///////////////////////////////
+
+//* 2017 05 09 *//
+/* App/Services/DatatableService.php
+        nuo 51 iki 55 uzkomentuota
+        Panaikina visiskai select skilti.
+
+/* App/Ninja/Datatables/EntityDatatable.php
+        nuo 65 iki 67 uzkomentuota
+        Panaikintas stulpelis.
+
+//* 2017 05 10 *//
+/* resources/view/list.blade.php 19 line
+        is: {!! Button::primary(mtrans($entityType, "new_{$entityType}"))->asLinkTo(url(Utils::pluralizeEntityType($entityType) . '/create/' . (isset($clientId) ? $clientId : '')))->appendIcon(Icon::create('user pull-left')) !!}
+        i:  {!! Button::primary(Icon::create('user').(mtrans($entityType, "new_{$entityType}")))->asLinkTo(url(Utils::pluralizeEntityType($entityType) . '/create/' . (isset($clientId) ? $clientId : ''))) !!}
+        // Pakeitimai atlikti tam kad viskas butu nuosekliai sudeta
+        // pirmiausiai ikonele veliau tekstas, buvo pirmiausiai tekstas po to ikonele
+
+        // Stiliaus keitimas nuo 10 eilutes pateikta sena versija, ji pakeista nauja
+            <div id="top_right_buttons" class="pull-left">
+                @if ($entityType == ENTITY_EXPENSE)
+                    {!! Button::normal(trans('texts.categories'))->asLinkTo(URL::to('/expense_categories'))->appendIcon(Icon::create('list')) !!}
+                @elseif ($entityType == ENTITY_TASK)
+                    {!! Button::normal(trans('texts.projects'))->asLinkTo(URL::to('/projects'))->appendIcon(Icon::create('list')) !!}
+                @endif
+
+                @if (Auth::user()->can('create', $entityType) && empty($vendorId))
+                    {!! Button::primary(mtrans($entityType, "new_{$entityType}"))->asLinkTo(url(Utils::pluralizeEntityType($entityType) . '/create/' . (isset($clientId) ? $clientId : '')))->appendIcon(Icon::create('user pull-left')) !!}
+                @endif
+            </div>
+            <div class="pull-left">
+            	<div class="dropdown devel-dropdown">
+            		<button class="btn btn-primary dropdown-toggle devel-dropdown-button" type="button" data-toggle="dropdown"><p class="devel-dropdown-text">Select to show</p>
+            			<span class="caret caret-dev-top"></span></button>
+            		<ul class="dropdown-menu devel-dropdown-menu">
+            			<li class="dropdown-header">Select to show <span class="caret caret-dev-dropdown"></span></li>
+            			<li role="separator" class="divider"></li>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb2" id="select-all-chkbx" type="checkbox">
+            					<label for="cb2">&nbsp;All</label>
+            				</div>
+            			<li role="separator" class="divider"></li>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb1" type="checkbox">
+            					<label for="cb1">&nbsp;Active</label>
+            				</div>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb3" type="checkbox">
+            					<label for="cb3">&nbsp;Inactive</label>
+            				</div>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb4" type="checkbox">
+            					<label for="cb4">&nbsp;Deleted</label>
+            				</div>
+            			<li role="separator" class="divider"></li>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb5" type="checkbox">
+            					<label for="cb5">&nbsp;VAT Verified</label>
+            				</div>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb6" type="checkbox">
+            					<label for="cb6">&nbsp;VAT Pending</label>
+            				</div>
+            				<div class="custom-checkbox custom-checkbox-dropdown-menu">
+            					<input checked="" id="cb7" type="checkbox">
+            					<label for="cb7">&nbsp;VAT Invalid</label>
+            				</div>
+            			<li role="separator" class="divider"></li>
+            		</ul>
+            	</div>
+            </div>
+            <div class="pull-left top-form-div">
+            	<input id="tableFilter_{{ $entityType }}" type="text" style="width:268px;margin-right:17px;background-color: white !important"
+            		   class="form-control pull-left top-form-dropdown" placeholder="{{ trans('texts.filter') }}" value="{{ Input::get('filter') }}"/>
+            </div>
+        // iki 86 line
+
+/* resources/assets/css/style.css 1673 line
+        // Stiliaus pakeitimai su komentarais
+
+/* public/css/built.css 14036 line
+        // Pridedama viskas kas ir style.css faile
+
+//* 2017 05 11 *//
+        /* resources/assets/css/style.css 1673 line
+                // Sutvarkytos tos pacios eilutes kaip ir vakar
+
+        /* public/css/built.css 14036 line
+                // Sutvarkytos tos pacios eilutes kaip ir vakar
