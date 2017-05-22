@@ -108,8 +108,11 @@ class ClientRepository extends BaseRepository
         $client->fill($data);
         $client->save();
 
-        foreach (json_decode($data['vat_checks']) as $vatCheck) {
-            $client->vatChecks()->create((array)$vatCheck);
+        $vatChecks = json_decode($data['vat_checks']);
+        if ($vatChecks) {
+            foreach ($vatChecks as $vatCheck) {
+                $client->vatChecks()->create((array)$vatCheck);
+            }
         }
 
         /*

@@ -2152,20 +2152,97 @@ td > a:hover {
     font-weight: 600;
 }
 
-
 /* Datatable controls */
 .dt_controls {
     float: right;
+    margin-top: 30px;
 }
 
 .dt_controls > div {
     float: none !important;
     display: inline-block;
+    vertical-align: middle;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.pagination > span, .dataTables_length label, .dataTables_info {
+    vertical-align: top;
+    font-size: 16px;
+    font-weight: 600;
+    color: #949494 !important;
+    margin: 6px 0;
+    display: inline-block;
+}
+
+.pagination > ul {
+    margin: 0 20px;
+}
+
+.pagination > li {
+    display: inline-block !important;
     vertical-align: top;
 }
 
-div#DataTables_Table_0_length {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
+.pagination .page {
+    width: 70px;
+    text-align: center;
+}
+
+.pagination > .prev a, .pagination > .next a {
+    border: none;
+    background: none;
+    font-weight: 600;
+    color: #949494;
+    padding: 0;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.pagination > .prev a {
+    padding-right: 9px;
+}
+
+.pagination > .next a {
+    padding-left: 9px;
+}
+
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    display: none;
+}
+
+.pagination > .active > input, .pagination > .active > span, .pagination > .active > input:hover, .pagination > .active > span:hover, .pagination > .active > input:focus, .pagination > .active > span:focus {
+    background: #ffffff !important;
+    color: #373737 !important;
+    border: none;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    font-size: 16px;
+    padding: 7px 0;
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    color: #373737 !important;
+    background: none;
+    border: none;
+}
+
+div.dataTables_length {
+    margin: 0 15px !important;
+    padding: 0;
+}
+
+div.dataTables_length label {
+    margin: 0;
+}
+
+div.dataTables_length select {
+    text-align: center;
+    background: #ffffff !important;
+    color: #373737 !important;
+    border: none;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    font-size: 16px;
+    padding: 7px 10px 7px;
+    margin-right: 10px;
 }
