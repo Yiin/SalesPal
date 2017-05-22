@@ -2216,7 +2216,7 @@ td > a:hover {
     background: #ffffff !important;
     color: #373737 !important;
     border: none;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
     font-size: 16px;
     padding: 7px 0;
 }
@@ -2241,7 +2241,7 @@ div.dataTables_length select {
     background: #ffffff !important;
     color: #373737 !important;
     border: none;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
     font-size: 16px;
     padding: 7px 10px 7px;
     margin-right: 10px;
