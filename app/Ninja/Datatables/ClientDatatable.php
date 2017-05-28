@@ -27,9 +27,9 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'contact',
+                'work_phone',
                 function ($model) {
-                    return link_to("clients/{$model->public_id}", $model->contact ?: '')->toHtml();
+                    return $model->work_phone;
                 },
             ],
             [
