@@ -131,6 +131,7 @@ $LANG = array(
     'date_created' => 'Date Created',
     'last_login' => 'Last Login',
     'balance' => 'Balance',
+    'paid_in' => 'Paid In',
     'action' => 'Action',
     'status' => 'Select to show',
     'invoice_total' => 'Invoice Total',

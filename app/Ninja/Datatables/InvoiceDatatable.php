@@ -45,13 +45,19 @@ class InvoiceDatatable extends EntityDatatable
                 },
             ],
             [
+                $entityType == ENTITY_INVOICE ? 'due_date' : 'valid_until',
+                function ($model) {
+                    return Utils::fromSqlDate($model->due_date_sql);
+                },
+            ],
+            [
                 'amount',
                 function ($model) {
                     return Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
                 },
             ],
             [
-                'balance',
+                'paid_in',
                 function ($model) {
                     $partial = Invoice::find($model->public_id)->getAmountPaid(true);
                     return $partial > 0 ?
@@ -59,12 +65,6 @@ class InvoiceDatatable extends EntityDatatable
                         Utils::formatMoney(0, $model->currency_id, $model->country_id);
                 },
                 $entityType == ENTITY_INVOICE,
-            ],
-            [
-                $entityType == ENTITY_INVOICE ? 'due_date' : 'valid_until',
-                function ($model) {
-                    return Utils::fromSqlDate($model->due_date_sql);
-                },
             ],
             [
                 'status',
