@@ -35,7 +35,7 @@ class SelfUpdateController extends BaseController
     public function index()
     {
         $versionInstalled = $this->updater->source()->getVersionInstalled('v');
-        $updateAvailable = $this->updater->source()->isNewVersionAvailable($versionInstalled);
+        $updateAvailable = false;
 
         return view(
             'vendor.self-update.self-update',
