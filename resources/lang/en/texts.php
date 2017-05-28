@@ -833,7 +833,7 @@ $LANG = array(
     'admin' => 'Admin',
     'disabled' => 'Disabled',
     'show_archived_users' => 'Show archived users',
-    'notes' => 'Notes',
+    'notes' => 'Description',
     'invoice_will_create' => 'client will be created',
     'invoices_will_create' => 'invoices will be created',
     'failed_to_import' => 'The following records failed to import, they either already exist or are missing required fields.',
@@ -1057,7 +1057,7 @@ $LANG = array(
     'invalid_card_number' => 'The credit card number is not valid.',
     'invalid_expiry' => 'The expiration date is not valid.',
     'invalid_cvv' => 'The CVV is not valid.',
-    'cost' => 'Cost',
+    'cost' => 'Price',
     'create_invoice_for_sample' => 'Note: create your first invoice to see a preview here.',
 
     // User Permissions
