@@ -26,15 +26,15 @@ class CreditDatatable extends EntityDatatable
                 ! $this->hideClient,
             ],
             [
-                'amount',
+                'public_notes',
                 function ($model) {
-                    return Utils::formatMoney($model->amount, $model->currency_id, $model->country_id) . '<span '.Utils::getEntityRowClass($model).'/>';
+                    return $model->public_notes;
                 },
             ],
             [
-                'balance',
+                'private_notes',
                 function ($model) {
-                    return Utils::formatMoney($model->balance, $model->currency_id, $model->country_id);
+                    return $model->private_notes;
                 },
             ],
             [
@@ -48,15 +48,15 @@ class CreditDatatable extends EntityDatatable
                 },
             ],
             [
-                'public_notes',
+                'amount',
                 function ($model) {
-                    return $model->public_notes;
+                    return Utils::formatMoney($model->amount, $model->currency_id, $model->country_id) . '<span '.Utils::getEntityRowClass($model).'/>';
                 },
             ],
             [
-                'private_notes',
+                'balance',
                 function ($model) {
-                    return $model->private_notes;
+                    return Utils::formatMoney($model->balance, $model->currency_id, $model->country_id);
                 },
             ],
         ];
