@@ -39,10 +39,22 @@ class VendorDatatable extends EntityDatatable
                 },
             ],
             [
-                'client_created_at',
+                'expenses',
                 function ($model) {
-                    return Utils::timestampToDateString(strtotime($model->created_at));
-                },
+                    $vendor_id = \App\Models\Vendor::getPrivateId($model->public_id);
+                    $vendor = \App\Models\Vendor::find($vendor_id);
+                    $currency_id = $vendor->currency_id ? $vendor->currency_id : 1;
+
+                    $sum = 0;
+
+                    foreach ($vendor->getTotalExpenses() as $expense) {
+                        if($expense->expense_currency_id === $currency_id) { 
+                            $sum += $expense->amount;
+                        }
+                    }
+
+                    return Utils::formatMoney($sum, $currency_id, $vendor->country_id);
+                }
             ],
         ];
     }
