@@ -40,6 +40,20 @@ class ProductDatatable extends EntityDatatable
                 },
                 Auth::user()->account->invoice_item_taxes,
             ],
+            [
+                'stock',
+                function ($model) {
+                    if($model->qty === null) {
+                        return trans('texts.service');
+                    }
+                    else if($model->qty > 0) {
+                        return number_format($model->qty);
+                    }
+                    else {
+                        return trans('texts.out_of_stock');
+                    }
+                }
+            ]
         ];
     }
 

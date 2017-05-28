@@ -32,6 +32,7 @@
   @endif
 
   {!! Former::text('cost') !!}
+  {!! Former::text('qty')->placeholder(trans('texts.leave_empty_if_service')) !!}
 
   @if ($account->invoice_item_taxes)
       {!! Former::select('default_tax_rate_id')

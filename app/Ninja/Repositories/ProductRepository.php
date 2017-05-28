@@ -33,6 +33,7 @@ class ProductRepository extends BaseRepository
                     'products.product_key',
                     'products.notes',
                     'products.cost',
+                    'products.qty',
                     'tax_rates.name as tax_name',
                     'tax_rates.rate as tax_rate',
                     'products.deleted_at',
@@ -68,7 +69,7 @@ class ProductRepository extends BaseRepository
         $product->product_key = isset($data['product_key']) ? trim($data['product_key']) : '';
         $product->notes = isset($data['notes']) ? trim($data['notes']) : '';
         $product->cost = isset($data['cost']) ? Utils::parseFloat($data['cost']) : 0;
-        $product->qty = isset($data['qty']) ? Utils::parseFloat($data['qty']) : 1;
+        $product->qty = isset($data['qty']) ? (empty($data['qty']) ? null : Utils::parseFloat($data['qty'])) : 1;
         $product->save();
 
         return $product;
