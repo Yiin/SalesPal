@@ -46,6 +46,23 @@ class ExpenseDatatable extends EntityDatatable
                 ! $this->hideClient,
             ],
             [
+                'category',
+                function ($model) {
+                    $category = $model->category != null ? substr($model->category, 0, 100) : '';
+                    if (! Auth::user()->can('editByOwner', [ENTITY_EXPENSE_CATEGORY, $model->category_user_id])) {
+                        return $category;
+                    }
+
+                    return $model->category_public_id ? link_to("expense_categories/{$model->category_public_id}/edit", $category)->toHtml() : '';
+                },
+            ],
+            [
+                'public_notes',
+                function ($model) {
+                    return $model->public_notes != null ? substr($model->public_notes, 0, 100) : '';
+                },
+            ],
+            [
                 'expense_date',
                 function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_EXPENSE, $model->user_id])) {
@@ -68,23 +85,6 @@ class ExpenseDatatable extends EntityDatatable
                     }
 
                     return $str;
-                },
-            ],
-            [
-                'category',
-                function ($model) {
-                    $category = $model->category != null ? substr($model->category, 0, 100) : '';
-                    if (! Auth::user()->can('editByOwner', [ENTITY_EXPENSE_CATEGORY, $model->category_user_id])) {
-                        return $category;
-                    }
-
-                    return $model->category_public_id ? link_to("expense_categories/{$model->category_public_id}/edit", $category)->toHtml() : '';
-                },
-            ],
-            [
-                'public_notes',
-                function ($model) {
-                    return $model->public_notes != null ? substr($model->public_notes, 0, 100) : '';
                 },
             ],
             [
