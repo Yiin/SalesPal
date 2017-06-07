@@ -12,31 +12,54 @@ class ProductDatatable extends EntityDatatable
     public $entityType = ENTITY_PRODUCT;
     public $sortCol = 4;
 
+    public function getEntityTitle($model)
+    {
+        return $model->product_key;
+    }
+
     public function columns()
     {
         return [
             [
                 'product_key',
                 function ($model) {
-                    return link_to('products/' . $model->public_id . '/edit', $model->product_key)->toHtml();
+                    return [
+                        'data' => $model->product_key,
+                        'display' => link_to('products/' . $model->public_id . '/edit', $model->product_key)->toHtml()
+                    ];
                 },
             ],
             [
                 'notes',
                 function ($model) {
-                    return nl2br(Str::limit($model->notes, 100));
+                    return [
+                        'data' => $model->notes,
+                        'display' => nl2br(Str::limit($model->notes, 100))
+                    ];
                 },
             ],
             [
                 'cost',
                 function ($model) {
-                    return Utils::formatMoney($model->cost);
+                    return [
+                        'data' => $model->cost,
+                        'display' => Utils::formatMoney($model->cost)
+                    ];
                 },
             ],
             [
                 'tax_rate',
                 function ($model) {
-                    return $model->tax_rate ? ($model->tax_name . ' ' . $model->tax_rate . '%') : '';
+                    $tax_rate = $model->default_tax_rate ? $model->default_tax_rate->rate : 0;
+                    $tax_name = $model->default_tax_rate ? $model->default_tax_rate->name : '';
+
+                    return [
+                        'data' => [
+                            'rate' => $tax_rate,
+                            'name' => $tax_name
+                        ],
+                        'display' => $tax_rate ? ($tax_name . ' ' . $tax_rate . '%') : ''
+                    ];
                 },
                 Auth::user()->account->invoice_item_taxes,
             ],
@@ -44,14 +67,18 @@ class ProductDatatable extends EntityDatatable
                 'stock',
                 function ($model) {
                     if($model->qty === null) {
-                        return trans('texts.service');
+                        $text = trans('texts.service');
                     }
                     else if($model->qty > 0) {
-                        return number_format($model->qty);
+                        $text = number_format($model->qty);
                     }
                     else {
-                        return trans('texts.out_of_stock');
+                        $text = trans('texts.out_of_stock');
                     }
+                    return [
+                        'data' => $model->qty,
+                        'display' => $text
+                    ];
                 }
             ]
         ];

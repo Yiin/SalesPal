@@ -7,6 +7,7 @@ use App\Models\AccountGatewaySettings;
 use App\Models\AccountGateway;
 use App\Models\Gateway;
 use App\Services\AccountGatewayService;
+use App\Ninja\Datatables\AccountGatewayDatatable;
 use Auth;
 use Input;
 use Redirect;
@@ -29,14 +30,14 @@ class AccountGatewayController extends BaseController
         $this->accountGatewayService = $accountGatewayService;
     }
 
+    public function getLegacyDatatable()
+    {
+        return $this->accountGatewayService->getDatatable(Auth::user()->account_id);
+    }
+
     public function index()
     {
         return Redirect::to('settings/' . ACCOUNT_PAYMENTS);
-    }
-
-    public function getDatatable()
-    {
-        return $this->accountGatewayService->getDatatable(Auth::user()->account_id);
     }
 
     public function show($publicId)

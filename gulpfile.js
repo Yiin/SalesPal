@@ -1,4 +1,7 @@
+process.env.DISABLE_NOTIFIER = true;
+
 var elixir = require('laravel-elixir');
+require('laravel-elixir-vue-2');
 
 /**
  * Set Elixir Source Maps
@@ -34,7 +37,7 @@ elixir(function(mix) {
     mix.styles([
         bowerDir + '/bootstrap/dist/css/bootstrap.css',
         bowerDir + '/font-awesome/css/font-awesome.css',
-        '../datatables/media/css/jquery.dataTables.css',
+        '../vendor/datatables/media/css/jquery.dataTables.css',
         bowerDir + '/datatables-bootstrap3/BS3/assets/css/datatables.css',
         'bootstrap-combobox.css',
         'public.style.css',
@@ -44,7 +47,7 @@ elixir(function(mix) {
     mix.styles([
         bowerDir + '/bootstrap/dist/css/bootstrap.css',
         bowerDir + '/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
-        '../datatables/media/css/jquery.dataTables.css',
+        '../vendor/datatables/media/css/jquery.dataTables.css',
         bowerDir + '/datatables-bootstrap3/BS3/assets/css/datatables.css',
         bowerDir + '/font-awesome/css/font-awesome.css',
         bowerDir + '/dropzone/dist/dropzone.css',
@@ -119,12 +122,12 @@ elixir(function(mix) {
         bowerDir + '/jquery/dist/jquery.js',
         bowerDir + '/jquery-ui/jquery-ui.js',
         bowerDir + '/bootstrap/dist/js/bootstrap.js',
-        '../datatables/media/js/jquery.dataTables.js',
+        '../vendor/datatables/media/js/jquery.dataTables.js',
         bowerDir + '/datatables-bootstrap3/BS3/assets/js/datatables.js',
         bowerDir + '/knockout.js/knockout.js',
         bowerDir + '/knockout-mapping/build/output/knockout.mapping-latest.js',
         bowerDir + '/knockout-sortable/build/knockout-sortable.js',
-        bowerDir + '/underscore/underscore.js',
+        // '../vendor/underscore/underscore.js',
         bowerDir + '/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
         bowerDir + '/bootstrap-datepicker/dist/locales/bootstrap-datepicker.de.min.js',
         bowerDir + '/bootstrap-datepicker/dist/locales/bootstrap-datepicker.da.min.js',
@@ -153,6 +156,10 @@ elixir(function(mix) {
         'script.js',
         'pdf.pdfmake.js',
     ], 'public/built.js');
+
+    mix.webpack([
+        'vue/main.js'
+    ], 'public/compiled.js');
 
 
 });

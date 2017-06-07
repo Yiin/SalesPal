@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ClientRequest;
 use App\Http\Requests\CreateClientRequest;
 use App\Http\Requests\UpdateClientRequest;
@@ -28,12 +29,20 @@ class ClientController extends BaseController
     protected $clientRepo;
     protected $entityType = ENTITY_CLIENT;
 
-    public function __construct(ClientRepository $clientRepo, ClientService $clientService)
+    public function __construct(ClientRepository $clientRepo, ClientService $clientService, ClientDatatable $clientDatatable)
     {
         //parent::__construct();
-
+        
         $this->clientRepo = $clientRepo;
         $this->clientService = $clientService;
+
+        $this->entityQuery = Client::query();
+        $this->datatable = $clientDatatable;
+    }
+
+    protected function filterClient(&$query, $clientId)
+    {
+        // do nothing
     }
 
     /**
@@ -49,14 +58,6 @@ class ClientController extends BaseController
             'title' => trans('texts.clients'),
             'statuses' => Client::getStatuses(),
         ]);
-    }
-
-    public function getDatatable()
-    {
-        $search = Input::get('sSearch');
-        $userId = Auth::user()->filterId();
-
-        return $this->clientService->getDatatable($search, $userId);
     }
 
     /**

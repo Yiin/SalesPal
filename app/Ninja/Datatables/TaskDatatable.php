@@ -12,28 +12,33 @@ class TaskDatatable extends EntityDatatable
     public $entityType = ENTITY_TASK;
     public $sortCol = 3;
 
+    public function getEntityTitle($model)
+    {
+        return $model->project . '(' . Utils::formatTime(Task::calcDuration($model)) . ')';
+    }
+
     public function columns()
     {
         return [
             [
                 'client_name',
                 function ($model) {
-                    if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client_user_id])) {
-                        return Utils::getClientDisplayName($model);
+                    if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client ? $model->client->user_id : null])) {
+                        return Utils::getClientDisplayName($model->client);
                     }
 
-                    return $model->client_public_id ? link_to("clients/{$model->client_public_id}", Utils::getClientDisplayName($model))->toHtml() : '';
+                    return $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : '';
                 },
                 ! $this->hideClient,
             ],
             [
                 'project',
                 function ($model) {
-                    if (! Auth::user()->can('editByOwner', [ENTITY_PROJECT, $model->project_user_id])) {
-                        return $model->project;
+                    if (! Auth::user()->can('editByOwner', [ENTITY_PROJECT, $model->project ? $model->project->user_id : null])) {
+                        return $model->project->name;
                     }
 
-                    return $model->project_public_id ? link_to("projects/{$model->project_public_id}/edit", $model->project)->toHtml() : '';
+                    return $model->project ? link_to("projects/{$model->project->public_id}/edit", $model->project->name)->toHtml() : '';
                 },
             ],
             [
@@ -82,10 +87,10 @@ class TaskDatatable extends EntityDatatable
             [
                 trans('texts.view_invoice'),
                 function ($model) {
-                    return URL::to("/invoices/{$model->invoice_public_id}/edit");
+                    return URL::to("/invoices/{$model->invoice->public_id}/edit");
                 },
                 function ($model) {
-                    return $model->invoice_number && Auth::user()->can('editByOwner', [ENTITY_INVOICE, $model->invoice_user_id]);
+                    return $model->invoice && Auth::user()->can('editByOwner', [ENTITY_INVOICE, $model->invoice->user_id]);
                 },
             ],
             [
@@ -103,7 +108,7 @@ class TaskDatatable extends EntityDatatable
                     return "javascript:submitForm_task('invoice', {$model->public_id})";
                 },
                 function ($model) {
-                    return ! $model->invoice_number && (! $model->deleted_at || $model->deleted_at == '0000-00-00') && Auth::user()->can('create', ENTITY_INVOICE);
+                    return ! $model->invoice && (! $model->deleted_at || $model->deleted_at == '0000-00-00') && Auth::user()->can('create', ENTITY_INVOICE);
                 },
             ],
         ];
@@ -111,8 +116,8 @@ class TaskDatatable extends EntityDatatable
 
     private function getStatusLabel($model)
     {
-        $label = Task::calcStatusLabel($model->is_running, $model->balance, $model->invoice_number);
-        $class = Task::calcStatusClass($model->is_running, $model->balance, $model->invoice_number);
+        $label = Task::calcStatusLabel($model->is_running, $model->balance, $model->invoice ? $model->invoice->invoice_number : null);
+        $class = Task::calcStatusClass($model->is_running, $model->balance, $model->invoice ? $model->invoice->invoice_number : null);
 
         return "<h4><div class=\"label label-{$class}\">$label</div></h4>";
     }

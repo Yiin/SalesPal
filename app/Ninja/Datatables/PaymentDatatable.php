@@ -19,62 +19,97 @@ class PaymentDatatable extends EntityDatatable
         GATEWAY_WEPAY,
     ];
 
+    public function getEntityTitle($model)
+    {
+        return $model->invoice->invoice_number;
+    }
+
     public function columns()
     {
         return [
             [
                 'invoice_name',
                 function ($model) {
-                    if (! Auth::user()->can('viewByOwner', [ENTITY_INVOICE, $model->invoice_user_id])) {
-                        return $model->invoice_number;
+                    if (! Auth::user()->can('viewByOwner', [ENTITY_INVOICE, $model->invoice->user_id])) {
+                        return ['data' => $model->invoice->invoice_number, 'display' => $model->invoice->invoice_number];
                     }
 
-                    return link_to("invoices/{$model->invoice_public_id}/edit", $model->invoice_number, ['class' => Utils::getEntityRowClass($model)])->toHtml();
+                    return [
+                        'data' => $model->invoice->invoice_number, 
+                        'display' => link_to("invoices/{$model->invoice->public_id}/edit", $model->invoice->invoice_number, ['class' => Utils::getEntityRowClass($model)])->toHtml()
+                    ];
                 },
             ],
             [
                 'client_name',
                 function ($model) {
-                    if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client_user_id])) {
-                        return Utils::getClientDisplayName($model);
+                    if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client ? $model->client->user_id : null])) {
+                        return [
+                            'data' => $model->client ? $model->client->public_id : null, 
+                            'display' => $model->client ? Utils::getClientDisplayName($model->client) : ''
+                        ];
                     }
 
-                    return $model->client_public_id ? link_to("clients/{$model->client_public_id}", Utils::getClientDisplayName($model))->toHtml() : '';
+                    return [
+                        'data' => Utils::getClientDisplayName($model->client), 
+                        'display' => $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : ''
+                    ];
                 },
                 ! $this->hideClient,
             ],
             [
                 'transaction_reference',
                 function ($model) {
-                    return $model->transaction_reference ? $model->transaction_reference : '<i>'.trans('texts.manual_entry').'</i>';
+                    return [
+                        'data' => $model->transaction_reference, 
+                        'display' => $model->transaction_reference ? $model->transaction_reference : '<i>'.trans('texts.manual_entry').'</i>'
+                    ];
                 },
             ],
             [
                 'method',
                 function ($model) {
-                    return ($model->payment_type && ! $model->last4) ? $model->payment_type : ($model->account_gateway_id ? $model->gateway_name : '');
+                    return [
+                        'data' => ($model->payment_type && ! $model->last4) ? $model->payment_type->name : ($model->account_gateway_id ? $model->account_gateway->name : ''),
+                        'display' => ($model->payment_type && ! $model->last4) ? $model->payment_type->name : ($model->account_gateway_id ? $model->account_gateway->name : '')
+                    ];
                 },
             ],
             [
                 'amount',
                 function ($model) {
-                    return Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
+                    return [
+                        'data' => [
+                            'currency_id' => $model->currency_id,
+                            'amount' => $model->amount,
+                        ],
+                        'display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id)
+                    ];
                 },
             ],
             [
                 'date',
                 function ($model) {
                     if ($model->is_deleted) {
-                        return Utils::dateToString($model->payment_date);
+                        return [
+                            'data' => $model->payment_date,
+                            'display' => Utils::dateToString($model->payment_date)
+                        ];
                     } else {
-                        return link_to("payments/{$model->public_id}/edit", Utils::dateToString($model->payment_date))->toHtml();
+                        return [
+                            'data' => $model->payment_date,
+                            'display' => link_to("payments/{$model->public_id}/edit", Utils::dateToString($model->payment_date))->toHtml()
+                        ];
                     }
                 },
             ],
             [
                 'status',
                 function ($model) {
-                    return self::getStatusLabel($model);
+                    return [
+                        'data' => $model->payment_status_id,
+                        'display' => self::getStatusLabel($model)
+                    ];
                 },
             ],
         ];
@@ -113,7 +148,7 @@ class PaymentDatatable extends EntityDatatable
     private function getStatusLabel($model)
     {
         $amount = Utils::formatMoney($model->refunded, $model->currency_id, $model->country_id);
-        $label = Payment::calcStatusLabel($model->payment_status_id, $model->status, $amount);
+        $label = Payment::calcStatusLabel($model->payment_status_id, $model->payment_status->name, $amount);
         $class = Payment::calcStatusClass($model->payment_status_id);
 
         return "<h4><div class=\"label label-{$class}\">$label</div></h4>";

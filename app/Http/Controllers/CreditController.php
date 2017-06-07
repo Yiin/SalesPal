@@ -23,12 +23,30 @@ class CreditController extends BaseController
     protected $creditService;
     protected $entityType = ENTITY_CREDIT;
 
-    public function __construct(CreditRepository $creditRepo, CreditService $creditService)
+    public function __construct(CreditRepository $creditRepo, CreditService $creditService, CreditDatatable $datatable)
     {
         // parent::__construct();
 
         $this->creditRepo = $creditRepo;
         $this->creditService = $creditService;
+
+        $this->entityQuery = Credit::query();
+        $this->datatable = $datatable;
+    }
+
+    public function filterEntity(&$query, $entityId = null)
+    {
+        // filter by client
+        if ($entityId) {
+            $query = $query->whereHas('client', function ($query) use ($entityId) {
+                $query->where('id', $entityId);
+            });
+        }
+        else {
+            $query->whereHas('client', function ($query) {
+                $query->whereNull('deleted_at');
+            });
+        }
     }
 
     /**
@@ -43,11 +61,6 @@ class CreditController extends BaseController
             'datatable' => new CreditDatatable(),
             'title' => trans('texts.credits'),
         ]);
-    }
-
-    public function getDatatable($clientPublicId = null)
-    {
-        return $this->creditService->getDatatable($clientPublicId, Input::get('sSearch'));
     }
 
     public function create(CreditRequest $request)

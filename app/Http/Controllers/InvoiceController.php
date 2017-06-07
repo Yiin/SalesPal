@@ -42,7 +42,7 @@ class InvoiceController extends BaseController
     protected $recurringInvoiceService;
     protected $entityType = ENTITY_INVOICE;
 
-    public function __construct(InvoiceRepository $invoiceRepo, ClientRepository $clientRepo, InvoiceService $invoiceService, DocumentRepository $documentRepo, RecurringInvoiceService $recurringInvoiceService, PaymentService $paymentService)
+    public function __construct(InvoiceRepository $invoiceRepo, ClientRepository $clientRepo, InvoiceService $invoiceService, DocumentRepository $documentRepo, RecurringInvoiceService $recurringInvoiceService, PaymentService $paymentService, InvoiceDatatable $datatable)
     {
         // parent::__construct();
 
@@ -51,6 +51,24 @@ class InvoiceController extends BaseController
         $this->invoiceService = $invoiceService;
         $this->recurringInvoiceService = $recurringInvoiceService;
         $this->paymentService = $paymentService;
+
+        $this->entityQuery = Invoice::invoices();
+        $this->datatable = $datatable;
+    }
+
+    public function filterEntity(&$query, $entityId = null)
+    {
+        // filter by client
+        if ($entityId) {
+            $query = $query->whereHas('client', function ($query) use ($entityId) {
+                $query->where('id', $entityId);
+            });
+        }
+        else {
+            $query->whereHas('client', function ($query) {
+                $query->whereNull('deleted_at');
+            });
+        }
     }
 
     public function index()
@@ -59,26 +77,10 @@ class InvoiceController extends BaseController
             'title' => trans('texts.invoices'),
             'entityType' => ENTITY_INVOICE,
             'statuses' => Invoice::getStatuses(),
-            'datatable' => new InvoiceDatatable(),
+            'datatable' => $this->datatable,
         ];
 
         return response()->view('list_wrapper', $data);
-    }
-
-    public function getDatatable($clientPublicId = null)
-    {
-        $accountId = Auth::user()->account_id;
-        $search = Input::get('sSearch');
-
-        return $this->invoiceService->getDatatable($accountId, $clientPublicId, ENTITY_INVOICE, $search);
-    }
-
-    public function getRecurringDatatable($clientPublicId = null)
-    {
-        $accountId = Auth::user()->account_id;
-        $search = Input::get('sSearch');
-
-        return $this->recurringInvoiceService->getDatatable($accountId, $clientPublicId, ENTITY_RECURRING_INVOICE, $search);
     }
 
     public function edit(InvoiceRequest $request, $publicId, $clone = false)

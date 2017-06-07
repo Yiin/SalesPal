@@ -12,18 +12,23 @@ class ExpenseDatatable extends EntityDatatable
     public $entityType = ENTITY_EXPENSE;
     public $sortCol = 3;
 
+    public function getEntityTitle($model)
+    {
+        return 'ID ' . $model->public_id;
+    }
+
     public function columns()
     {
         return [
             [
                 'vendor_name',
                 function ($model) {
-                    if ($model->vendor_public_id) {
-                        if (! Auth::user()->can('viewByOwner', [ENTITY_VENDOR, $model->vendor_user_id])) {
-                            return $model->vendor_name;
+                    if ($model->vendor) {
+                        if (! Auth::user()->can('viewByOwner', [ENTITY_VENDOR, $model->vendor->user_id])) {
+                            return $model->vendor->name;
                         }
 
-                        return link_to("vendors/{$model->vendor_public_id}", $model->vendor_name)->toHtml();
+                        return link_to("vendors/{$model->vendor->public_id}", $model->vendor->name)->toHtml();
                     } else {
                         return '';
                     }
@@ -33,12 +38,12 @@ class ExpenseDatatable extends EntityDatatable
             [
                 'client_name',
                 function ($model) {
-                    if ($model->client_public_id) {
-                        if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client_user_id])) {
+                    if ($model->client) {
+                        if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                             return Utils::getClientDisplayName($model);
                         }
 
-                        return link_to("clients/{$model->client_public_id}", Utils::getClientDisplayName($model))->toHtml();
+                        return link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml();
                     } else {
                         return '';
                     }
@@ -48,12 +53,13 @@ class ExpenseDatatable extends EntityDatatable
             [
                 'category',
                 function ($model) {
-                    $category = $model->category != null ? substr($model->category, 0, 100) : '';
-                    if (! Auth::user()->can('editByOwner', [ENTITY_EXPENSE_CATEGORY, $model->category_user_id])) {
+                    $category = $model->expense_category ? substr($model->expense_category->name, 0, 100) : '';
+
+                    if (! Auth::user()->can('editByOwner', [ENTITY_EXPENSE_CATEGORY, $model->expense_category ? $model->expense_category->user_id : null])) {
                         return $category;
                     }
 
-                    return $model->category_public_id ? link_to("expense_categories/{$model->category_public_id}/edit", $category)->toHtml() : '';
+                    return $model->expense_category ? link_to("expense_categories/{$model->expense_category->public_id}/edit", $category)->toHtml() : '';
                 },
             ],
             [
@@ -66,10 +72,10 @@ class ExpenseDatatable extends EntityDatatable
                 'expense_date',
                 function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_EXPENSE, $model->user_id])) {
-                        return Utils::fromSqlDate($model->expense_date_sql);
+                        return Utils::fromSqlDate($model->expense_date);
                     }
 
-                    return link_to("expenses/{$model->public_id}/edit", Utils::fromSqlDate($model->expense_date_sql))->toHtml();
+                    return link_to("expenses/{$model->public_id}/edit", Utils::fromSqlDate($model->expense_date))->toHtml();
                 },
             ],
             [
@@ -111,10 +117,10 @@ class ExpenseDatatable extends EntityDatatable
             [
                 trans('texts.view_invoice'),
                 function ($model) {
-                    return URL::to("/invoices/{$model->invoice_public_id}/edit");
+                    return URL::to("/invoices/{$model->invoice->public_id}/edit");
                 },
                 function ($model) {
-                    return $model->invoice_public_id && Auth::user()->can('editByOwner', [ENTITY_INVOICE, $model->invoice_user_id]);
+                    return $model->invoice && Auth::user()->can('editByOwner', [ENTITY_INVOICE, $model->invoice->user_id]);
                 },
             ],
             [

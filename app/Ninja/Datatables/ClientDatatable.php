@@ -11,53 +11,73 @@ class ClientDatatable extends EntityDatatable
     public $entityType = ENTITY_CLIENT;
     public $sortCol = 4;
 
+    public function getEntityTitle($model)
+    {
+        return $model->name;
+    }
+
     public function columns()
     {
         return [
             [
                 'name',
                 function ($model) {
-                    return link_to("clients/{$model->public_id}", $model->name ?: '')->toHtml();
+                    return [
+                        'data' => $model->name,
+                        'display' => link_to("clients/{$model->public_id}", $model->name ?: '')->toHtml()
+                    ];
                 },
             ],
             [
                 'vat_number',
                 function ($model) {
-                    return link_to("clients/{$model->public_id}", '')->toHtml();
+                    return [
+                        'data' => $model->vat_number,
+                        'display' => link_to("clients/{$model->public_id}", $model->vat_number)->toHtml()
+                    ];
                 },
             ],
             [
                 'work_phone',
                 function ($model) {
-                    return $model->work_phone;
+                    return [
+                        'data' => $model->work_phone,
+                        'display' => $model->work_phone
+                    ];
                 },
             ],
             [
                 'email',
                 function ($model) {
-                    return link_to("clients/{$model->public_id}", $model->email ?: '')->toHtml();
+                    $contact = $model->contacts()->first();
+                    $email = $contact ? $contact->email : '';
+
+                    return [
+                        'data' => $email,
+                        'display' => link_to("clients/{$model->public_id}", $email ?: '')->toHtml()
+                    ];
                 },
-            ],
-            [
-                'id_number',
-                function ($model) {
-                    return $model->id_number;
-                },
-                Auth::user()->account->clientNumbersEnabled()
             ],
             [
                 'client_created_at',
                 function ($model) {
-                    return Utils::timestampToDateString(strtotime($model->created_at));
+                    return [
+                        'data' => $model->created_at,
+                        'display' => Utils::timestampToDateString(strtotime($model->created_at))
+                    ];
                 },
             ],
             [
                 'balance',
                 function ($model) {
-                    $currency = Utils::formatMoney($model->balance, $model->currency_id);
+                    $currency_id = $model->currency_id ?: Auth::user()->account->currency_id;
+                    $currency = Utils::formatMoney($model->balance, $currency_id);
                     $parts = explode(' ', $currency);
 
-                    return "<span class='currency_symbol'>{$parts[0]}</span> <span class='currency_value'>{$parts[1]}</span>";
+                    return [
+                        'data' => $model->parts,
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span> <span class='currency_value'>{$parts[1]}</span>"
+                    ];
                 },
             ]
         ];

@@ -56,13 +56,32 @@ class TaskController extends BaseController
     public function __construct(
         TaskRepository $taskRepo,
         InvoiceRepository $invoiceRepo,
-        TaskService $taskService
+        TaskService $taskService,
+        TaskDatatable $datatable
     ) {
         // parent::__construct();
 
         $this->taskRepo = $taskRepo;
         $this->invoiceRepo = $invoiceRepo;
         $this->taskService = $taskService;
+
+        $this->entityQuery = Task::query();
+        $this->datatable = $datatable;
+    }
+
+    public function filterEntity(&$query, $entityId = null)
+    {
+        // filter by client
+        if ($entityId) {
+            $query = $query->whereHas('client', function ($query) use ($entityId) {
+                $query->where('id', $entityId);
+            });
+        }
+        else {
+            $query->whereHas('client', function ($query) {
+                $query->whereNull('deleted_at');
+            });
+        }
     }
 
     /**
@@ -72,19 +91,9 @@ class TaskController extends BaseController
     {
         return View::make('list_wrapper', [
             'entityType' => ENTITY_TASK,
-            'datatable' => new TaskDatatable(),
+            'datatable' => $this->datatable,
             'title' => trans('texts.tasks'),
         ]);
-    }
-
-    /**
-     * @param null $clientPublicId
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getDatatable($clientPublicId = null)
-    {
-        return $this->taskService->getDatatable($clientPublicId, Input::get('sSearch'));
     }
 
     /**

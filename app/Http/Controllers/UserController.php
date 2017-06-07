@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Ninja\Mailers\ContactMailer;
 use App\Ninja\Mailers\UserMailer;
 use App\Ninja\Repositories\AccountRepository;
+use App\Ninja\Datatables\UserDatatable;
 use App\Services\UserService;
 use Auth;
 use Input;
@@ -25,7 +26,7 @@ class UserController extends BaseController
     protected $userMailer;
     protected $userService;
 
-    public function __construct(AccountRepository $accountRepo, ContactMailer $contactMailer, UserMailer $userMailer, UserService $userService)
+    public function __construct(AccountRepository $accountRepo, ContactMailer $contactMailer, UserMailer $userMailer, UserService $userService, UserDatatable $datatable)
     {
         //parent::__construct();
 
@@ -40,7 +41,7 @@ class UserController extends BaseController
         return Redirect::to('settings/' . ACCOUNT_USER_MANAGEMENT);
     }
 
-    public function getDatatable()
+    public function getLegacyDatatable()
     {
         return $this->userService->getDatatable(Auth::user()->account_id);
     }

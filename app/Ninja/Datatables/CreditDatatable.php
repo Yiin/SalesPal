@@ -11,17 +11,22 @@ class CreditDatatable extends EntityDatatable
     public $entityType = ENTITY_CREDIT;
     public $sortCol = 4;
 
+    public function getEntityTitle($model)
+    {
+        return 'ID ' . $model->public_id;
+    }
+
     public function columns()
     {
         return [
             [
                 'client_name',
                 function ($model) {
-                    if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client_user_id])) {
+                    if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                         return Utils::getClientDisplayName($model);
                     }
 
-                    return $model->client_public_id ? link_to("clients/{$model->client_public_id}", Utils::getClientDisplayName($model))->toHtml() : '';
+                    return $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : '';
                 },
                 ! $this->hideClient,
             ],
@@ -41,10 +46,10 @@ class CreditDatatable extends EntityDatatable
                 'credit_date',
                 function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CREDIT, $model->user_id])) {
-                        return Utils::fromSqlDate($model->credit_date_sql);
+                        return Utils::fromSqlDate($model->credit_date);
                     }
 
-                    return link_to("credits/{$model->public_id}/edit", Utils::fromSqlDate($model->credit_date_sql))->toHtml();
+                    return link_to("credits/{$model->public_id}/edit", Utils::fromSqlDate($model->credit_date))->toHtml();
                 },
             ],
             [
@@ -77,7 +82,7 @@ class CreditDatatable extends EntityDatatable
             [
                 trans('texts.apply_credit'),
                 function ($model) {
-                    return URL::to("payments/create/{$model->client_public_id}") . '?paymentTypeId=1';
+                    return URL::to("payments/create/{$model->client->public_id}") . '?paymentTypeId=1';
                 },
                 function ($model) {
                     return Auth::user()->can('create', ENTITY_PAYMENT);

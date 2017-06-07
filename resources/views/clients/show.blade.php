@@ -213,20 +213,13 @@
 	<div class="tab-content">
 
         <div class="tab-pane active" id="activity">
-			{!! Datatable::table()
-		    	->addColumn(
-		    		trans('texts.date'),
-		    		trans('texts.message'),
-		    		trans('texts.balance'),
-		    		trans('texts.adjustment'))
-		    	->setUrl(url('api/activities/'. $client->public_id))
-                ->setCustomValues('entityType', 'activity')
-                ->setCustomValues('clientId', $client->public_id)
-                ->setCustomValues('rightAlign', [2, 3])
-		    	->setOptions('sPaginationType', 'bootstrap')
-		    	->setOptions('bFilter', false)
-		    	->setOptions('aaSorting', [['0', 'desc']])
-		    	->render('datatable') !!}
+            <div class="vue-app" id="vueapp_{{ str_random() }}">
+                <entity-table
+                    entity="activity"
+                    entities="activities"
+                    client-id="{{ $client->public_id }}"
+                ></entity-table>
+            </div>
         </div>
 
     @if ($hasTasks)

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Client;
 use App\Models\Credit;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Ninja\Datatables\PaymentDatatable;
 use App\Ninja\Mailers\ContactMailer;
 use App\Ninja\Repositories\PaymentRepository;
@@ -52,11 +53,30 @@ class PaymentController extends BaseController
     public function __construct(
         PaymentRepository $paymentRepo,
         ContactMailer $contactMailer,
-        PaymentService $paymentService
+        PaymentService $paymentService,
+        PaymentDatatable $datatable
     ) {
         $this->paymentRepo = $paymentRepo;
         $this->contactMailer = $contactMailer;
         $this->paymentService = $paymentService;
+
+        $this->entityQuery = Payment::query();
+        $this->datatable = $datatable;
+    }
+
+    public function filterEntity(&$query, $entityId = null)
+    {
+        // filter by client
+        if ($entityId) {
+            $query = $query->whereHas('client', function ($query) use ($entityId) {
+                $query->where('id', $entityId);
+            });
+        }
+        else {
+            $query->whereHas('client', function ($query) {
+                $query->whereNull('deleted_at');
+            });
+        }
     }
 
     /**
@@ -69,16 +89,6 @@ class PaymentController extends BaseController
             'datatable' => new PaymentDatatable(),
             'title' => trans('texts.payments'),
         ]);
-    }
-
-    /**
-     * @param null $clientPublicId
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getDatatable($clientPublicId = null)
-    {
-        return $this->paymentService->getDatatable($clientPublicId, Input::get('sSearch'));
     }
 
     /**

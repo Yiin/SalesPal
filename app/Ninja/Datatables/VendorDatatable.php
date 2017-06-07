@@ -11,6 +11,11 @@ class VendorDatatable extends EntityDatatable
     public $entityType = ENTITY_VENDOR;
     public $sortCol = 4;
 
+    public function getEntityTitle($model)
+    {
+        return $model->name;
+    }
+
     public function columns()
     {
         return [
@@ -29,13 +34,19 @@ class VendorDatatable extends EntityDatatable
             [
                 'work_phone',
                 function ($model) {
-                    return $model->work_phone;
+                    $contact = $model->vendor_contacts()->first();
+                    $phone = $model->work_phone ? $model->work_phone : $contact ? $contact->phone : '';
+                    
+                    return $phone;
                 },
             ],
             [
                 'email',
                 function ($model) {
-                    return link_to("vendors/{$model->public_id}", $model->email ?: '')->toHtml();
+                    $contact = $model->vendor_contacts()->first();
+                    $email = $model->email ? $model->email : $contact ? $contact->email : '';
+
+                    return link_to("vendors/{$model->public_id}", $email ?: '')->toHtml();
                 },
             ],
             [

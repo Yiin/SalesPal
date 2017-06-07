@@ -11,41 +11,49 @@ class RecurringInvoiceDatatable extends EntityDatatable
 {
     public $entityType = ENTITY_RECURRING_INVOICE;
 
+    public function getEntityTitle($model)
+    {
+        return 'ID ' . $model->public_id;
+    }
+
     public function columns()
     {
         return [
             [
                 'frequency',
                 function ($model) {
-                    $frequency = strtolower($model->frequency);
+                    $frequency = strtolower($model->frequency->name);
                     $frequency = preg_replace('/\s/', '_', $frequency);
 
-                    return link_to("invoices/{$model->public_id}", trans('texts.freq_'.$frequency))->toHtml();
+                    return [
+                        'data' => $model->frequency,
+                        'display' => link_to("invoices/{$model->public_id}", trans('texts.freq_'.$frequency))->toHtml()
+                    ];
                 },
             ],
             [
                 'client_name',
                 function ($model) {
-                    return link_to("clients/{$model->client_public_id}", Utils::getClientDisplayName($model))->toHtml();
+                    return link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml();
                 },
                 ! $this->hideClient,
             ],
             [
                 'start_date',
                 function ($model) {
-                    return Utils::fromSqlDate($model->start_date_sql);
+                    return Utils::fromSqlDate($model->start_date);
                 },
             ],
             [
                 'last_sent',
                 function ($model) {
-                    return Utils::fromSqlDate($model->last_sent_date_sql);
+                    return Utils::fromSqlDate($model->last_sent_date);
                 },
             ],
             [
                 'end_date',
                 function ($model) {
-                    return Utils::fromSqlDate($model->end_date_sql);
+                    return Utils::fromSqlDate($model->end_date);
                 },
             ],
             [
@@ -65,10 +73,10 @@ class RecurringInvoiceDatatable extends EntityDatatable
 
     private function getStatusLabel($model)
     {
-        $class = Invoice::calcStatusClass($model->invoice_status_id, $model->balance, $model->due_date_sql, $model->is_recurring);
-        $label = Invoice::calcStatusLabel($model->invoice_status_name, $class, $this->entityType, $model->quote_invoice_id);
+        $class = Invoice::calcStatusClass($model->invoice_status->id, $model->balance, $model->due_date_sql, $model->is_recurring);
+        $label = Invoice::calcStatusLabel($model->invoice_status->name, $class, $this->entityType, $model->quote_invoice_id);
 
-        if ($model->invoice_status_id == INVOICE_STATUS_SENT && (! $model->last_sent_date_sql || $model->last_sent_date_sql == '0000-00-00')) {
+        if ($model->invoice_status->id == INVOICE_STATUS_SENT && (! $model->last_sent_date || $model->last_sent_date == '0000-00-00')) {
             $label = trans('texts.pending');
         }
 

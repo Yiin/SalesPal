@@ -45,6 +45,12 @@
 
     <script src="{{ asset('built.js') }}?no_cache={{ NINJA_VERSION }}" type="text/javascript"></script>
 
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token()
+        ]) !!};
+    </script>
+
     <script type="text/javascript">
         var NINJA = NINJA || {};
         NINJA.fontSize = 9;
@@ -273,6 +279,7 @@
         window.open(url, '_blank');
     }
 </script>
+<script src="{{ asset('compiled.js') }}?no_cache={{ NINJA_VERSION }}" type="text/javascript"></script>
 
 </body>
 

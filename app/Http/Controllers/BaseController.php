@@ -4,14 +4,185 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Request;
+use Illuminate\Http\Request;
 use Utils;
+use Auth;
 
 class BaseController extends Controller
 {
     use DispatchesJobs, AuthorizesRequests;
 
     protected $entityType;
+
+    public function getDatatable(Request $request, $entityPublicId = null)
+    {
+        // get table state and filters
+        $table_state = $request->get('state');
+        $filter = $request->get('filter');
+        list($orderBy, $orderDirection) = $request->get('orderBy');
+
+        // extract data from table_state
+        $page = $table_state['page'] - 1; // adjust page value, so first page is 0, not 1
+        $entities_per_page = $table_state['entities_per_page'];
+
+        $query = $this->entityQuery;
+
+        // we should only show results belonging to logged in user
+        $this->filterAccount($query);
+        $this->filterEntity($query, $entityPublicId);
+
+        // update table state with fresh values
+        $table_state['entities_count'] = $query->count();
+        $table_state['page_count'] = $entities_per_page ? max(ceil($table_state['entities_count'] / $entities_per_page), 1) : 1;
+        $table_state['is_empty'] = $table_state['entities_count'] === 0;
+
+        $rows = $this->getEntities($query, $this->datatable, $page, $entities_per_page, $filter, $orderBy, $orderDirection);
+
+        return [
+            // bulkEdit should be false only on settings tables
+            'bulkEdit' => $this->bulkEdit ?? true,
+            'rows' => $rows,
+            'table_state' => $table_state
+        ];
+    }
+
+    protected function filterAccount(&$query)
+    {
+        $query = $query->where('account_id', Auth::user()->account_id);
+    }
+
+    /**
+     * Filter entities by {entity}_id. Override function in child class to disable filter
+     *
+     * @param      mixed    $query     The query
+     * @param      integer  $entityId  The entity identifier
+     */
+    protected function filterEntity(&$query, $entityId)
+    {
+        // do nothing by default
+    }
+
+    protected function getEntities($query, $datatable, $page, $entities_per_page, $filter, $orderBy, $orderDirection)
+    {
+        return $query->orderBy($orderBy, $orderDirection)
+            ->skip($entities_per_page * $page)
+            ->limit($entities_per_page)
+            ->get()
+            ->map(function ($model) use ($datatable) {
+                return $this->getRowData($model, $datatable);
+            });
+    }
+
+    protected function getRowData($model, $datatable)
+    {
+        $row = [];
+
+        /**
+         * Row Title
+         */
+        $row['__title'] = $datatable->getEntityTitle($model);
+
+        /**
+         * Row Actions
+         */
+        $row['__actions'] = $this->getRowActions($model, $datatable);
+
+        /**
+         * Row Checkbox
+         */
+        $row['__checkbox'] = $this->getRowCheckboxData($model);
+
+        /**
+         * Row Columns
+         */
+        $this->loadRowColumns($row, $model, $datatable);
+
+        return (object)$row;
+    }
+
+    protected function getRowActions($model, $datatable)
+    {
+        $actions = [];
+
+        foreach($datatable->actions() as $action) {
+            if(count($action) < 2) {
+                continue;
+            }
+
+            list($title, $getUrl) = $action;
+            $visible = (count($action) > 2) ? $action[2] : true;
+
+            if(is_callable($visible)) {
+                $visible = $visible($model);
+            }
+
+            if($visible) {
+                if($title === '--divider--') {
+                    $actions[] = '';
+                    continue;
+                }
+
+                $url = $getUrl($model);
+
+                $urlString = is_string($url) ? $url : $url['url'];
+
+                if(strpos($urlString, "javascript:") !== FALSE) {
+                    $jsAction = $urlString;
+                }
+                else {
+                    $jsAction = "window.location = '$urlString'";
+                }
+
+                $actions[] = [
+                    'title' => $title,
+                    'action' => $jsAction
+                ];
+            }
+        }
+
+        // if last action is divider, remove it.
+        if(end($actions) === '') {
+            array_pop($actions);
+        }
+
+        return $actions;
+    }
+
+    protected function getRowCheckboxData($model)
+    {
+        return [
+            'data' => [
+                'id' => $model->public_id ?? $model->id,
+                'class' => Utils::getEntityRowClass($model)
+            ],
+            'show' => Auth::user()->hasPermission('edit_all') || (isset($model->user_id) && Auth::user()->id == $model->user_id)
+        ];
+    }
+
+    protected function loadRowColumns(&$row, $model, $datatable)
+    {
+        foreach ($datatable->columns() as $column) {
+            list($field, $value) = $column;
+            $visible = (count($column) > 2) ? $column[2] : true;
+
+            if(!$visible) {
+                $row[$field] = '';
+                continue;
+            }
+
+            $row[$field] = is_callable($value) ? $value($model) : $value;
+        }
+    }
+
+    public function getDatatableColumns()
+    {
+        return array_map(function ($column) {
+            return [
+                'field' => $column[0],
+                'label' => trans('texts.' . $column[0])
+            ];
+        }, $this->datatable->columns());
+    }
 
     /**
      * Setup the layout used by the controller.
@@ -32,7 +203,7 @@ class BaseController extends Controller
         }
 
         $isDatatable = filter_var(request()->datatable, FILTER_VALIDATE_BOOLEAN);
-        $referer = Request::server('HTTP_REFERER');
+        $referer = \Request::server('HTTP_REFERER');
         $entityTypes = Utils::pluralizeEntityType($entityType);
 
         // when restoring redirect to entity

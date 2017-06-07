@@ -8,6 +8,11 @@ class ActivityDatatable extends EntityDatatable
 {
     public $entityType = ENTITY_ACTIVITY;
 
+    public function getEntityTitle($model)
+    {
+        return 'ID ' . $model->public_id;
+    }
+
     public function columns()
     {
         return [
@@ -21,17 +26,17 @@ class ActivityDatatable extends EntityDatatable
                 'activity_type_id',
                 function ($model) {
                     $data = [
-                        'client' => link_to('/clients/' . $model->client_public_id, Utils::getClientDisplayName($model))->toHtml(),
+                        'client' => link_to('/clients/' . $model->client->public_id, Utils::getClientDisplayName($model))->toHtml(),
                         'user' => $model->is_system ? '<i>' . trans('texts.system') . '</i>' : Utils::getPersonDisplayName($model->user_first_name, $model->user_last_name, $model->user_email),
-                        'invoice' => $model->invoice ? link_to('/invoices/' . $model->invoice_public_id, $model->is_recurring ? trans('texts.recurring_invoice') : $model->invoice)->toHtml() : null,
-                        'quote' => $model->invoice ? link_to('/quotes/' . $model->invoice_public_id, $model->invoice)->toHtml() : null,
-                        'contact' => $model->contact_id ? link_to('/clients/' . $model->client_public_id, Utils::getClientDisplayName($model))->toHtml() : Utils::getPersonDisplayName($model->user_first_name, $model->user_last_name, $model->user_email),
+                        'invoice' => $model->invoice ? link_to('/invoices/' . $model->invoice->public_id, $model->is_recurring ? trans('texts.recurring_invoice') : $model->invoice->invoice_number)->toHtml() : null,
+                        'quote' => $model->invoice ? link_to('/quotes/' . $model->invoice->public_id, $model->invoice)->toHtml() : null,
+                        'contact' => $model->contact_id ? link_to('/clients/' . $model->client->public_id, Utils::getClientDisplayName($model))->toHtml() : Utils::getPersonDisplayName($model->user_first_name, $model->user_last_name, $model->user_email),
                         'payment' => $model->payment ?: '',
                         'credit' => $model->payment_amount ? Utils::formatMoney($model->credit, $model->currency_id, $model->country_id) : '',
                         'payment_amount' => $model->payment_amount ? Utils::formatMoney($model->payment_amount, $model->currency_id, $model->country_id) : null,
                         'adjustment' => $model->adjustment ? Utils::formatMoney($model->adjustment, $model->currency_id, $model->country_id) : null,
-                        'task' => $model->task_public_id ? link_to('/tasks/' . $model->task_public_id, substr($model->task_description, 0, 30).'...') : null,
-                        'expense' => $model->expense_public_id ? link_to('/expenses/' . $model->expense_public_id, substr($model->expense_public_notes, 0, 30).'...') : null,
+                        'task' => $model->task ? link_to('/tasks/' . $model->task->public_id, substr($model->task_description, 0, 30).'...') : null,
+                        'expense' => $model->expense ? link_to('/expenses/' . $model->expense->public_id, substr($model->expense_public_notes, 0, 30).'...') : null,
                     ];
 
                     $str = trans("texts.activity_{$model->activity_type_id}", $data);

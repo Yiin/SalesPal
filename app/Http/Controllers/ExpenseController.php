@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateExpenseRequest;
 use App\Http\Requests\ExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
@@ -35,13 +36,16 @@ class ExpenseController extends BaseController
      */
     protected $invoiceRepo;
 
-    public function __construct(ExpenseRepository $expenseRepo, ExpenseService $expenseService, InvoiceRepository $invoiceRepo)
+    public function __construct(ExpenseRepository $expenseRepo, ExpenseService $expenseService, InvoiceRepository $invoiceRepo, ExpenseDatatable $datatable)
     {
         // parent::__construct();
 
         $this->expenseRepo = $expenseRepo;
         $this->expenseService = $expenseService;
         $this->invoiceRepo = $invoiceRepo;
+
+        $this->entityQuery = Expense::query();
+        $this->datatable = $datatable;
     }
 
     /**
@@ -58,14 +62,34 @@ class ExpenseController extends BaseController
         ]);
     }
 
-    public function getDatatable($expensePublicId = null)
+    public function getDatatableVendor(Request $request, $vendorPublicId = null)
     {
-        return $this->expenseService->getDatatable(Input::get('sSearch'));
+        $this->entityQuery = Expense::query();
+
+        if ($vendorPublicId) {
+            $this->entityQuery = $this->entityQuery->where('vendor_id', $vendorPublicId);
+        }
+        return $this->getDatatable($request);
     }
 
-    public function getDatatableVendor($vendorPublicId = null)
+    public function getDatatableColumnsVendor($vendorPublicId = null)
     {
-        return $this->expenseService->getDatatableVendor($vendorPublicId);
+        return $this->getDatatableColumns();
+    }
+
+    public function filterEntity(&$query, $entityId = null)
+    {
+        // filter by client
+        if ($entityId) {
+            $query = $query->whereHas('vendor', function ($query) use ($entityId) {
+                $query->where('id', $entityId);
+            });
+        }
+        else {
+            $query->whereHas('vendor', function ($query) {
+                $query->whereNull('deleted_at');
+            });
+        }
     }
 
     public function create(ExpenseRequest $request)

@@ -32,7 +32,7 @@ class QuoteController extends BaseController
     protected $invoiceService;
     protected $entityType = ENTITY_INVOICE;
 
-    public function __construct(Mailer $mailer, InvoiceRepository $invoiceRepo, ClientRepository $clientRepo, InvoiceService $invoiceService)
+    public function __construct(Mailer $mailer, InvoiceRepository $invoiceRepo, ClientRepository $clientRepo, InvoiceService $invoiceService, InvoiceDatatable $datatable)
     {
         // parent::__construct();
 
@@ -40,28 +40,37 @@ class QuoteController extends BaseController
         $this->invoiceRepo = $invoiceRepo;
         $this->clientRepo = $clientRepo;
         $this->invoiceService = $invoiceService;
+
+        $this->entityQuery = Invoice::quotes();
+
+        $this->datatable = $datatable;
+        $this->datatable->entityType = ENTITY_QUOTE;
+    }
+
+    public function filterEntity(&$query, $entityId = null)
+    {
+        // filter by client
+        if ($entityId) {
+            $query = $query->whereHas('client', function ($query) use ($entityId) {
+                $query->where('id', $entityId);
+            });
+        }
+        else {
+            $query->whereHas('client', function ($query) {
+                $query->whereNull('deleted_at');
+            });
+        }
     }
 
     public function index()
     {
-        $datatable = new InvoiceDatatable();
-        $datatable->entityType = ENTITY_QUOTE;
-
         $data = [
           'title' => trans('texts.quotes'),
           'entityType' => ENTITY_QUOTE,
-          'datatable' => $datatable,
+          'datatable' => $this->datatable,
         ];
 
         return response()->view('list_wrapper', $data);
-    }
-
-    public function getDatatable($clientPublicId = null)
-    {
-        $accountId = Auth::user()->account_id;
-        $search = Input::get('sSearch');
-
-        return $this->invoiceService->getDatatable($accountId, $clientPublicId, ENTITY_QUOTE, $search);
     }
 
     public function create(InvoiceRequest $request, $clientPublicId = 0)

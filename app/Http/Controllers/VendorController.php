@@ -25,12 +25,20 @@ class VendorController extends BaseController
     protected $vendorRepo;
     protected $entityType = ENTITY_VENDOR;
 
-    public function __construct(VendorRepository $vendorRepo, VendorService $vendorService)
+    public function __construct(VendorRepository $vendorRepo, VendorService $vendorService, VendorDatatable $datatable)
     {
         //parent::__construct();
 
         $this->vendorRepo = $vendorRepo;
         $this->vendorService = $vendorService;
+
+        $this->entityQuery = Vendor::query();
+        $this->datatable = $datatable;
+    }
+
+    protected function filterClient(&$query, $clientId)
+    {
+        // do nothing
     }
 
     /**
@@ -45,11 +53,6 @@ class VendorController extends BaseController
             'datatable' => new VendorDatatable(),
             'title' => trans('texts.vendors'),
         ]);
-    }
-
-    public function getDatatable()
-    {
-        return $this->vendorService->getDatatable(Input::get('sSearch'));
     }
 
     /**

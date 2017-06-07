@@ -23,14 +23,14 @@ class AccountGatewayDatatable extends EntityDatatable
                 'gateway',
                 function ($model) {
                     if ($model->deleted_at) {
-                        return $model->name;
+                        return ['data' => $model->name, 'display' => $model->name];
                     } elseif ($model->gateway_id == GATEWAY_CUSTOM) {
                         $accountGateway = $this->getAccountGateway($model->id);
                         $name = $accountGateway->getConfigField('name') . ' [' . trans('texts.custom') . ']';
 
-                        return link_to("gateways/{$model->public_id}/edit", $name)->toHtml();
+                        return ['data' => $model->name, 'display' => link_to("gateways/{$model->public_id}/edit", $name)->toHtml()];
                     } elseif ($model->gateway_id != GATEWAY_WEPAY) {
-                        return link_to("gateways/{$model->public_id}/edit", $model->name)->toHtml();
+                        return ['data' => $model->name, 'display' => link_to("gateways/{$model->public_id}/edit", $model->name)->toHtml()];
                     } else {
                         $accountGateway = $this->getAccountGateway($model->id);
                         $config = $accountGateway->getConfig();
@@ -56,7 +56,7 @@ class AccountGatewayDatatable extends EntityDatatable
                         } catch (\WePayException $ex) {
                         }
 
-                        return $html;
+                        return ['data' => $model->name, 'display' => $html];
                     }
                 },
             ],
@@ -91,14 +91,14 @@ class AccountGatewayDatatable extends EntityDatatable
                         }
                     }
 
-                    return $html;
+                    return ['data' => null, 'display' => $html];
                 },
             ],
             [
                 'fees',
                 function ($model) {
                     if (! $model->gateway_fee_enabled) {
-                        return trans('texts.fees_disabled');
+                        return ['data' => null, 'display' => trans('texts.fees_disabled')];
                     }
 
                     $gatewayTypes = $this->getGatewayTypes($model->id, $model->gateway_id);
@@ -123,7 +123,7 @@ class AccountGatewayDatatable extends EntityDatatable
                             $html .= ' + ' . trans('texts.tax');
                         }
                     };
-                    return $html ?: trans('texts.no_fees');
+                    return ['data' => null, 'display' => $html ?: trans('texts.no_fees')];
                 },
             ],
         ];

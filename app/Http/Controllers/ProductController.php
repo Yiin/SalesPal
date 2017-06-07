@@ -35,12 +35,20 @@ class ProductController extends BaseController
      *
      * @param ProductService $productService
      */
-    public function __construct(ProductService $productService, ProductRepository $productRepo)
+    public function __construct(ProductService $productService, ProductRepository $productRepo, ProductDatatable $productDatatable)
     {
         //parent::__construct();
-
+        
         $this->productService = $productService;
         $this->productRepo = $productRepo;
+        $this->datatable = $productDatatable;
+
+        $this->entityQuery = Product::query();
+    }
+
+    protected function filterClient(&$query, $clientId)
+    {
+        // do nothing
     }
 
     /**
@@ -61,14 +69,6 @@ class ProductController extends BaseController
         Session::reflash();
 
         return Redirect::to("products/$publicId/edit");
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getDatatable()
-    {
-        return $this->productService->getDatatable(Auth::user()->account_id, Input::get('sSearch'));
     }
 
     /**

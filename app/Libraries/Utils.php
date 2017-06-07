@@ -802,6 +802,8 @@ class Utils
             return $model->client_name;
         } elseif ($model->first_name || $model->last_name) {
             return $model->first_name . ' ' . $model->last_name;
+        } elseif ($model->name) {
+            return $model->name;
         } else {
             return $model->email ?: '';
         }
