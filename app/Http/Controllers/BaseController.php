@@ -14,6 +14,26 @@ class BaseController extends Controller
 
     protected $entityType;
 
+    public function getFilters()
+    {
+        return $this->datatable->filters();
+    }
+
+    public function getSearchBy()
+    {
+        return $this->datatable->searchBy();
+    }
+
+    public function getDatatableColumns()
+    {
+        return array_map(function ($column) {
+            return [
+                'field' => $column[0],
+                'label' => trans('texts.' . $column[0])
+            ];
+        }, $this->datatable->columns());
+    }
+
     public function getDatatable(Request $request, $entityPublicId = null)
     {
         // get table state and filters
@@ -30,13 +50,14 @@ class BaseController extends Controller
         // we should only show results belonging to logged in user
         $this->filterAccount($query);
         $this->filterEntity($query, $entityPublicId);
+        $query->filter($filter);
 
         // update table state with fresh values
         $table_state['entities_count'] = $query->count();
         $table_state['page_count'] = $entities_per_page ? max(ceil($table_state['entities_count'] / $entities_per_page), 1) : 1;
         $table_state['is_empty'] = $table_state['entities_count'] === 0;
 
-        $rows = $this->getEntities($query, $this->datatable, $page, $entities_per_page, $filter, $orderBy, $orderDirection);
+        $rows = $this->getEntities($query, $this->datatable, $page, $entities_per_page, $orderBy, $orderDirection);
 
         return [
             // bulkEdit should be false only on settings tables
@@ -62,7 +83,7 @@ class BaseController extends Controller
         // do nothing by default
     }
 
-    protected function getEntities($query, $datatable, $page, $entities_per_page, $filter, $orderBy, $orderDirection)
+    protected function getEntities($query, $datatable, $page, $entities_per_page, $orderBy, $orderDirection)
     {
         return $query->orderBy($orderBy, $orderDirection)
             ->skip($entities_per_page * $page)
@@ -172,16 +193,6 @@ class BaseController extends Controller
 
             $row[$field] = is_callable($value) ? $value($model) : $value;
         }
-    }
-
-    public function getDatatableColumns()
-    {
-        return array_map(function ($column) {
-            return [
-                'field' => $column[0],
-                'label' => trans('texts.' . $column[0])
-            ];
-        }, $this->datatable->columns());
     }
 
     /**

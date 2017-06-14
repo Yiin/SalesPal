@@ -16,6 +16,29 @@ class CreditDatatable extends EntityDatatable
         return 'ID ' . $model->public_id;
     }
 
+    public function filters()
+    {
+        $filters = [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'archived',
+                'label' => trans('texts.archived'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+        ];
+
+    return $filters;
+    }
+
     public function columns()
     {
         return [
@@ -23,23 +46,23 @@ class CreditDatatable extends EntityDatatable
                 'client_name',
                 function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
-                        return Utils::getClientDisplayName($model);
+                        return ['display' => Utils::getClientDisplayName($model->client)];
                     }
 
-                    return $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : '';
+                    return ['display' => $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : ''];
                 },
                 ! $this->hideClient,
             ],
             [
                 'public_notes',
                 function ($model) {
-                    return $model->public_notes;
+                    return ['display' => $model->public_notes];
                 },
             ],
             [
                 'private_notes',
                 function ($model) {
-                    return $model->private_notes;
+                    return ['display' => $model->private_notes];
                 },
             ],
             [
@@ -49,19 +72,19 @@ class CreditDatatable extends EntityDatatable
                         return Utils::fromSqlDate($model->credit_date);
                     }
 
-                    return link_to("credits/{$model->public_id}/edit", Utils::fromSqlDate($model->credit_date))->toHtml();
+                    return ['display' => link_to("credits/{$model->public_id}/edit", Utils::fromSqlDate($model->credit_date))->toHtml()];
                 },
             ],
             [
                 'amount',
                 function ($model) {
-                    return Utils::formatMoney($model->amount, $model->currency_id, $model->country_id) . '<span '.Utils::getEntityRowClass($model).'/>';
+                    return ['display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id) . '<span '.Utils::getEntityRowClass($model).'/>'];
                 },
             ],
             [
                 'balance',
                 function ($model) {
-                    return Utils::formatMoney($model->balance, $model->currency_id, $model->country_id);
+                    return ['display' => Utils::formatMoney($model->balance, $model->currency_id, $model->country_id)];
                 },
             ],
         ];

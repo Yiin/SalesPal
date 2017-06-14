@@ -19,6 +19,16 @@ class EntityDatatable
         }
     }
 
+    public function filters()
+    {
+        return [];
+    }
+
+    public function searchBy()
+    {
+        return [];
+    }
+
     public function columns()
     {
         return [];

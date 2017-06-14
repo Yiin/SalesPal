@@ -360,6 +360,52 @@ class Payment extends EntityModel
 
         return $activity->json_backup;
     }
+
+    public function scopeFilter($query, $filter)
+    {
+        if ($filter) foreach ($filter as $f) {
+            switch ($f) {
+                case 'active':
+                    $query = $query->withTrashed()->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNull('deleted_at');
+                    });
+                    break;
+                case 'archived':
+                    $query = $query->withTrashed()->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNotNull('deleted_at');
+                    });
+                    break;
+                case 'deleted':
+                    $query = $query->withTrashed()->orWhere(function($query) {
+                        $query->where('is_deleted', true)->whereNotNull('deleted_at');
+                    });
+                    break;
+
+                case 'completed':
+                    $query = $query->orWhere(function($query) {
+                        $query->whereHas('payment_status', function ($query) {
+                            $query->where('name', 'completed');
+                        });
+                    });
+                    break;
+                case 'refunded':
+                    $query = $query->orWhere(function($query) {
+                        $query->whereHas('payment_status', function ($query) {
+                            $query->where('name', 'refunded');
+                        });
+                    });
+                    break;
+                default:
+                    list($type, $id) = explode(':', $f);
+
+                    switch ($type) {
+                        case 'payment_type':
+                            $query = $query->orWhere('payment_type_id', $id);
+                            break;
+                    }
+            }
+        }
+    }
 }
 
 Payment::creating(function ($payment) {

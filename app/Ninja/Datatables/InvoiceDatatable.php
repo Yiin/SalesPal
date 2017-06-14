@@ -17,6 +17,74 @@ class InvoiceDatatable extends EntityDatatable
         return $this->entityType === ENTITY_INVOICE ? $model->invoice_number : $model->quote_number;
     }
 
+    public function filters()
+    {
+        $filters = [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'inactive',
+                'label' => trans('texts.archived'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            [
+                'type' => 'separator'
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'draft',
+                'label' => trans('texts.status_draft'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'sent',
+                'label' => trans('texts.status_sent'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'viewed',
+                'label' => trans('texts.status_viewed'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'approved',
+                'label' => trans('texts.status_approved'),
+            ],
+        ];
+
+        if ($this->entityType == ENTITY_INVOICE) {
+            foreach ([
+                [
+                    'type' => 'checkbox',
+                    'value' => 'partial',
+                    'label' => trans('texts.status_partial'),
+                ],
+                [
+                    'type' => 'checkbox',
+                    'value' => 'paid',
+                    'label' => trans('texts.status_paid'),
+                ],
+                [
+                    'type' => 'checkbox',
+                    'value' => 'overdue',
+                    'label' => trans('texts.overdue'),
+                ],
+            ] as $f) {
+                $filters [] = $f;
+            }
+        }
+
+        return $filters;
+    }
+
     public function columns()
     {
         $entityType = $this->entityType;
@@ -89,7 +157,7 @@ class InvoiceDatatable extends EntityDatatable
             [
                 'paid_in',
                 function ($model) {
-                    $partial = Invoice::find($model->public_id)->getAmountPaid(true);
+                    $partial = $model->getAmountPaid(true);
                     return [
                         'data' => [
                             'currency_id' => $model->currency_id,
@@ -166,7 +234,7 @@ class InvoiceDatatable extends EntityDatatable
                     return "javascript:submitForm_{$entityType}('markPaid', {$model->public_id})";
                 },
                 function ($model) use ($entityType) {
-                    return $entityType == ENTITY_INVOICE && $model->balance != 0 && Auth::user()->can('editByOwner', [ENTITY_INVOICE, $model->user_id]);
+                    return $entityType == ENTITY_INVOICE && $model->invoice_status->name !== 'paid' && $model->balance != 0 && Auth::user()->can('editByOwner', [ENTITY_INVOICE, $model->user_id]);
                 },
             ],
             [

@@ -80,19 +80,9 @@ class StartupCheck
                     $data = @json_decode($file);
                 }
                 if ($data) {
-                    if (version_compare(NINJA_VERSION, $data->version, '<')) {
-                        $params = [
-                            'user_version' => NINJA_VERSION,
-                            'latest_version' => $data->version,
-                            'releases_link' => link_to(RELEASES_URL, 'Invoice Ninja', ['target' => '_blank']),
-                        ];
-                        Session::put('news_feed_id', NEW_VERSION_AVAILABLE);
-                        Session::flash('news_feed_message', trans('texts.new_version_available', $params));
-                    } else {
-                        Session::put('news_feed_id', $data->id);
-                        if ($data->message && $data->id > Auth::user()->news_feed_id) {
-                            Session::flash('news_feed_message', $data->message);
-                        }
+                    Session::put('news_feed_id', $data->id);
+                    if ($data->message && $data->id > Auth::user()->news_feed_id) {
+                        Session::flash('news_feed_message', $data->message);
                     }
                 } else {
                     Session::put('news_feed_id', true);

@@ -24,6 +24,55 @@ class PaymentDatatable extends EntityDatatable
         return $model->invoice->invoice_number;
     }
 
+    public function filters()
+    {
+        $filters = [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'archived',
+                'label' => trans('texts.archived'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'completed',
+                'label' => trans('texts.status_completed'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'refunded',
+                'label' => trans('texts.status_refunded'),
+            ],
+        ];
+
+        $methodDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.method'),
+            'options' => []
+        ];
+
+        foreach (\App\Models\PaymentType::all() as $type) {
+            $methodDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'payment_type:' . $type->id,
+                'label' => $type->name
+            ];
+        }
+
+        $filters [] = $methodDropdown;
+
+        return $filters;
+    }
+
     public function columns()
     {
         return [

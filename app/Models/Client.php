@@ -566,6 +566,50 @@ class Client extends EntityModel
     {
         return $this->payment_terms == -1 ? 0 : $this->payment_terms;
     }
+
+    public function scopeFilter($query, $filter)
+    {
+        if ($filter) foreach ($filter as $f) {
+            switch ($f) {
+                case 'active':
+                    $query = $query->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNull('deleted_at');
+                    });
+                    break;
+                case 'inactive':
+                    $query = $query->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNotNull('deleted_at');
+                    });
+                    break;
+                case 'deleted':
+                    $query = $query->orWhere(function($query) {
+                        $query->where('is_deleted', true)->whereNotNull('deleted_at');
+                    });
+                    break;
+                case 'vat_verified':
+                    // $query = $query->join('vat_checks', function ($join) {
+                    //     $join->on('clients.vat_number', '=', DB::raw("CONCAT(`vat_checks`.`country_code`, `vat_checks`.`vat_number`) = `clients`.`vat_number`)"))
+                    //          ->where('vat_checks.is_valid', '=', true)
+                    //          ->where('vat_checks.id', '=', DB::raw("(SELECT MAX(id) FROM vat_checks)"));
+                    // });
+                    break;
+                case 'vat_pending':
+                    // $query = $query->where()
+                break;
+                case 'vat_invalid':
+                    // $query = $query->whereHas('vatChecks', function ($query) {
+                    //     $query->whereRaw("CONCAT(`vat_checks.country_code`, `vat_checks.vat_number`) = %?%", [$query->vat_number])
+                    //         ->where('is_valid', false);
+                    // });
+                break;
+                default:
+                    $query = $query->whereHas('country', function ($query) use ($f) {
+                        $query->where('id', $f);
+                    });
+            }
+        }
+        return $query;
+    }
 }
 
 Client::creating(function ($client) {

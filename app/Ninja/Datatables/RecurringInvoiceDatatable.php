@@ -16,6 +16,45 @@ class RecurringInvoiceDatatable extends EntityDatatable
         return 'ID ' . $model->public_id;
     }
 
+    public function filters()
+    {
+        return [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'archived',
+                'label' => trans('texts.archived'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'draft',
+                'label' => trans('texts.status_draft'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'pending',
+                'label' => trans('texts.status_pending'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'overdue',
+                'label' => trans('texts.overdue'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

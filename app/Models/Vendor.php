@@ -342,6 +342,49 @@ class Vendor extends EntityModel
                 ->groupBy('expense_currency_id')
                 ->get();
     }
+
+    public function scopeFilter($query, $filter)
+    {
+        if ($filter) foreach ($filter as $f) {
+            switch ($f) {
+                case 'active':
+                    $query = $query->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNull('deleted_at');
+                    });
+                    break;
+                case 'archived':
+                    $query = $query->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNotNull('deleted_at');
+                    });
+                    break;
+                case 'deleted':
+                    $query = $query->orWhere(function($query) {
+                        $query->where('is_deleted', true)->whereNotNull('deleted_at');
+                    });
+                    break;
+
+                case 'buying':
+                    $query = $query->orWhere(function($query) {
+                        $query->whereHas('status', function ($query) {
+                            $query->where('name', 'buying');
+                        });
+                    });
+                    break;
+                case 'reselling':
+                    $query = $query->orWhere(function($query) {
+                        $query->whereHas('status', function ($query) {
+                            $query->where('name', 'reselling');
+                        });
+                    });
+                    break;
+                default:
+                    $query = $query->whereHas('country', function ($query) use ($f) {
+                        $query->where('id', $f);
+                    });
+            }
+        }
+        return $query;
+    }
 }
 
 Vendor::creating(function ($vendor) {

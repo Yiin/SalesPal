@@ -657,7 +657,7 @@ class Invoice extends EntityModel implements BalanceAffecting
 
     public static function calcStatusClass($statusId, $balance, $dueDate, $isRecurring)
     {
-        if ($statusId >= INVOICE_STATUS_SENT && ! $isRecurring && static::calcIsOverdue($balance, $dueDate)) {
+        if ($statusId >= INVOICE_STATUS_SENT && static::calcIsOverdue($balance, $dueDate)) {
             return 'danger';
         }
 
@@ -1521,6 +1521,80 @@ class Invoice extends EntityModel implements BalanceAffecting
                 ->whereIn('activity_type_id', [ACTIVITY_TYPE_EMAIL_INVOICE, ACTIVITY_TYPE_EMAIL_QUOTE])
                 ->orderBy('id', 'desc')
                 ->get();
+    }
+
+    public function scopeFilter($query, $filter)
+    {
+        if ($filter) foreach ($filter as $f) {
+            switch ($f) {
+                case 'active':
+                    $query = $query->withTrashed()->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNull('deleted_at');
+                    });
+                    break;
+                case 'inactive':
+                    $query = $query->withTrashed()->orWhere(function($query) {
+                        $query->where('is_deleted', false)->whereNotNull('deleted_at');
+                    });
+                    break;
+                case 'deleted':
+                    $query = $query->withTrashed()->orWhere(function($query) {
+                        $query->where('is_deleted', true)->whereNotNull('deleted_at');
+                    });
+                    break;
+                    
+                case 'draft':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereHas('invoice_status', function ($query) {
+                            $query->where('name', 'draft');
+                        });
+                    });
+                    break;
+                case 'pending':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereHas('invoice_status', function ($query) {
+                            $query->where('name', 'sent')->whereNull('last_sent_date');
+                        });
+                    });
+                    break;
+                case 'sent':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereHas('invoice_status', function ($query) {
+                            $query->where('name', 'sent');
+                        });
+                    });
+                    break;
+                case 'viewed':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereHas('invoice_status', function ($query) {
+                            $query->where('name', 'viewed');
+                        });
+                    });
+                    break;
+                case 'partial':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereHas('invoice_status', function ($query) {
+                            $query->where('name', 'partial');
+                        });
+                    });
+                    break;
+                case 'paid':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereHas('invoice_status', function ($query) {
+                            $query->where('name', 'paid');
+                        });
+                    });
+                    break;
+                case 'overdue':
+                    $query = $query->orWhere(function ($query) {
+                        $query->where(function ($query) {
+                            $query->where('due_date', '!=', '0000-00-00')->whereNotNull('due_date');
+                        })->where('balance', '>', 0)
+                          ->where('due_date', '<', date('Y-m-d'));
+                    });
+                    break;
+            }
+        }
     }
 }
 

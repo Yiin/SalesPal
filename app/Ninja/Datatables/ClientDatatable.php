@@ -16,6 +16,100 @@ class ClientDatatable extends EntityDatatable
         return $model->name;
     }
 
+    public function filters()
+    {
+        $filters = [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'inactive',
+                'label' => trans('texts.inactive'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            [
+                'type' => 'separator'
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'vat_verified',
+                'label' => trans('texts.vat_verified'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'vat_pending',
+                'label' => trans('texts.vat_pending'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'vat_invalid',
+                'label' => trans('texts.vat_invalid'),
+            ],
+            [
+                'type' => 'separator'
+            ],
+        ];
+
+        $countriesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.country'),
+            'options' => [],
+        ];
+
+        foreach (\App\Models\Country::all() as $country) {
+            $countriesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => $country->id,
+                'label' => $country->name,
+            ];
+        }
+
+        $filters [] = $countriesDropdown;
+
+        return $filters;
+    }
+
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'label' => trans('texts.client_name'),
+                'value' => 'client_name',
+            ],
+            [
+                'type' => 'text',
+                'label' => trans('texts.client_name'),
+                'value' => 'client_name',
+            ],
+            [
+                'type' => 'text',
+                'label' => trans('texts.client_name'),
+                'value' => 'client_name',
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'date',
+                'label' => trans('texts.date_created'),
+                'value' => 'date_created',
+            ],
+            [
+                'type' => 'number',
+                'label' => trans('texts.balance'),
+                'value' => 'balance',
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [
@@ -59,7 +153,7 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'client_created_at',
+                'created_at',
                 function ($model) {
                     return [
                         'data' => $model->created_at,

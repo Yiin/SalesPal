@@ -22,6 +22,7 @@ class InvoiceStatusSeeder extends Seeder
             ['id' => '4', 'name' => 'Approved'],
             ['id' => '5', 'name' => 'Partial'],
             ['id' => '6', 'name' => 'Paid'],
+            ['id' => '7', 'name' => 'Rejected'],
         ];
 
         foreach ($statuses as $status) {

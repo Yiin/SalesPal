@@ -42,6 +42,11 @@ class EntityModel extends Eloquent
         STATUS_DELETED,
     ];
 
+    public function scopeFilter($query, $filter)
+    {
+        // apply table filters
+    }
+
     /**
      * @param null $context
      *

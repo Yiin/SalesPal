@@ -17,6 +17,45 @@ class ProductDatatable extends EntityDatatable
         return $model->product_key;
     }
 
+    public function filters()
+    {
+        return [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'archived',
+                'label' => trans('texts.archived'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'in_stock',
+                'label' => trans('texts.in_stock'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'non_stock',
+                'label' => trans('texts.non_stock'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'out_of_stock',
+                'label' => trans('texts.out_of_stock'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

@@ -3,15 +3,17 @@
         <div class="row">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
-            <div class="col-xs-3">
-                <dropdown :options="filters"></dropdown>
-            </div>
+            <filters-dropdown v-if="filters.length" :options="filters"></filters-dropdown>
+            <!-- <search-by-dropdown v-if="searchBy.length" :options="searchBy"></search-by-dropdown> -->
         </div>
 
 
 
         <div ref="table_wrapper" class="dataTables_wrapper form-inline no-footer">
             <table class="table table-striped data-table dataTable no-footer">
+                <!-- 
+                    Table Columns
+                 -->
                 <thead>
                     <tr v-if="!columns_loaded">
                         <th>
@@ -25,11 +27,21 @@
                                 <label></label>
                             </div>
                         </th>
-                        <th v-for="column in table_columns">
+                        <th v-for="column in table_columns" 
+                            @click="order(column.field)"
+                            :class="{ 
+                                sorting_asc: orderBy === column.field && orderDirection === 'ASC', 
+                                sorting_desc: orderBy === column.field && orderDirection === 'DESC'
+                            }"
+                        >
                             {{ column.label }}
                         </th>
                     </tr>
                 </thead>
+
+                <!-- 
+                    Table Rows
+                 -->
                 <tbody>
                     <tr v-if="!entities_loaded">
                         <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
@@ -56,6 +68,10 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- 
+                Table Controls
+             -->
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
                 <div class="table-controls">
                     <div class="row">
@@ -131,10 +147,8 @@ export default {
                 elements: [],
                 row: null
             },
-            filter: {
-                all: true
-            },
             filters: [],
+            searchBy: [],
 
             bulkEdit: false,
             checkboxAll: false,
@@ -154,7 +168,11 @@ export default {
             entities_loaded: false,
             table_filters: [],
             table_columns: [],
-            table_rows: []
+            table_rows: [],
+
+            promise: {
+                loadEntities: null
+            }
         }
     },
 
@@ -186,6 +204,12 @@ export default {
 
 
     watch: {
+        filters: {
+            handler: function (current, previous) {
+                this.loadEntities().catch(promise => promise.then(this.loadEntities).catch(() => {}));
+            },
+            deep: true
+        },
         'table_state.page': function (current, previous) {            
             if (current && current !== previous) {
                 if(current > this.table_state.page_count) {
@@ -207,7 +231,8 @@ export default {
     methods: {
 
         loadData() {
-            // this.loadFilters();
+            this.loadFilters();
+            this.loadSearchBy();
             this.loadColumns();
             this.loadEntities();
         },
@@ -232,6 +257,14 @@ export default {
         },
 
 
+        loadSearchBy() {
+            this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
+                .then(response => response.data)
+                .then(this.handleSeachBy)
+                .catch(this.handleError);
+        },
+
+
         loadColumns() {
             this.$http.get(`/api/${this.entities || this.entity + 's'}-columns/${this.clientId}`)
                 .then(response => response.data)
@@ -243,7 +276,7 @@ export default {
 
         loadEntities() {
             if(this.table_state.loading) {
-                return;
+                return Promise.reject(this.promise.loadEntities);
             }
 
             this.table_state.loading = true;
@@ -254,21 +287,41 @@ export default {
                 query.push(`state[${key}]=${this.table_state[key]}`);
             }
 
-            if (!this.filter.all) {
-                for (let key in this.filters) {
-                    query.push(`filter[${key}]=${this.filters[key]}`);
+            let filterIdx = 0;
+            this.filters.filter(filter => filter.selected || filter.type === 'dropdown').forEach(filter => {
+                if (filter.type === 'dropdown') {
+                    filter.options.filter(_filter => _filter.selected).forEach(_filter => {
+                        query.push(`filter[${filterIdx}]=${_filter.value}`);
+                        filterIdx++;
+                    });
                 }
-            }
+                else {
+                    query.push(`filter[${filterIdx}]=${filter.value}`);
+                    filterIdx++;
+                }
+            });
 
             query.push(`orderBy[0]=${this.orderBy}`);
             query.push(`orderBy[1]=${this.orderDirection}`);
 
-            this.$http.get(`/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&'))
+            this.promise.loadEntities = this.$http.get(`/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&'))
                 .then(response => response.data)
                 .then(this.handleEntities)
                 .then(() => this.table_state.loading = false)
                 .then(() => this.entities_loaded = true)
                 .catch(this.handleError);
+
+            return this.promise.loadEntities;
+        },
+
+
+        handleFilters(filters) {
+            this.filters = filters;
+        },
+
+
+        handleSeachBy(searchBy) {
+            this.searchBy = searchBy;
         },
 
 
@@ -286,6 +339,22 @@ export default {
 
         handleError(err) {
             console.error(err);
+        },
+
+
+
+        order(field) {
+            if (this.table_state.loading) {
+                return;
+            }
+            if (this.orderBy === field) {
+                this.orderDirection = this.orderDirection === 'ASC' ? 'DESC' : 'ASC';
+            }
+            else {
+                this.orderBy = field;
+                this.orderDirection = 'ASC';
+            }
+            this.loadEntities();
         },
 
 
@@ -413,6 +482,11 @@ export default {
         margin: 0 15px;
     }
 
+    th {
+        cursor: pointer;
+        user-select: none;
+    }
+
     tr:hover, tr.hover {
         background-color: #f5f5f5 !important;
     }
@@ -449,5 +523,127 @@ export default {
 
     .context-menu li:not(.divider):hover {
         background-color: #eee;
+    }
+
+    /* DataTables styles */
+    td, td > a {
+        color: #373737;
+        font-family: "Open Sans", sans-serif;
+        font-size: 16px;
+    }
+
+    td > a:hover {
+        color: #ed492f;
+        text-decoration: none;
+    }
+
+    /* Context menu should be above everything */
+    .context-menu-list {
+        z-index: 100 !important;
+    }
+
+    /* Datatable rows */
+    .currency_value {
+        color: #01a7fd;
+        padding-left: 4px;
+    }
+
+    .currency_symbol, .currency_value {
+        font-weight: 600;
+    }
+
+    /* Datatable controls */
+    .dt_controls {
+        float: right;
+        margin-top: 30px;
+    }
+
+    .dt_controls > div {
+        float: none !important;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .pagination > span, .dataTables_length label, .dataTables_info {
+        vertical-align: top;
+        font-size: 16px;
+        font-weight: 600;
+        color: #949494 !important;
+        margin: 7px 0;
+        display: inline-block;
+    }
+
+    .pagination > ul {
+        margin: 0 20px;
+    }
+
+    .pagination > li {
+        display: inline-block !important;
+        vertical-align: top;
+    }
+
+    .pagination .page {
+        width: 70px;
+        text-align: center;
+    }
+
+    .pagination > .prev a, .pagination > .next a {
+        border: none;
+        background: none;
+        font-weight: 600;
+        color: #949494;
+        padding: 0;
+        cursor: pointer;
+        font-size: 30px;
+        line-height: 30px;
+    }
+
+    .pagination > .prev a {
+        padding-right: 9px;
+    }
+
+    .pagination > .next a {
+        padding-left: 9px;
+    }
+
+    .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+        display: none;
+    }
+
+    .pagination > .active > input, .pagination > .active > span, .pagination > .active > input:hover, .pagination > .active > span:hover, .pagination > .active > input:focus, .pagination > .active > span:focus {
+        background: #ffffff !important;
+        color: #373737 !important;
+        border: none;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-size: 16px;
+        padding: 7px 0;
+    }
+
+    .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+        color: #373737 !important;
+        background: none;
+        border: none;
+    }
+
+    div.dataTables_length {
+        margin: 0 15px !important;
+        padding: 0;
+    }
+
+    div.dataTables_length label {
+        margin: 0;
+    }
+
+    div.dataTables_length select {
+        text-align: center;
+        background: #ffffff !important;
+        color: #373737 !important;
+        border: none;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-size: 16px;
+        padding: 7px 10px 7px;
+        margin-right: 10px;
     }
 </style>

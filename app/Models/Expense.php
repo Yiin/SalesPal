@@ -272,6 +272,54 @@ class Expense extends EntityModel
 
         return static::calcStatusLabel($this->should_be_invoiced, $this->invoice_id, $balance);
     }
+
+    public function scopeFilter($query, $filter)
+    {
+        if ($filter) foreach ($filter as $f) {
+            switch ($f) {
+                case 'active':
+                    $query = $query->orWhere(function ($query) {
+                        $query->where('is_deleted', false)->whereNull('deleted_at');
+                    });
+                    break;
+                case 'inactive':
+                    $query = $query->orWhere(function ($query) {
+                        $query->where('is_deleted', false)->whereNotNull('deleted_at');
+                    });
+                    break;
+                case 'deleted':
+                    $query = $query->orWhere(function ($query) {
+                        $query->where('is_deleted', true)->whereNotNull('deleted_at');
+                    });
+                    break;
+                    
+                case 'invoiced':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereNotNull('invoice_id')->whereHas('invoice', function ($query) {
+                            $query->where('balance', '>', 0);
+                        });
+                    });
+                    break;
+                case 'paid':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereNotNull('invoice_id')->whereHas('invoice', function ($query) {
+                            $query->where('balance', '<=', 0);
+                        });
+                    });
+                    break;
+                case 'pending':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereNull('invoice_id')->where('should_be_invoiced', true);
+                    });
+                    break;
+                case 'logged':
+                    $query = $query->orWhere(function ($query) {
+                        $query->whereNull('invoice_id')->where('should_be_invoiced', false);
+                    });
+                    break;
+            }
+        }
+    }
 }
 
 Expense::creating(function ($expense) {

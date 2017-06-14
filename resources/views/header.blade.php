@@ -466,7 +466,7 @@
         </div>
       </div>
     </nav>
-    <!-- /#left-sidebar-wrapper------------------------------------ -->
+    <!-- /#left-sidebar-wrapper -->
 
     <!-- Page Content -->
     <div id="page-content-wrapper">

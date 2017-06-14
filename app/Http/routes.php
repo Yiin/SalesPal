@@ -141,19 +141,27 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::resource('clients', 'ClientController');
     Route::get('api/clients', 'ClientController@getDatatable');
     Route::get('api/clients-columns', 'ClientController@getDatatableColumns');
+    Route::get('api/clients-filters', 'ClientController@getFilters');
+    Route::get('api/clients-searchby', 'ClientController@getSearchBy');
     Route::get('api/activities/{client_id?}', 'ActivityController@getDatatable');
     Route::get('api/activities-columns/{client_id?}', 'ActivityController@getDatatableColumns');
+    Route::get('api/activities-filters/{client_id?}', 'ActivityController@getFilters');
+    Route::get('api/activities-searchby/{client_id?}', 'ActivityController@getSearchBy');
     Route::post('clients/bulk', 'ClientController@bulk');
     Route::get('clients/statement/{client_id}', 'ClientController@statement');
 
     Route::resource('tasks', 'TaskController');
     Route::get('api/tasks/{client_id?}', 'TaskController@getDatatable');
     Route::get('api/tasks-columns/{client_id?}', 'TaskController@getDatatableColumns');
+    Route::get('api/tasks-filters/{client_id?}', 'TaskController@getFilters');
+    Route::get('api/tasks-searchby/{client_id?}', 'TaskController@getSearchBy');
     Route::get('tasks/create/{client_id?}/{project_id?}', 'TaskController@create');
     Route::post('tasks/bulk', 'TaskController@bulk');
     Route::get('projects', 'ProjectController@index');
     Route::get('api/projects', 'ProjectController@getDatatable');
     Route::get('api/projects-columns', 'ProjectController@getDatatableColumns');
+    Route::get('api/projects-filters', 'ProjectController@getFilters');
+    Route::get('api/projects-searchby', 'ProjectController@getSearchBy');
     Route::get('projects/create/{client_id?}', 'ProjectController@create');
     Route::post('projects', 'ProjectController@store');
     Route::put('projects/{projects}', 'ProjectController@update');
@@ -162,6 +170,8 @@ Route::group(['middleware' => 'auth:user'], function () {
 
     Route::get('api/recurring_invoices/{client_id?}', 'RecurringInvoiceController@getDatatable');
     Route::get('api/recurring_invoices-columns/{client_id?}', 'RecurringInvoiceController@getDatatableColumns');
+    Route::get('api/recurring_invoices-filters/{client_id?}', 'RecurringInvoiceController@getFilters');
+    Route::get('api/recurring_invoices-searchby/{client_id?}', 'RecurringInvoiceController@getSearchBy');
 
     Route::get('invoices/invoice_history/{invoice_id}', 'InvoiceController@invoiceHistory');
     Route::get('quotes/quote_history/{invoice_id}', 'InvoiceController@invoiceHistory');
@@ -169,6 +179,8 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::resource('invoices', 'InvoiceController');
     Route::get('api/invoices/{client_id?}', 'InvoiceController@getDatatable');
     Route::get('api/invoices-columns/{client_id?}', 'InvoiceController@getDatatableColumns');
+    Route::get('api/invoices-filters/{client_id?}', 'InvoiceController@getFilters');
+    Route::get('api/invoices-searchby/{client_id?}', 'InvoiceController@getSearchBy');
     Route::get('invoices/create/{client_id?}', 'InvoiceController@create');
     Route::get('recurring_invoices/create/{client_id?}', 'InvoiceController@createRecurring');
     Route::get('recurring_invoices', 'RecurringInvoiceController@index');
@@ -192,22 +204,30 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::get('quotes', 'QuoteController@index');
     Route::get('api/quotes/{client_id?}', 'QuoteController@getDatatable');
     Route::get('api/quotes-columns/{client_id?}', 'QuoteController@getDatatableColumns');
+    Route::get('api/quotes-filters/{client_id?}', 'QuoteController@getFilters');
+    Route::get('api/quotes-searchby/{client_id?}', 'QuoteController@getSearchBy');
     Route::post('quotes/bulk', 'QuoteController@bulk');
 
     Route::resource('payments', 'PaymentController');
     Route::get('payments/create/{client_id?}/{invoice_id?}', 'PaymentController@create');
     Route::get('api/payments/{client_id?}', 'PaymentController@getDatatable');
     Route::get('api/payments-columns/{client_id?}', 'PaymentController@getDatatableColumns');
+    Route::get('api/payments-filters/{client_id?}', 'PaymentController@getFilters');
+    Route::get('api/payments-searchby/{client_id?}', 'PaymentController@getSearchBy');
     Route::post('payments/bulk', 'PaymentController@bulk');
 
     Route::resource('credits', 'CreditController');
     Route::get('credits/create/{client_id?}/{invoice_id?}', 'CreditController@create');
     Route::get('api/credits/{client_id?}', 'CreditController@getDatatable');
     Route::get('api/credits-columns/{client_id?}', 'CreditController@getDatatableColumns');
+    Route::get('api/credits-filters/{client_id?}', 'CreditController@getFilters');
+    Route::get('api/credits-searchby/{client_id?}', 'CreditController@getSearchBy');
     Route::post('credits/bulk', 'CreditController@bulk');
 
     Route::get('api/products', 'ProductController@getDatatable');
     Route::get('api/products-columns', 'ProductController@getDatatableColumns');
+    Route::get('api/products-filters', 'ProductController@getFilters');
+    Route::get('api/products-searchby', 'ProductController@getSearchBy');
     Route::resource('products', 'ProductController');
     Route::post('products/bulk', 'ProductController@bulk');
 
@@ -218,6 +238,8 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::resource('vendors', 'VendorController');
     Route::get('api/vendors', 'VendorController@getDatatable');
     Route::get('api/vendors-columns', 'VendorController@getDatatableColumns');
+    Route::get('api/vendors-filters', 'VendorController@getFilters');
+    Route::get('api/vendors-searchby', 'VendorController@getSearchBy');
     Route::post('vendors/bulk', 'VendorController@bulk');
 
     // Expense
@@ -225,12 +247,18 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::get('expenses/create/{vendor_id?}/{client_id?}/{category_id?}', 'ExpenseController@create');
     Route::get('api/expenses', 'ExpenseController@getDatatable');
     Route::get('api/expenses-columns', 'ExpenseController@getDatatableColumns');
+    Route::get('api/expenses-filters', 'ExpenseController@getFilters');
+    Route::get('api/expenses-searchby', 'ExpenseController@getSearchBy');
     Route::get('api/expenses/{id}', 'ExpenseController@getDatatableVendor');
     Route::get('api/expenses-columns/{id}', 'ExpenseController@getDatatableColumnsVendor');
+    Route::get('api/expenses-filters/{id}', 'ExpenseController@getFilters');
+    Route::get('api/expenses-searchby/{id}', 'ExpenseController@getSearchBy');
     Route::post('expenses/bulk', 'ExpenseController@bulk');
     Route::get('expense_categories', 'ExpenseCategoryController@index');
     Route::get('api/expense_categories', 'ExpenseCategoryController@getDatatable');
     Route::get('api/expense_categories-columns', 'ExpenseCategoryController@getDatatableColumns');
+    Route::get('api/expense_categories-filters', 'ExpenseCategoryController@getFilters');
+    Route::get('api/expense_categories-searchby', 'ExpenseCategoryController@getSearchBy');
     Route::get('expense_categories/create', 'ExpenseCategoryController@create');
     Route::post('expense_categories', 'ExpenseCategoryController@store');
     Route::put('expense_categories/{expense_categories}', 'ExpenseCategoryController@update');
@@ -253,6 +281,8 @@ Route::group([
 ], function () {
     Route::get('api/users', 'UserController@getLegacyDatatable');
     Route::get('api/users-columns', 'UserController@getDatatableColumns');
+    Route::get('api/users-filters', 'UserController@getFilters');
+    Route::get('api/users-searchby', 'UserController@getSearchBy');
     Route::resource('users', 'UserController');
     Route::post('users/bulk', 'UserController@bulk');
     Route::get('send_confirmation/{user_id}', 'UserController@sendConfirmation');
@@ -263,11 +293,15 @@ Route::group([
 
     Route::get('api/tokens', 'TokenController@getLegacyDatatable');
     Route::get('api/tokens-columns', 'TokenController@getDatatableColumns');
+    Route::get('api/tokens-filters', 'TokenController@getFilters');
+    Route::get('api/tokens-searchby', 'TokenController@getSearchBy');
     Route::resource('tokens', 'TokenController');
     Route::post('tokens/bulk', 'TokenController@bulk');
 
     Route::get('api/tax_rates', 'TaxRateController@getLegacyDatatable');
     Route::get('api/tax_rates-columns', 'TaxRateController@getDatatableColumns');
+    Route::get('api/tax_rates-filters', 'TaxRateController@getFilters');
+    Route::get('api/tax_rates-searchby', 'TaxRateController@getSearchBy');
     Route::resource('tax_rates', 'TaxRateController');
     Route::post('tax_rates/bulk', 'TaxRateController@bulk');
 
@@ -295,11 +329,15 @@ Route::group([
     Route::get('gateways/{public_id}/resend_confirmation', 'AccountGatewayController@resendConfirmation');
     Route::get('api/gateways', 'AccountGatewayController@getLegacyDatatable');
     Route::get('api/gateways-columns', 'AccountGatewayController@getDatatableColumns');
+    Route::get('api/gateways-filters', 'AccountGatewayController@getFilters');
+    Route::get('api/gateways-searchby', 'AccountGatewayController@getSearchBy');
     Route::post('account_gateways/bulk', 'AccountGatewayController@bulk');
 
     Route::get('payment_terms', 'PaymentTermController@index');
     Route::get('api/payment_terms', 'PaymentTermController@getLegacyDatatable');
     Route::get('api/payment_terms-columns', 'PaymentTermController@getDatatableColumns');
+    Route::get('api/payment_terms-filters', 'PaymentTermController@getFilters');
+    Route::get('api/payment_terms-searchby', 'PaymentTermController@getSearchBy');
     Route::get('payment_terms/create', 'PaymentTermController@create');
     Route::post('payment_terms', 'PaymentTermController@store');
     Route::put('payment_terms/{payment_terms}', 'PaymentTermController@update');
@@ -311,6 +349,8 @@ Route::group([
     Route::resource('bank_accounts', 'BankAccountController');
     Route::get('api/bank_accounts', 'BankAccountController@getLegacyDatatable');
     Route::get('api/bank_accounts-columns', 'BankAccountController@getDatatableColumns');
+    Route::get('api/bank_accounts-filters', 'BankAccountController@getFilters');
+    Route::get('api/bank_accounts-searchby', 'BankAccountController@getSearchBy');
     Route::post('bank_accounts/bulk', 'BankAccountController@bulk');
     Route::post('bank_accounts/validate', 'BankAccountController@validateAccount');
     Route::post('bank_accounts/import_expenses/{bank_id}', 'BankAccountController@importExpenses');

@@ -17,6 +17,56 @@ class ExpenseDatatable extends EntityDatatable
         return 'ID ' . $model->public_id;
     }
 
+    public function filters()
+    {
+        return [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'inactive',
+                'label' => trans('texts.inactive'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            [
+                'type' => 'separator'
+            ],
+            [
+                'type' => 'dropdown',
+                'label' => trans('texts.status'),
+                'options' => [
+                    [
+                        'type' => 'checkbox',
+                        'value' => 'invoiced',
+                        'label' => trans('texts.invoiced'),
+                    ],
+                    [
+                        'type' => 'checkbox',
+                        'value' => 'paid',
+                        'label' => trans('texts.paid'),
+                    ],
+                    [
+                        'type' => 'checkbox',
+                        'value' => 'pending',
+                        'label' => trans('texts.pending'),
+                    ],
+                    [
+                        'type' => 'checkbox',
+                        'value' => 'logged',
+                        'label' => trans('texts.logged'),
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [
@@ -42,7 +92,6 @@ class ExpenseDatatable extends EntityDatatable
                         if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                             return Utils::getClientDisplayName($model);
                         }
-
                         return link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml();
                     } else {
                         return '';
@@ -96,7 +145,7 @@ class ExpenseDatatable extends EntityDatatable
             [
                 'status',
                 function ($model) {
-                    return self::getStatusLabel($model->invoice_id, $model->should_be_invoiced, $model->balance);
+                    return self::getStatusLabel($model->invoice_id, $model->should_be_invoiced, $model->invoice ? $model->invoice->balance : null);
                 },
             ],
         ];

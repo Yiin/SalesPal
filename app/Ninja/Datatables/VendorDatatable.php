@@ -16,6 +16,58 @@ class VendorDatatable extends EntityDatatable
         return $model->name;
     }
 
+    public function filters()
+    {
+        $filters = [
+            [
+                'type' => 'checkbox',
+                'value' => 'active',
+                'label' => trans('texts.active'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'acrhived',
+                'label' => trans('texts.archived'),
+            ],
+            [
+                'type' => 'checkbox',
+                'value' => 'deleted',
+                'label' => trans('texts.deleted'),
+            ],
+            // [
+            //     'type' => 'separator'
+            // ],
+            // [
+            //     'type' => 'checkbox',
+            //     'value' => 'buying',
+            //     'label' => trans('texts.buying'),
+            // ],
+            // [
+            //     'type' => 'checkbox',
+            //     'value' => 'reselling',
+            //     'label' => trans('texts.reselling'),
+            // ],
+        ];
+
+        $countriesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.country'),
+            'options' => [],
+        ];
+
+        foreach (\App\Models\Country::all() as $country) {
+            $countriesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => $country->id,
+                'label' => $country->name,
+            ];
+        }
+
+        $filters [] = $countriesDropdown;
+
+        return $filters;
+    }
+
     public function columns()
     {
         return [
