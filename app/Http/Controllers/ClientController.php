@@ -36,7 +36,7 @@ class ClientController extends BaseController
         $this->clientRepo = $clientRepo;
         $this->clientService = $clientService;
 
-        $this->entityQuery = Client::withTrashed();
+        $this->entityQuery = Client::query();
         $this->datatable = $clientDatatable;
     }
 

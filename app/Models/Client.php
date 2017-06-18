@@ -572,17 +572,17 @@ class Client extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->orWhere(function($query) {
+                    $query = $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'inactive':
-                    $query = $query->orWhere(function($query) {
+                    $query = $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->orWhere(function($query) {
+                    $query = $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;
@@ -609,6 +609,40 @@ class Client extends EntityModel
             }
         }
         return $query;
+    }
+
+    public function scopeSearchBy($query, $searchBy)
+    {
+        if ($searchBy) foreach ($searchBy as $search => $value) {
+            switch ($search) {
+                case 'client_name':
+                    $query->where(function ($query) use ($value) {
+                        Utils::querySearchText($query, 'name', $value);
+
+                        $query->orWhereHas('contacts', function ($query) use ($value) {
+                            Utils::querySearchText($query, 
+                                \DB::raw("CONCAT(`contacts`.`first_name`, ' ', `contacts`.`last_name`)"), 
+                                $value
+                            );
+                        });
+                    });
+                    break;
+                case 'contact_number':
+                    Utils::querySearchText($query, 'work_phone', $value);
+                    break;
+                case 'email':
+                    $query->whereHas('contacts', function ($query) use ($value) {
+                        Utils::querySearchText($query, 'email', $value);
+                    });
+                    break;
+                case 'date_created':
+                    Utils::querySearchDate($query, 'created_at', $value);
+                    break;
+                case 'balance':
+                    Utils::querySearchValue($query, 'balance', $value);
+                    break;
+            }
+        }
     }
 }
 

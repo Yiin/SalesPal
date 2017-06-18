@@ -56,6 +56,38 @@ class ProductDatatable extends EntityDatatable
         ];
     }
 
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'product_name',
+                'label' => trans('texts.product_name'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'product_price',
+                'label' => trans('texts.product_price'),
+            ],
+            [
+                'type' => 'separator'
+            ],
+            [
+                'type' => 'text',
+                'name' => 'description',
+                'label' => trans('texts.words_in_description'),
+            ],
+            [
+                'type' => 'separator'
+            ],
+            [
+                'type' => 'text',
+                'name' => 'qty',
+                'label' => trans('texts.stock_amount'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

@@ -85,6 +85,45 @@ class InvoiceDatatable extends EntityDatatable
         return $filters;
     }
 
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'invoice_number',
+                'label' => $this->entityType == ENTITY_INVOICE ? trans('texts.invoice_number') : trans('texts.quote_number'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'invoice_date',
+                'label' => $this->entityType == ENTITY_INVOICE ? trans('texts.invoice_date') : trans('texts.quote_date'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'invoice_due_date',
+                'label' => $this->entityType == ENTITY_INVOICE ? trans('texts.invoice_due_date') : trans('texts.valid_until_date'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'invoice_amount',
+                'label' => $this->entityType == ENTITY_INVOICE ? trans('texts.invoice_amount') : trans('texts.amount'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'text',
+                'name' => 'client_name',
+                'label' => trans('texts.client_name'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'product_name',
+                'label' => trans('texts.product_name'),
+            ]
+        ];
+    }
+
     public function columns()
     {
         $entityType = $this->entityType;

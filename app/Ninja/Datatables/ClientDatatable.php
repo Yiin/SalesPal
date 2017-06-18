@@ -81,31 +81,31 @@ class ClientDatatable extends EntityDatatable
         return [
             [
                 'type' => 'text',
+                'name' => 'client_name',
                 'label' => trans('texts.client_name'),
-                'value' => 'client_name',
             ],
             [
                 'type' => 'text',
-                'label' => trans('texts.client_name'),
-                'value' => 'client_name',
+                'name' => 'contact_number',
+                'label' => trans('texts.contact_number'),
             ],
             [
                 'type' => 'text',
-                'label' => trans('texts.client_name'),
-                'value' => 'client_name',
+                'name' => 'email',
+                'label' => trans('texts.email'),
             ],
             [
                 'type' => 'separator',
             ],
             [
                 'type' => 'date',
+                'name' => 'date_created',
                 'label' => trans('texts.date_created'),
-                'value' => 'date_created',
             ],
             [
                 'type' => 'number',
+                'name' => 'balance',
                 'label' => trans('texts.balance'),
-                'value' => 'balance',
             ],
         ];
     }

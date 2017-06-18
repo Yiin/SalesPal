@@ -4,7 +4,7 @@
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
             <filters-dropdown v-if="filters.length" :options="filters"></filters-dropdown>
-            <!-- <search-by-dropdown v-if="searchBy.length" :options="searchBy"></search-by-dropdown> -->
+            <search-by-dropdown v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
         </div>
 
 
@@ -74,34 +74,36 @@
              -->
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
                 <div class="table-controls">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <button v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="btn btn-xs btn-simple">
-                                Prev page
-                            </button>
-                            <input type="number" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="btn btn-xs btn-simple">
-                            <button v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="btn btn-xs btn-simple">
-                                Next page
-                            </button>
-                        </div>
-                        <div class="col-xs-4">
+                    <span>Page</span>
+                    <div class="pagination">
+                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev disabled">
+                            <a>«</a>
+                        </li>
+                        <li class="active"><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active"></li>
+                        <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
+                            <a>»</a>
+                        </li>
+                    </div>
+                    <div class="elements-control">
+                        <span>
                             <template v-if="table_state.entities_count > 0">
                                 Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
                             </template>
                             <template v-else>
                                 Showing 0 entries
                             </template>
-                        </div>
-                        <div class="col-xs-4">
-                            <select v-model="table_state.entities_per_page">
-                                <option value="5">5</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
+                        </span>
                     </div>
+                    <div class="entities-count-control">
+                        <select v-model="table_state.entities_per_page">
+                            <option value="5">5</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <span>rows</span>
                 </div>
             </div>
             <ul v-on-clickaway="clickAway" 
@@ -121,7 +123,7 @@
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway';
+import { mixin as clickaway } from '../mixins/clickaway';
 
 export default {
     mixins: [
@@ -171,8 +173,9 @@ export default {
             table_rows: [],
 
             promise: {
-                loadEntities: null
-            }
+                loadEntities: null,
+            },
+            searchByTimeout: null
         }
     },
 
@@ -206,11 +209,11 @@ export default {
     watch: {
         filters: {
             handler: function (current, previous) {
-                this.loadEntities().catch(promise => promise.then(this.loadEntities).catch(() => {}));
+                this.loadEntities();
             },
             deep: true
         },
-        'table_state.page': function (current, previous) {            
+        'table_state.page': function (current, previous) {
             if (current && current !== previous) {
                 if(current > this.table_state.page_count) {
                     this.table_state.page = this.table_state.page_count;
@@ -260,7 +263,7 @@ export default {
         loadSearchBy() {
             this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
                 .then(response => response.data)
-                .then(this.handleSeachBy)
+                .then(this.handleSearchBy)
                 .catch(this.handleError);
         },
 
@@ -275,10 +278,6 @@ export default {
 
 
         loadEntities() {
-            if(this.table_state.loading) {
-                return Promise.reject(this.promise.loadEntities);
-            }
-
             this.table_state.loading = true;
 
             let query = [];
@@ -301,17 +300,46 @@ export default {
                 }
             });
 
+            this.searchBy.filter(option => {
+                if (typeof option.value === 'string') {
+                    return option.value.length > 0;
+                }
+                else if (typeof option.value === 'object') {
+                    // array of dates, [start, end]
+                    return option.value && option.value.length === 2 && option.value[0].length && option.value[1].length;
+                }
+                else {
+                    return false;
+                }
+            }).forEach(option => {
+                let value = _.unescape(option.value);
+                query.push(`searchBy[${option.name}]=${value}`);
+            });
+
             query.push(`orderBy[0]=${this.orderBy}`);
             query.push(`orderBy[1]=${this.orderDirection}`);
 
-            this.promise.loadEntities = this.$http.get(`/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&'))
+            let url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
+
+            this.$http.get(url, {
+
+                before(request) {
+
+                  // abort previous request, if exists
+                  if (this.promise.loadEntities) {
+                    this.promise.loadEntities.abort();
+                  }
+
+                  // set previous request on Vue instance
+                  this.promise.loadEntities = request;
+                }
+
+            })
                 .then(response => response.data)
                 .then(this.handleEntities)
                 .then(() => this.table_state.loading = false)
                 .then(() => this.entities_loaded = true)
                 .catch(this.handleError);
-
-            return this.promise.loadEntities;
         },
 
 
@@ -320,7 +348,7 @@ export default {
         },
 
 
-        handleSeachBy(searchBy) {
+        handleSearchBy(searchBy) {
             this.searchBy = searchBy;
         },
 
@@ -338,7 +366,13 @@ export default {
 
 
         handleError(err) {
-            console.error(err);
+            // console.error(err);
+        },
+
+
+
+        searchByHandler() {
+            this._loadEntities();
         },
 
 
@@ -374,11 +408,13 @@ export default {
 
 
 
-        toggleSelect(id) {
+        toggleSelect(id, doNotCancel = false) {
             let index = this.selected_entities.indexOf(id);
 
             if (index > -1) {
-                this.selected_entities.splice(index, 1);
+                if (!doNotCancel) {
+                    this.selected_entities.splice(index, 1);
+                }
             }
             else {
                 this.selected_entities.push(id);
@@ -401,6 +437,10 @@ export default {
 
 
         showContextMenu(e, row) {
+            if (row.__checkbox) {
+                this.toggleSelect(row.__checkbox.data.id, true);
+            }
+
             this.contextMenu.elements = [];
 
             if (this.selected_entities.length) {
@@ -471,6 +511,8 @@ export default {
     mounted() {
         this.loadData();
         this.registerListeners();
+
+        this._loadEntities = _.debounce(this.loadEntities, 500);
     }
 }
 </script>
@@ -553,12 +595,23 @@ export default {
     }
 
     /* Datatable controls */
-    .dt_controls {
+    div.entities-count-control select {
+        text-align: center;
+        background: #ffffff !important;
+        color: #373737 !important;
+        border: none;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-size: 16px;
+        padding: 7px 10px 7px;
+        margin-right: 10px;
+        width: 80px;
+    }
+    .table-controls {
         float: right;
         margin-top: 30px;
     }
 
-    .dt_controls > div {
+    .table-controls > div {
         float: none !important;
         display: inline-block;
         vertical-align: middle;
@@ -566,7 +619,7 @@ export default {
         padding: 0 !important;
     }
 
-    .pagination > span, .dataTables_length label, .dataTables_info {
+    .pagination > span, template, .table-controls > span, .elements-control > span, .dataTables_info {
         vertical-align: top;
         font-size: 16px;
         font-weight: 600;
@@ -601,11 +654,25 @@ export default {
     }
 
     .pagination > .prev a {
-        padding-right: 9px;
+        padding-right: 7px;
+        padding-bottom: 10px; 
+            border: none;
+        background: none;  
     }
 
     .pagination > .next a {
-        padding-left: 9px;
+        padding-left: 7px;
+        padding-bottom: 10px; 
+            border: none;
+        background: none;   
+    }
+
+    .pagination > .prev a:hover {
+    color: #333;
+    }
+
+    .pagination > .next a:hover {
+    color: #333;
     }
 
     .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
@@ -625,25 +692,5 @@ export default {
         color: #373737 !important;
         background: none;
         border: none;
-    }
-
-    div.dataTables_length {
-        margin: 0 15px !important;
-        padding: 0;
-    }
-
-    div.dataTables_length label {
-        margin: 0;
-    }
-
-    div.dataTables_length select {
-        text-align: center;
-        background: #ffffff !important;
-        color: #373737 !important;
-        border: none;
-        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
-        font-size: 16px;
-        padding: 7px 10px 7px;
-        margin-right: 10px;
     }
 </style>

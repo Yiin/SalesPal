@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laracasts\Presenter\PresentableTrait;
+use App\Libraries\Utils;
 
 /**
  * Class Product.
@@ -98,35 +99,63 @@ class Product extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'archived':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;
 
                 case 'in_stock':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->where('qty', '>', 0);
                     });
                     break;
                 case 'non_stock':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->whereNull('qty');
                     });
                     break;
                 case 'out_of_stock':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->where('qty', '<=', 0);
                     });
+                    break;
+            }
+        }
+    }
+
+    public function scopeSearchBy($query, $searchBy)
+    {
+        if ($searchBy) foreach ($searchBy as $search => $value) {
+            switch ($search) {
+                case 'product_name':
+                    Utils::querySearchText($query, 'product_key', $value);
+                    break;
+                case 'product_price':
+                    Utils::querySearchValue($query, 'cost', $value);
+                    break;
+                case 'description':
+                    Utils::querySearchText($query, 'notes', $value);
+                    break;
+                case 'qty':
+                    if (strtolower($value) === strtolower(trans('texts.service'))) {
+                        $query->whereNull('qty');
+                    }
+                    else if (strtolower($value) === strtolower(trans('texts.out_of_stock'))) {
+                        $query->where('qty', '<=', 0);
+                    }
+                    else {
+                        Utils::querySearchValue($query, 'qty', $value, true);
+                    }
                     break;
             }
         }

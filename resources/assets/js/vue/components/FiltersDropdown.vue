@@ -1,6 +1,6 @@
 <template>
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" class="btn btn-primary" type="button">
+        <button @click="toggleDropdown" type="button">
             {{ title }}
         </button>
 
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway';
+import { mixin as clickaway } from '../mixins/clickaway';
 
 export default {
     mixins: [
@@ -163,6 +163,19 @@ export default {
     .vue-dropdown {
         position: relative;
         display: inline-block;
+        margin: 0 15px;
+    }
+
+    .vue-dropdown > button {
+        width: 200px;
+        background:  white;
+        border: none;
+        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        height: 42px;
+        text-align: left;
+        padding: 0 15px;
+        font-size: 16px;
+        color: #373737;
     }
 
     .vue-dropdown-menu {

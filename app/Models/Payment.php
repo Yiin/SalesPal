@@ -10,6 +10,7 @@ use App\Events\PaymentWasVoided;
 use Event;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laracasts\Presenter\PresentableTrait;
+use Utils;
 
 /**
  * Class Payment.
@@ -403,6 +404,42 @@ class Payment extends EntityModel
                             $query = $query->orWhere('payment_type_id', $id);
                             break;
                     }
+            }
+        }
+    }
+
+    public function scopeSearchBy($query, $searchBy)
+    {
+        if ($searchBy) foreach ($searchBy as $search => $value) {
+            switch ($search) {
+                case 'invoice_number':
+                    $query->whereHas('invoice', function ($query) use ($value) {
+                        Utils::querySearchText($query, 'invoice_number', $value);
+                    });
+                    break;
+                case 'payment_date':
+                    Utils::querySearchDate($query, 'payment_date', $value);
+                    break;
+                case 'payment_amount':
+                    Utils::querySearchValue($query, 'amount', $value);
+                    break;
+                case 'client_name':
+                    $query->whereHas('client', function ($query) use ($value) {
+                        Utils::querySearchText($query, 'name', $value);
+
+                        $query->orWhereHas('contacts', function ($query) use ($value) {
+                            Utils::querySearchText($query, 
+                                \DB::raw("CONCAT(`contacts`.`first_name`, ' ', `contacts`.`last_name`)"), 
+                                $value
+                            );
+                        });
+                    });
+                    break;
+                case 'product_name':
+                    $query->whereHas('invoice_items.product', function ($query) use ($value) {
+                        Utils::querySearchText($query, 'product_key', $value);
+                    });
+                    break;
             }
         }
     }

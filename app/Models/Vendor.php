@@ -385,6 +385,44 @@ class Vendor extends EntityModel
         }
         return $query;
     }
+
+    public function scopeSearchBy($query, $searchBy)
+    {
+        if ($searchBy) foreach ($searchBy as $search => $value) {
+            switch ($search) {
+                case 'vendor_name':
+                    Utils::querySearchText($query, 'name', $value);
+                    break;
+                case 'contact_number':
+                    Utils::querySearchText($query, 'work_phone', $value);
+                    
+                    $query->orWhereHas('vendor_contacts', function ($query) use ($value) {
+                        Utils::querySearchText($query, 'phone', $value);
+                    });
+                    break;
+                case 'email':
+                    Utils::querySearchText($query, 'email', $value);
+
+                    $query->orWhereHas('vendor_contacts', function ($query) use ($value) {
+                        Utils::querySearchText($query, 'email', $value);
+                    });
+                    break;
+                case 'date_created':
+                    Utils::querySearchDate($query, 'created_at', $value);
+                    break;
+                case 'expenses_amount':
+                    $query->whereHas('expenses', function ($query) use ($value) {
+                        $query->where('expenses.is_deleted', false);
+                        $query->where('expenses.expense_currency_id', '=', DB::raw("`vendors`.`currency_id`"));
+
+                        Utils::queryHavingValue($query, DB::raw("SUM(`expenses`.`amount`)"), $value);
+
+                        $query->groupBy('expenses.expense_currency_id');
+                    });
+                    break;
+            }
+        }
+    }
 }
 
 Vendor::creating(function ($vendor) {

@@ -1237,4 +1237,100 @@ class Utils
     {
         return strlen($string) > $length ? rtrim(substr($string, 0, $length)) . '...' : $string;
     }
+
+    public static function querySearchValue(&$query, $name, $value, $ignoreNull = false)
+    {
+        // = (default) OR <= OR >=
+        $sign = in_array($value[0], ['<', '>']) ? $value[0] . '=' : '=';
+
+        // extract value
+        $value = (int)($sign === '=' ? $value : substr($value, 1));
+
+        $query->where(function ($query) use ($name, $sign, $value, $ignoreNull) {
+            $query->where($name, $sign, $value);
+
+            if (! $ignoreNull) {
+                // if 0 is in searchable values interval, search for null too
+                if (
+                    ($sign === '<=' && $value >= 0) || 
+                    ($sign === '>=' && $value <= 0) ||
+                     $value === 0
+                ) {
+                    $query->orWhereNull($name);
+                }
+            }
+        });
+    }
+
+    public static function queryHavingValue(&$query, $name, $value, $ignoreNull = false)
+    {
+        // = (default) OR <= OR >=
+        $sign = in_array($value[0], ['<', '>']) ? $value[0] . '=' : '=';
+
+        // extract value
+        $value = (int)($sign === '=' ? $value : substr($value, 1));
+
+        $query->having($name, $sign, $value);
+
+        if (! $ignoreNull) {
+            // if 0 is in searchable values interval, search for null too
+            if (
+                ($sign === '<=' && $value >= 0) || 
+                ($sign === '>=' && $value <= 0) ||
+                 $value === 0
+            ) {
+                $query->orHaving($name, 'IS', DB::raw("NULL"));
+            }
+        }
+    }
+
+    public static function querySearchText(&$query, $name, $value)
+    {
+        if ($value[0] === '"' && substr($value, -1) === '"') {
+            $value = str_replace('"', '', $value);
+            $query->where($name, 'LIKE', "%{$value}%");
+        }
+        else {
+            $value = str_replace('"', '', $value);
+            $words = explode(" ", $value);
+
+            $query->where(function ($query) use ($name, $words) {
+                foreach ($words as $word) {
+                    $query->where($name, 'LIKE', "%{$word}%");
+                }
+            });
+        }
+    }
+
+    public static function querySearchDate(&$query, $name, $value)
+    {
+        $timezone = Session::get(SESSION_TIMEZONE, DEFAULT_TIMEZONE);
+
+        $value = explode(',', $value);
+
+        if ($value[0] === $value[1]) {
+            $date = Carbon::createFromFormat('Y-m-d', $value[0], $timezone)
+                ->hour(0)->minute(0)->second(0)
+                ->setTimezone(config('app.timezone'));
+
+            $day = $date->toDateTimeString();
+            $nextDay = $date->addDay()->toDateTimeString();
+
+            $query->where($name, '>=', $day)->where($name, '<', $nextDay);
+        }
+        else {
+            $startDate = Carbon::createFromFormat('Y-m-d', $value[0], $timezone)
+                ->hour(0)->minute(0)->second(0)
+                ->setTimezone(config('app.timezone'));
+
+            $endDate = Carbon::createFromFormat('Y-m-d', $value[1], $timezone)
+                ->hour(0)->minute(0)->second(0)
+                ->setTimezone(config('app.timezone'));
+
+            $startDay = $startDate->toDateTimeString();
+            $endDay = $endDate->addDay()->toDateTimeString();
+
+            $query->where($name, '>=', $startDay)->where($name, '<', $endDay);
+        }
+    }
 }

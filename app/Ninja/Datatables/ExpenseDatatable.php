@@ -67,6 +67,35 @@ class ExpenseDatatable extends EntityDatatable
         ];
     }
 
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'invoice_number',
+                'label' => trans('texts.invoice_number'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'expense_date',
+                'label' => trans('texts.expense_date'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'expense_amount',
+                'label' => trans('texts.expense_amount'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'text',
+                'name' => 'client_name',
+                'label' => trans('texts.client_name'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

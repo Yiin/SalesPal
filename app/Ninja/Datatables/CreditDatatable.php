@@ -36,7 +36,36 @@ class CreditDatatable extends EntityDatatable
             ],
         ];
 
-    return $filters;
+        return $filters;
+    }
+
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'client_name',
+                'label' => trans('texts.client_name'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'credit_date',
+                'label' => trans('texts.credit_date'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'text',
+                'name' => 'amount',
+                'label' => trans('texts.amount'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'balance',
+                'label' => trans('texts.balance'),
+            ],
+        ];
     }
 
     public function columns()

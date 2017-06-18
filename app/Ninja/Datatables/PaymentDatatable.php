@@ -73,6 +73,40 @@ class PaymentDatatable extends EntityDatatable
         return $filters;
     }
 
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'invoice_number',
+                'label' => trans('texts.invoice_number'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'payment_date',
+                'label' => trans('texts.payment_date'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'payment_amount',
+                'label' => trans('texts.payment_amount'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'text',
+                'name' => 'client_name',
+                'label' => trans('texts.client_name'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'product_name',
+                'label' => trans('texts.product_name'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

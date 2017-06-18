@@ -39,6 +39,7 @@ class BaseController extends Controller
         // get table state and filters
         $table_state = $request->get('state');
         $filter = $request->get('filter');
+        $searchBy = $request->get('searchBy');
         list($orderBy, $orderDirection) = $request->get('orderBy');
 
         // extract data from table_state
@@ -51,6 +52,7 @@ class BaseController extends Controller
         $this->filterAccount($query);
         $this->filterEntity($query, $entityPublicId);
         $query->filter($filter);
+        $query->searchBy($searchBy);
 
         // update table state with fresh values
         $table_state['entities_count'] = $query->count();

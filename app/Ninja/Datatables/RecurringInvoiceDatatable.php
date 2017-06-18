@@ -55,6 +55,45 @@ class RecurringInvoiceDatatable extends EntityDatatable
         ];
     }
 
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'frequency',
+                'label' => trans('texts.frequency'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'invoice_date',
+                'label' => trans('texts.invoice_date'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'invoice_due_date',
+                'label' => trans('texts.invoice_due_date'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'invoice_amount',
+                'label' => trans('texts.invoice_amount'),
+            ],
+            [
+                'type' => 'separator',
+            ],
+            [
+                'type' => 'text',
+                'name' => 'client_name',
+                'label' => trans('texts.client_name'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'product_name',
+                'label' => trans('texts.product_name'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

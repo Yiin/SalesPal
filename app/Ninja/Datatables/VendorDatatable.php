@@ -68,6 +68,37 @@ class VendorDatatable extends EntityDatatable
         return $filters;
     }
 
+    public function searchBy()
+    {
+        return [
+            [
+                'type' => 'text',
+                'name' => 'vendor_name',
+                'label' => trans('texts.vendor_name'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'contact_number',
+                'label' => trans('texts.contact_number'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'email',
+                'label' => trans('texts.email'),
+            ],
+            [
+                'type' => 'date',
+                'name' => 'date_created',
+                'label' => trans('texts.date_created'),
+            ],
+            [
+                'type' => 'text',
+                'name' => 'expenses_amount',
+                'label' => trans('texts.expenses_amount'),
+            ],
+        ];
+    }
+
     public function columns()
     {
         return [

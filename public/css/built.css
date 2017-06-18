@@ -11923,6 +11923,12 @@ html {
     padding: 3px 0 !important;
 }
 
+hr.separator {
+  margin: 5px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
 legend {
     padding-bottom: 10px;
     margin-bottom: 18px;

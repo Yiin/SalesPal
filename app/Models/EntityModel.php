@@ -47,6 +47,11 @@ class EntityModel extends Eloquent
         // apply table filters
     }
 
+    public function scopeSearchBy($query, $searchBy)
+    {
+        // apply table search conditions
+    }
+
     /**
      * @param null $context
      *
