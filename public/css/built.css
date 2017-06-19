@@ -12353,7 +12353,7 @@ table td {
     max-width: 250px;
 }
 
-.pagination > li:first-child > a, .pagination > li:first-child > span {
+.pagintaion > li:first-child > a, .pagintaion > li:first-child > span {
     border-bottom-left-radius: 3px;
     border-top-left-radius: 3px;
 }
@@ -12363,7 +12363,7 @@ table td {
     margin-top: 16px;
 }
 
-.pagination > ul {
+.pagintaion > ul {
     margin: 0px;
 }
 
@@ -13154,16 +13154,16 @@ div.alert {
     z-index: 9999;
 }
 
-div.dataTables_length {
+div.entities-count-control {
     padding-left: 20px;
     padding-top: 10px;
 }
 
-div.dataTables_length select {
+div.entities-count-control select {
     background-color: white !important;
 }
 
-div.dataTables_length label {
+div.entities-count-control label {
     font-weight: 500;
 }
 
@@ -14059,12 +14059,12 @@ td > a:hover {
 }
 
 /* Datatable controls */
-.dt_controls {
+.table-controls {
     float: right;
     margin-top: 30px;
 }
 
-.dt_controls > div {
+.table-controls > div {
     float: none !important;
     display: inline-block;
     vertical-align: middle;
@@ -14072,12 +14072,12 @@ td > a:hover {
     padding: 0 !important;
 }
 
-.pagination > span, .dataTables_length label, .dataTables_info {
+.pagination > span, template, .table-controls > span, .elements-control > span, .dataTables_info {
     vertical-align: top;
     font-size: 16px;
     font-weight: 600;
     color: #949494 !important;
-    margin: 6px 0;
+    margin: 7px 0;
     display: inline-block;
 }
 
@@ -14107,18 +14107,32 @@ td > a:hover {
 }
 
 .pagination > .prev a {
-    padding-right: 9px;
+    padding-right: 7px;
+    padding-bottom: 10px; 
+        border: none;
+    background: none;  
 }
 
 .pagination > .next a {
-    padding-left: 9px;
+    padding-left: 7px;
+    padding-bottom: 10px; 
+        border: none;
+    background: none;   
 }
 
-.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+.pagination > .prev a:hover {
+color: #333;
+}
+
+.pagination > .next a:hover {
+color: #333;
+}
+
+.pagination > .disabled > span, .pagintaion > .disabled > span:hover, .pagintaion > .disabled > span:focus, .pagintaion > .disabled > a, .pagintaion > .disabled > a:hover, .pagintaion > .disabled > a:focus {
     display: none;
 }
 
-.pagination > .active > input, .pagination > .active > span, .pagination > .active > input:hover, .pagination > .active > span:hover, .pagination > .active > input:focus, .pagination > .active > span:focus {
+.pagintaion > .active > input, .pagintaion > .active > span, .pagintaion > .active > input:hover, .pagintaion > .active > span:hover, .pagintaion > .active > input:focus, .pagintaion > .active > span:focus {
     background: #ffffff !important;
     color: #373737 !important;
     border: none;
@@ -14127,22 +14141,13 @@ td > a:hover {
     padding: 7px 0;
 }
 
-.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+.pagintaion > li > a:hover, .pagintaion > li > span:hover, .pagintaion > li > a:focus, .pagintaion > li > span:focus {
     color: #373737 !important;
     background: none;
     border: none;
 }
 
-div.dataTables_length {
-    margin: 0 15px !important;
-    padding: 0;
-}
-
-div.dataTables_length label {
-    margin: 0;
-}
-
-div.dataTables_length select {
+div.entities-count-control select {
     text-align: center;
     background: #ffffff !important;
     color: #373737 !important;
@@ -14151,6 +14156,11 @@ div.dataTables_length select {
     font-size: 16px;
     padding: 7px 10px 7px;
     margin-right: 10px;
+    width: 80px;
+}
+
+div.entities-count-control option {
+    font-weight: 500;
 }
 /*!
  * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)

@@ -1,5 +1,10 @@
 <template>
     <div>
+            <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+            <li class="active">Clients</li>
+    </ol>
+
         <div class="row">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
@@ -42,171 +47,190 @@
                         </td>
                     </tr>
                     <tr v-for="row in table_rows" 
-                        @click="(row.__checkbox.show ? toggleSelect(row.__checkbox.data.id) : null)"
-                        @contextmenu.prevent="showContextMenu($event, row)"
-                        :class="{ hover: row === contextMenu.row }"
+                    @click="(row.__checkbox.show ? toggleSelect(row.__checkbox.data.id) : null)"
+                    @contextmenu.prevent="showContextMenu($event, row)"
+                    :class="{ hover: row === contextMenu.row }"
                     >
-                        <td v-if="bulkEdit">
-                            <div v-if="row.__checkbox.show" class="custom-checkbox custom-checkbox-datatable">
-                                <input type="checkbox" name="ids[]" :value="row.__checkbox.data.id" v-model="selected_entities" :class="row.__checkbox.data.class">
-                                <label></label>
-                            </div>
-                        </td>
-                        <td v-for="column in table_columns" v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
-                <div class="table-controls">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <button v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="btn btn-xs btn-simple">
-                                Prev page
-                            </button>
-                            <input type="number" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="btn btn-xs btn-simple">
-                            <button v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="btn btn-xs btn-simple">
-                                Next page
-                            </button>
+                    <td v-if="bulkEdit">
+                        <div v-if="row.__checkbox.show" class="custom-checkbox custom-checkbox-datatable">
+                            <input type="checkbox" name="ids[]" :value="row.__checkbox.data.id" v-model="selected_entities" :class="row.__checkbox.data.class">
+                            <label></label>
                         </div>
-                        <div class="col-xs-4">
-                            <template v-if="table_state.entities_count > 0">
-                                Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
-                            </template>
-                            <template v-else>
-                                Showing 0 entries
-                            </template>
+                    </td>
+                    <td v-for="column in table_columns" v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
+            <div class="calculator">
+                <span>Total</span>
+                    <div class="calculator-show" >
+                        <select class="calculator-buton" v-model="selected">
+                            <option>Show</option>
+                            <option>Balance</option>
+                        </select>
                         </div>
-                        <div class="col-xs-4">
-                            <select v-model="table_state.entities_per_page">
-                                <option value="5">5</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                        <span>for selected is {{ selected }}</span>
             </div>
-            <ul v-on-clickaway="clickAway" 
-                ref="contextmenu" 
-                v-if="contextMenu.visible" 
-                :style="{ top: contextMenu.position.top, left: contextMenu.position.left }" 
-                class="context-menu"
-            >
-                <li v-for="element in contextMenu.elements" 
-                    v-html="element.title" 
-                    :class="{ divider: element === '' }"
-                    :onclick="( typeof element.action !== 'undefined' ? element.action : '' )"
-                ></li>
-            </ul>
+            <div class="table-controls">
+            <span>Page</span>
+                <div class="pagination">
+                    <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev disabled">
+                        <a>«</a>
+                    </li>
+                    <li><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active table-state"></li>
+                    <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
+                        <a>»</a>
+                    </li>
+                </div>
+                <div class="elements-control">
+                <span>
+                    <template v-if="table_state.entities_count > 0">
+                        Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
+                    </template>
+                    <template v-else>
+                        Showing 0 entries
+                    </template>
+                </span>
+                </div>
+                <div class="entities-count-control entities-control">
+                    <select v-model="table_state.entities_per_page">
+                        <option value="5">5</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <span>rows</span>
+            </div>
         </div>
+
+            <ul v-on-clickaway="clickAway" 
+            ref="contextmenu" 
+            v-if="contextMenu.visible" 
+            :style="{ top: contextMenu.position.top, left: contextMenu.position.left }" 
+            class="context-menu"
+            >
+            <li v-for="element in contextMenu.elements" 
+            v-html="element.title" 
+            :class="{ divider: element === '' }"
+            :onclick="( typeof element.action !== 'undefined' ? element.action : '' )"
+            ></li>
+        </ul>
     </div>
+    
+    <div class="label retry ">RETRY</div>
+    <div class="label verify ">VERIFY</div>
+
+</div>
+</div>
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway';
 
-export default {
-    mixins: [
+    import { mixin as clickaway } from 'vue-clickaway';
+
+    export default {
+        mixins: [
         clickaway
-    ],
+        ],
 
 
 
-    props: [
+        props: [
         'entity', 'entities', 'create', 'clientId'
-    ],
+        ],
 
 
 
-    data() {
-        return {
-            contextMenu: {
-                position: {
-                    top: 0,
-                    left: 0
+        data() {
+            return {
+                contextMenu: {
+                    position: {
+                        top: 0,
+                        left: 0
+                    },
+                    visible: false,
+                    elements: [],
+                    row: null
                 },
-                visible: false,
-                elements: [],
-                row: null
-            },
-            filter: {
-                all: true
-            },
-            filters: [],
+                filter: {
+                    all: true
+                },
+                filters: [],
 
-            bulkEdit: false,
-            checkboxAll: false,
-            selected_entities: [],
+                bulkEdit: false,
+                checkboxAll: false,
+                selected_entities: [],
 
-            orderBy: 'created_at',
-            orderDirection: 'DESC',
-            table_state: {
-                page: 1,
-                page_count: 1,
-                entities_per_page: 5,
-                entities_count: 2,
-                loading: false,
-                is_empty: false
-            },
-            columns_loaded: false,
-            entities_loaded: false,
-            table_filters: [],
-            table_columns: [],
-            table_rows: []
-        }
-    },
-
-
-
-    computed: {
-
-        all_rows_are_checked() {
-            return (this.selected_entities.length === this.table_rows.filter(row => row.__checkbox.show).length);
+                orderBy: 'created_at',
+                orderDirection: 'DESC',
+                table_state: {
+                    page: 1,
+                    page_count: 1,
+                    entities_per_page: 5,
+                    entities_count: 2,
+                    loading: false,
+                    is_empty: false
+                },
+                columns_loaded: false,
+                entities_loaded: false,
+                table_filters: [],
+                table_columns: [],
+                table_rows: []
+            }
         },
 
-        showing_from() {
-            return (this.table_state.page - 1) * this.table_state.entities_per_page + 1;
+
+
+        computed: {
+
+            all_rows_are_checked() {
+                return (this.selected_entities.length === this.table_rows.filter(row => row.__checkbox.show).length);
+            },
+
+            showing_from() {
+                return (this.table_state.page - 1) * this.table_state.entities_per_page + 1;
+            },
+
+            showing_to() {
+                let max = this.table_state.page * this.table_state.entities_per_page;
+                let count = this.table_state.entities_count;
+
+                return max > count ? count : max;
+            },
+
+            showing_out_of() {
+                return this.table_state.entities_count;
+            }
+
         },
 
-        showing_to() {
-            let max = this.table_state.page * this.table_state.entities_per_page;
-            let count = this.table_state.entities_count;
-
-            return max > count ? count : max;
-        },
-
-        showing_out_of() {
-            return this.table_state.entities_count;
-        }
-
-    },
 
 
-
-    watch: {
-        'table_state.page': function (current, previous) {            
-            if (current && current !== previous) {
-                if(current > this.table_state.page_count) {
-                    this.table_state.page = this.table_state.page_count;
+        watch: {
+            'table_state.page': function (current, previous) {            
+                if (current && current !== previous) {
+                    if(current > this.table_state.page_count) {
+                        this.table_state.page = this.table_state.page_count;
+                    }
+                    this.loadEntities();
+                }
+            },
+            'table_state.entities_per_page': function (entities_per_page, previous) {
+                if (entities_per_page * (this.table_state.page - 1) > this.table_state.entities_count) {
+                    this.table_state.page = Math.ceil(this.table_state.entities_count / entities_per_page);
                 }
                 this.loadEntities();
             }
         },
-        'table_state.entities_per_page': function (entities_per_page, previous) {
-            if (entities_per_page * (this.table_state.page - 1) > this.table_state.entities_count) {
-                this.table_state.page = Math.ceil(this.table_state.entities_count / entities_per_page);
-            }
-            this.loadEntities();
-        }
-    },
 
 
 
-    methods: {
+        methods: {
 
-        loadData() {
+            loadData() {
             // this.loadFilters();
             this.loadColumns();
             this.loadEntities();
@@ -217,8 +241,8 @@ export default {
             window.addEventListener('keydown', e => {
                 switch(e.keyCode) {
                     /* esc */ case 27:
-                        this.clickAway();
-                        break;
+                    this.clickAway();
+                    break;
                 }
             });
         },
@@ -226,18 +250,18 @@ export default {
 
         loadFilters() {
             this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
-                .then(response => response.data)
-                .then(this.handleFilters)
-                .catch(this.handleError);
+            .then(response => response.data)
+            .then(this.handleFilters)
+            .catch(this.handleError);
         },
 
 
         loadColumns() {
             this.$http.get(`/api/${this.entities || this.entity + 's'}-columns/${this.clientId}`)
-                .then(response => response.data)
-                .then(this.handleColumns)
-                .then(() => this.columns_loaded = true)
-                .catch(this.handleError);
+            .then(response => response.data)
+            .then(this.handleColumns)
+            .then(() => this.columns_loaded = true)
+            .catch(this.handleError);
         },
 
 
@@ -264,11 +288,11 @@ export default {
             query.push(`orderBy[1]=${this.orderDirection}`);
 
             this.$http.get(`/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&'))
-                .then(response => response.data)
-                .then(this.handleEntities)
-                .then(() => this.table_state.loading = false)
-                .then(() => this.entities_loaded = true)
-                .catch(this.handleError);
+            .then(response => response.data)
+            .then(this.handleEntities)
+            .then(() => this.table_state.loading = false)
+            .then(() => this.entities_loaded = true)
+            .catch(this.handleError);
         },
 
 
@@ -407,6 +431,70 @@ export default {
 </script>
 
 <style scoped>
+    .table-state {
+        border: #ffffff;
+        padding-top: 12px;
+        padding-bottom: 13px;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-size: 16px;
+    }
+
+    .calculator-buton {
+        width: 160px !important;
+        border: white;
+        width: 160px;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-size: 16px;
+        padding-top: 11px;
+        margin-top: -4px;
+        text-align: center;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 15px;
+    }
+    .entities-control {
+    padding-left: 20px;
+    padding-top: 10px;
+}
+    .entities-count-control option {
+    font-weight: 500;
+}
+
+    .calculator {
+        display: inline-flex;
+        float: left;
+        margin-top: 20px;
+    }
+
+    .calculator span {
+        vertical-align: top;
+        font-size: 16px;
+        font-weight: 600;
+        color: #949494 !important;
+        margin: 7px 0;
+        display: inline-block;
+    }
+
+    .retry {
+        background-color: #373737;
+        font-size: 100%;
+    }
+
+    .verify {
+        background-color: #01a8fe;
+        font-size: 100%;
+    }
+    div.entities-count-control select {
+        text-align: center;
+        background: #ffffff !important;
+        color: #373737 !important;
+        border: none;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-size: 16px;
+        padding: 7px 10px 7px;
+        margin-right: 10px;
+        width: 80px;
+    }
     .create-btn-wrapper {
         display: inline-block;
         float: left;
