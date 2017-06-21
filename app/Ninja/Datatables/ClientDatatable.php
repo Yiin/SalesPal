@@ -27,7 +27,7 @@ class ClientDatatable extends EntityDatatable
             [
                 'type' => 'checkbox',
                 'value' => 'inactive',
-                'label' => trans('texts.inactive'),
+                'label' => trans('texts.archived'),
             ],
             [
                 'type' => 'checkbox',
@@ -57,6 +57,14 @@ class ClientDatatable extends EntityDatatable
             ],
         ];
 
+        $filters [] = $this->countriesDropdown();
+        $filters [] = $this->currenciesDropdown();
+
+        return $filters;
+    }
+
+    public function countriesDropdown()
+    {
         $countriesDropdown = [
             'type' => 'dropdown',
             'label' => trans('texts.country'),
@@ -66,14 +74,35 @@ class ClientDatatable extends EntityDatatable
         foreach (\App\Models\Country::all() as $country) {
             $countriesDropdown['options'][] = [
                 'type' => 'checkbox',
-                'value' => $country->id,
+                'value' => 'country_id:' . $country->id,
                 'label' => $country->name,
             ];
         }
 
-        $filters [] = $countriesDropdown;
+        return $countriesDropdown;
+    }
 
-        return $filters;
+    public function currenciesDropdown()
+    {
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas('clients', function ($query) {
+
+        })->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -114,8 +143,9 @@ class ClientDatatable extends EntityDatatable
     {
         return [
             [
-                'name',
-                function ($model) {
+                'field' => 'name',
+                'width' => '18%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->name,
                         'display' => link_to("clients/{$model->public_id}", $model->name ?: '')->toHtml()
@@ -123,8 +153,9 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'vat_number',
-                function ($model) {
+                'field' => 'vat_number',
+                'width' => '20%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->vat_number,
                         'display' => link_to("clients/{$model->public_id}", $model->vat_number)->toHtml()
@@ -132,8 +163,9 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'work_phone',
-                function ($model) {
+                'field' => 'work_phone',
+                'width' => '13%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->work_phone,
                         'display' => $model->work_phone
@@ -141,8 +173,9 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'email',
-                function ($model) {
+                'field' => 'email',
+                'width' => '20%',
+                'value' => function ($model) {
                     $contact = $model->contacts()->first();
                     $email = $contact ? $contact->email : '';
 
@@ -153,8 +186,9 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'created_at',
-                function ($model) {
+                'field' => 'created_at',
+                'width' => '11%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->created_at,
                         'display' => Utils::timestampToDateString(strtotime($model->created_at))
@@ -162,8 +196,9 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'balance',
-                function ($model) {
+                'field' => 'balance',
+                'width' => '14%',
+                'value' => function ($model) {
                     $currency_id = $model->currency_id ?: Auth::user()->account->currency_id;
                     $currency = Utils::formatMoney($model->balance, $currency_id);
                     $parts = explode(' ', $currency);

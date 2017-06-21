@@ -28,4 +28,9 @@ class Currency extends Eloquent
     {
         return $this->name;
     }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
 }

@@ -98,8 +98,9 @@ class RecurringInvoiceDatatable extends EntityDatatable
     {
         return [
             [
-                'frequency',
-                function ($model) {
+                'field' => 'frequency',
+                'width' => '14%',
+                'value' => function ($model) {
                     $frequency = strtolower($model->frequency->name);
                     $frequency = preg_replace('/\s/', '_', $frequency);
 
@@ -110,39 +111,45 @@ class RecurringInvoiceDatatable extends EntityDatatable
                 },
             ],
             [
-                'client_name',
-                function ($model) {
+                'field' => 'client_name',
+                'width' => '20%',
+                'value' => function ($model) {
                     return link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml();
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'start_date',
-                function ($model) {
+                'field' => 'start_date',
+                'width' => '11%',
+                'value' => function ($model) {
                     return Utils::fromSqlDate($model->start_date);
                 },
             ],
             [
-                'last_sent',
-                function ($model) {
+                'field' => 'last_sent',
+                'width' => '11%',
+                'value' => function ($model) {
                     return Utils::fromSqlDate($model->last_sent_date);
                 },
             ],
             [
-                'end_date',
-                function ($model) {
+                'field' => 'end_date',
+                'width' => '11%',
+                'value' => function ($model) {
                     return Utils::fromSqlDate($model->end_date);
                 },
             ],
             [
-                'amount',
-                function ($model) {
+                'field' => 'amount',
+                'width' => '16%',
+                'value' => function ($model) {
                     return Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
                 },
             ],
             [
-                'status',
-                function ($model) {
+                'field' => 'status',
+                'width' => '13%',
+                'value' => function ($model) {
                     return self::getStatusLabel($model);
                 },
             ],
@@ -151,8 +158,8 @@ class RecurringInvoiceDatatable extends EntityDatatable
 
     private function getStatusLabel($model)
     {
-        $class = Invoice::calcStatusClass($model->invoice_status->id, $model->balance, $model->due_date_sql, $model->is_recurring);
-        $label = Invoice::calcStatusLabel($model->invoice_status->name, $class, $this->entityType, $model->quote_invoice_id);
+        $class = Invoice::calcStatusClass($model, $model->invoice_status->id, $model->balance, $model->due_date_sql, $model->is_recurring);
+        $label = Invoice::calcStatusLabel($model, $model->invoice_status->name, $class, $this->entityType, $model->quote_invoice_id);
 
         if ($model->invoice_status->id == INVOICE_STATUS_SENT && (! $model->last_sent_date || $model->last_sent_date == '0000-00-00')) {
             $label = trans('texts.pending');

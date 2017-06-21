@@ -21,19 +21,19 @@ class TaskDatatable extends EntityDatatable
     {
         return [
             [
-                'client_name',
-                function ($model) {
+                'field' => 'client_name',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client ? $model->client->user_id : null])) {
                         return Utils::getClientDisplayName($model->client);
                     }
 
                     return $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : '';
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'project',
-                function ($model) {
+                'field' => 'project',
+                'value' => function ($model) {
                     if (! Auth::user()->can('editByOwner', [ENTITY_PROJECT, $model->project ? $model->project->user_id : null])) {
                         return $model->project->name;
                     }
@@ -42,8 +42,8 @@ class TaskDatatable extends EntityDatatable
                 },
             ],
             [
-                'date',
-                function ($model) {
+                'field' => 'date',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_EXPENSE, $model->user_id])) {
                         return Task::calcStartTime($model);
                     }
@@ -52,20 +52,20 @@ class TaskDatatable extends EntityDatatable
                 },
             ],
             [
-                'duration',
-                function ($model) {
+                'field' => 'duration',
+                'value' => function ($model) {
                     return Utils::formatTime(Task::calcDuration($model));
                 },
             ],
             [
-                'description',
-                function ($model) {
+                'field' => 'description',
+                'value' => function ($model) {
                     return $model->description;
                 },
             ],
             [
-                'status',
-                function ($model) {
+                'field' => 'status',
+                'value' => function ($model) {
                     return self::getStatusLabel($model);
                 },
             ],

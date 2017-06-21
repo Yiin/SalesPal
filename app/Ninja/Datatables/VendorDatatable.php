@@ -103,20 +103,23 @@ class VendorDatatable extends EntityDatatable
     {
         return [
             [
-                'name',
-                function ($model) {
+                'field' => 'name',
+                'width' => '15%',
+                'value' => function ($model) {
                     return link_to("vendors/{$model->public_id}", $model->name ?: '')->toHtml();
                 },
             ],
             [
-                'city',
-                function ($model) {
+                'field' => 'city',
+                'width' => '15%',
+                'value' => function ($model) {
                     return $model->city;
                 },
             ],
             [
-                'work_phone',
-                function ($model) {
+                'field' => 'work_phone',
+                'width' => '12%',
+                'value' => function ($model) {
                     $contact = $model->vendor_contacts()->first();
                     $phone = $model->work_phone ? $model->work_phone : $contact ? $contact->phone : '';
                     
@@ -124,8 +127,9 @@ class VendorDatatable extends EntityDatatable
                 },
             ],
             [
-                'email',
-                function ($model) {
+                'field' => 'email',
+                'width' => '30%',
+                'value' => function ($model) {
                     $contact = $model->vendor_contacts()->first();
                     $email = $model->email ? $model->email : $contact ? $contact->email : '';
 
@@ -133,8 +137,16 @@ class VendorDatatable extends EntityDatatable
                 },
             ],
             [
-                'expenses',
-                function ($model) {
+                'field' => 'created_at',
+                'width' => '12%',
+                'value' => function ($model) {
+                    return Utils::timestampToDateString(strtotime($model->created_at));
+                },
+            ],
+            [
+                'field' => 'expenses',
+                'width' => '13%',
+                'value' => function ($model) {
                     $vendor_id = \App\Models\Vendor::getPrivateId($model->public_id);
                     $vendor = \App\Models\Vendor::find($vendor_id);
                     $currency_id = $vendor->currency_id ? $vendor->currency_id : 1;

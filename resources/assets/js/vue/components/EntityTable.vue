@@ -21,7 +21,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th v-if="bulkEdit">
+                        <th v-if="bulkEdit" style="width: 4%">
                             <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox-datatables-header">
                                 <input type="checkbox" v-model="checkboxAll">
                                 <label></label>
@@ -33,6 +33,7 @@
                                 sorting_asc: orderBy === column.field && orderDirection === 'ASC', 
                                 sorting_desc: orderBy === column.field && orderDirection === 'DESC'
                             }"
+                            :style="{ width: column.width }"
                         >
                             {{ column.label }}
                         </th>
@@ -106,6 +107,10 @@
                     <span>rows</span>
                 </div>
             </div>
+
+            <!-- 
+                Context Menu
+             -->
             <ul v-on-clickaway="clickAway" 
                 ref="contextmenu" 
                 v-if="contextMenu.visible" 
@@ -115,7 +120,7 @@
                 <li v-for="element in contextMenu.elements" 
                     v-html="element.title" 
                     :class="{ divider: element === '' }"
-                    :onclick="( typeof element.action !== 'undefined' ? element.action : '' )"
+                    @click="contextMenuClickHandler(element)"
                 ></li>
             </ul>
         </div>
@@ -155,6 +160,7 @@ export default {
             bulkEdit: false,
             checkboxAll: false,
             selected_entities: [],
+            selected_entity_id: null,
 
             orderBy: 'created_at',
             orderDirection: 'DESC',
@@ -408,19 +414,31 @@ export default {
 
 
 
-        toggleSelect(id, doNotCancel = false) {
+        toggleSelect(id, toggleOff = null) {
             let index = this.selected_entities.indexOf(id);
 
             if (index > -1) {
-                if (!doNotCancel) {
-                    this.selected_entities.splice(index, 1);
-                }
+                this.toggleSelectOff(index, true);
             }
             else {
-                this.selected_entities.push(id);
+                this.toggleSelectOn(id, false);
             }
 
             this.checkboxAll = this.all_rows_are_checked;
+        },
+
+
+        toggleSelectOff(id, is_index = false) {
+            let index = is_index ? id : this.selected_entities.indexOf(id);
+            this.selected_entities.splice(index, 1);
+        },
+
+
+        toggleSelectOn(id, check_if_exists = true) {
+            if (check_if_exists && this.selected_entities.indexOf(id) !== -1) {
+                return;
+            }
+            this.selected_entities.push(id);
         },
 
 
@@ -438,7 +456,13 @@ export default {
 
         showContextMenu(e, row) {
             if (row.__checkbox) {
-                this.toggleSelect(row.__checkbox.data.id, true);
+                let id = row.__checkbox.data.id;
+
+                if (this.selected_entity_id && this.selected_entity_id !== id) {
+                    this.toggleSelectOff(this.selected_entity_id);
+                }
+                this.selected_entity_id = id;
+                this.toggleSelectOn(id);
             }
 
             this.contextMenu.elements = [];
@@ -464,7 +488,20 @@ export default {
         },
 
 
-        clickAway() {
+        contextMenuClickHandler(element) {
+            if (typeof element.action !== 'undefined') {
+                this.clickAway(false);
+
+                eval(element.action);
+            }
+        },
+
+
+        clickAway(cancel = true) {
+            if (cancel && this.selected_entity_id) {
+                this.toggleSelectOff(this.selected_entity_id);
+                this.selected_entity_id = null;
+            }
             this.contextMenu.visible = false;
             this.contextMenu.row = null;
         },

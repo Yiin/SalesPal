@@ -28,7 +28,7 @@ class ExpenseDatatable extends EntityDatatable
             [
                 'type' => 'checkbox',
                 'value' => 'inactive',
-                'label' => trans('texts.inactive'),
+                'label' => trans('texts.archived'),
             ],
             [
                 'type' => 'checkbox',
@@ -100,8 +100,9 @@ class ExpenseDatatable extends EntityDatatable
     {
         return [
             [
-                'vendor_name',
-                function ($model) {
+                'field' => 'vendor_name',
+                'width' => '14%',
+                'value' => function ($model) {
                     if ($model->vendor) {
                         if (! Auth::user()->can('viewByOwner', [ENTITY_VENDOR, $model->vendor->user_id])) {
                             return $model->vendor->name;
@@ -112,11 +113,12 @@ class ExpenseDatatable extends EntityDatatable
                         return '';
                     }
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'client_name',
-                function ($model) {
+                'field' => 'client_name',
+                'width' => '20%',
+                'value' => function ($model) {
                     if ($model->client) {
                         if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                             return Utils::getClientDisplayName($model);
@@ -126,11 +128,12 @@ class ExpenseDatatable extends EntityDatatable
                         return '';
                     }
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'category',
-                function ($model) {
+                'field' => 'category',
+                'width' => '10%',
+                'value' => function ($model) {
                     $category = $model->expense_category ? substr($model->expense_category->name, 0, 100) : '';
 
                     if (! Auth::user()->can('editByOwner', [ENTITY_EXPENSE_CATEGORY, $model->expense_category ? $model->expense_category->user_id : null])) {
@@ -141,14 +144,16 @@ class ExpenseDatatable extends EntityDatatable
                 },
             ],
             [
-                'public_notes',
-                function ($model) {
+                'field' => 'public_notes',
+                'width' => '19%',
+                'value' => function ($model) {
                     return $model->public_notes != null ? substr($model->public_notes, 0, 100) : '';
                 },
             ],
             [
-                'expense_date',
-                function ($model) {
+                'field' => 'expense_date',
+                'width' => '11%',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_EXPENSE, $model->user_id])) {
                         return Utils::fromSqlDate($model->expense_date);
                     }
@@ -157,8 +162,9 @@ class ExpenseDatatable extends EntityDatatable
                 },
             ],
             [
-                'amount',
-                function ($model) {
+                'field' => 'amount',
+                'width' => '10%',
+                'value' => function ($model) {
                     $amount = Utils::calculateTaxes($model->amount, $model->tax_rate1, $model->tax_rate2);
                     $str = Utils::formatMoney($amount, $model->expense_currency_id);
 
@@ -172,9 +178,10 @@ class ExpenseDatatable extends EntityDatatable
                 },
             ],
             [
-                'status',
-                function ($model) {
-                    return self::getStatusLabel($model->invoice_id, $model->should_be_invoiced, $model->invoice ? $model->invoice->balance : null);
+                'field' => 'status',
+                'width' => '12%',
+                'value' => function ($model) {
+                    return self::getStatusLabel($model, $model->invoice_id, $model->should_be_invoiced, $model->invoice ? $model->invoice->balance : null);
                 },
             ],
         ];
@@ -213,10 +220,10 @@ class ExpenseDatatable extends EntityDatatable
         ];
     }
 
-    private function getStatusLabel($invoiceId, $shouldBeInvoiced, $balance)
+    private function getStatusLabel($model, $invoiceId, $shouldBeInvoiced, $balance)
     {
-        $label = Expense::calcStatusLabel($shouldBeInvoiced, $invoiceId, $balance);
-        $class = Expense::calcStatusClass($shouldBeInvoiced, $invoiceId, $balance);
+        $label = Expense::calcStatusLabel($model, $shouldBeInvoiced, $invoiceId, $balance);
+        $class = Expense::calcStatusClass($model, $shouldBeInvoiced, $invoiceId, $balance);
 
         return "<h4><div class=\"label label-{$class}\">$label</div></h4>";
     }

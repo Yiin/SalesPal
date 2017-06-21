@@ -28,8 +28,9 @@ class BaseController extends Controller
     {
         return array_map(function ($column) {
             return [
-                'field' => $column[0],
-                'label' => trans('texts.' . $column[0])
+                'field' => $column['field'],
+                'label' => trans('texts.' . $column['field']),
+                'width' => $column['width'] ?? 'auto'
             ];
         }, $this->datatable->columns());
     }
@@ -185,8 +186,9 @@ class BaseController extends Controller
     protected function loadRowColumns(&$row, $model, $datatable)
     {
         foreach ($datatable->columns() as $column) {
-            list($field, $value) = $column;
-            $visible = (count($column) > 2) ? $column[2] : true;
+            $field = $column['field'];
+            $value = $column['value'];
+            $visible = $column['visible'] ?? true;
 
             if(!$visible) {
                 $row[$field] = '';

@@ -111,8 +111,9 @@ class PaymentDatatable extends EntityDatatable
     {
         return [
             [
-                'invoice_name',
-                function ($model) {
+                'field' => 'invoice_name',
+                'width' => '14%',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_INVOICE, $model->invoice->user_id])) {
                         return ['data' => $model->invoice->invoice_number, 'display' => $model->invoice->invoice_number];
                     }
@@ -124,8 +125,9 @@ class PaymentDatatable extends EntityDatatable
                 },
             ],
             [
-                'client_name',
-                function ($model) {
+                'field' => 'client_name',
+                'width' => '20%',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client ? $model->client->user_id : null])) {
                         return [
                             'data' => $model->client ? $model->client->public_id : null, 
@@ -138,11 +140,12 @@ class PaymentDatatable extends EntityDatatable
                         'display' => $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : ''
                     ];
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'transaction_reference',
-                function ($model) {
+                'field' => 'transaction_reference',
+                'width' => '20%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->transaction_reference, 
                         'display' => $model->transaction_reference ? $model->transaction_reference : '<i>'.trans('texts.manual_entry').'</i>'
@@ -150,8 +153,9 @@ class PaymentDatatable extends EntityDatatable
                 },
             ],
             [
-                'method',
-                function ($model) {
+                'field' => 'method',
+                'width' => '9%',
+                'value' => function ($model) {
                     return [
                         'data' => ($model->payment_type && ! $model->last4) ? $model->payment_type->name : ($model->account_gateway_id ? $model->account_gateway->name : ''),
                         'display' => ($model->payment_type && ! $model->last4) ? $model->payment_type->name : ($model->account_gateway_id ? $model->account_gateway->name : '')
@@ -159,8 +163,9 @@ class PaymentDatatable extends EntityDatatable
                 },
             ],
             [
-                'amount',
-                function ($model) {
+                'field' => 'amount',
+                'width' => '10%',
+                'value' => function ($model) {
                     return [
                         'data' => [
                             'currency_id' => $model->currency_id,
@@ -171,8 +176,9 @@ class PaymentDatatable extends EntityDatatable
                 },
             ],
             [
-                'date',
-                function ($model) {
+                'field' => 'date',
+                'width' => '11%',
+                'value' => function ($model) {
                     if ($model->is_deleted) {
                         return [
                             'data' => $model->payment_date,
@@ -187,8 +193,9 @@ class PaymentDatatable extends EntityDatatable
                 },
             ],
             [
-                'status',
-                function ($model) {
+                'field' => 'status',
+                'width' => '12%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->payment_status_id,
                         'display' => self::getStatusLabel($model)
@@ -231,8 +238,8 @@ class PaymentDatatable extends EntityDatatable
     private function getStatusLabel($model)
     {
         $amount = Utils::formatMoney($model->refunded, $model->currency_id, $model->country_id);
-        $label = Payment::calcStatusLabel($model->payment_status_id, $model->payment_status->name, $amount);
-        $class = Payment::calcStatusClass($model->payment_status_id);
+        $label = Payment::calcStatusLabel($model, $model->payment_status_id, $model->payment_status->name, $amount);
+        $class = Payment::calcStatusClass($model, $model->payment_status_id);
 
         return "<h4><div class=\"label label-{$class}\">$label</div></h4>";
     }

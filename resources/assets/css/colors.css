@@ -3,25 +3,25 @@ body {
 }
 
 .nav-tabs.nav-justified>.active>a, .nav-tabs.nav-justified>.active>a:hover, .nav-tabs.nav-justified>.active>a:focus {
-    background-color: #337ab7;
+    background-color: #01a8fe;
 }
 
 .navbar .dropdown-menu {
-    border-top: 0px solid #337ab7;
+    border-top: 0px solid #01a8fe;
 }
 
 .active-clients {
-    background-color: #337ab7;
+    background-color: #01a8fe;
 }
 
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
-    background-color: #337ab7;
-    border-color: #337ab7;
+    background-color: #01a8fe;
+    border-color: #01a8fe;
 }
 
 .navbar,
 .navbar-collapse {
-    background-color: #00a8fe !important;
+    background-color: #01a8fe !important;
 }
 
 .panel-heading {
@@ -68,7 +68,7 @@ thead th {
 }
 .sidebar-nav li > a.active {
     /*border-left: 4px solid #01a8fe; */
-    background-color: #00a8fe;
+    background-color: #01a8fe;
     color: white;
 }
 .sidebar-nav li > a:active i

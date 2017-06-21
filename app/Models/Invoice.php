@@ -642,8 +642,14 @@ class Invoice extends EntityModel implements BalanceAffecting
         return floatval($this->balance) != 0 && ! $this->is_deleted && $this->isInvoice();
     }
 
-    public static function calcStatusLabel($status, $class, $entityType, $quoteInvoiceId)
+    public static function calcStatusLabel($model, $status, $class, $entityType, $quoteInvoiceId)
     {
+        if ($model->isArchived()) {
+            return trans('texts.archived');
+        }
+        if ($model->isDeleted()) {
+            return trans('texts.deleted');
+        }
         if ($quoteInvoiceId) {
             $label = 'converted';
         } elseif ($class == 'danger') {
@@ -655,8 +661,14 @@ class Invoice extends EntityModel implements BalanceAffecting
         return trans("texts.{$label}");
     }
 
-    public static function calcStatusClass($statusId, $balance, $dueDate, $isRecurring)
+    public static function calcStatusClass($model, $statusId, $balance, $dueDate, $isRecurring)
     {
+        if ($model->isArchived()) {
+            return 'warning';
+        }
+        if ($model->isDeleted()) {
+            return 'danger';
+        }
         if ($statusId >= INVOICE_STATUS_SENT && static::calcIsOverdue($balance, $dueDate)) {
             return 'danger';
         }

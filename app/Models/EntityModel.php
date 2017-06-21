@@ -190,6 +190,21 @@ class EntityModel extends Eloquent
         return $query->withTrashed()->where('is_deleted', '=', false);
     }
 
+    public function isActive()
+    {
+        return !$this->deleted_at && !$this->is_deleted;
+    }
+
+    public function isArchived()
+    {
+        return $this->deleted_at && !$this->is_deleted;
+    }
+
+    public function isDeleted()
+    {
+        return $this->deleted_at && $this->is_deleted;
+    }
+
     /**
      * @return mixed
      */

@@ -130,8 +130,9 @@ class InvoiceDatatable extends EntityDatatable
 
         return [
             [
-                $entityType == ENTITY_INVOICE ? 'invoice_number' : 'quote_number',
-                function ($model) use ($entityType) {
+                'field' => $entityType == ENTITY_INVOICE ? 'invoice_number' : 'quote_number',
+                'width' => $entityType == ENTITY_INVOICE ? '14%' : '22%',
+                'value' => function ($model) use ($entityType) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_INVOICE, $model->user_id])) {
                         return [
                             'data' => $model->invoice_number,
@@ -146,8 +147,9 @@ class InvoiceDatatable extends EntityDatatable
                 },
             ],
             [
-                'client_name',
-                function ($model) {
+                'field' => 'client_name',
+                'width' => $entityType == ENTITY_INVOICE ? '20%' : '26%',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                         return [
                             'data' => null,
@@ -160,11 +162,12 @@ class InvoiceDatatable extends EntityDatatable
                         'display' => link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml()
                     ];
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'date',
-                function ($model) {
+                'field' => 'date',
+                'width' => '11%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->invoice_date,
                         'display' => Utils::fromSqlDate($model->invoice_date)
@@ -172,8 +175,9 @@ class InvoiceDatatable extends EntityDatatable
                 },
             ],
             [
-                $entityType == ENTITY_INVOICE ? 'due_date' : 'valid_until',
-                function ($model) {
+                'field' => $entityType == ENTITY_INVOICE ? 'due_date' : 'valid_until',
+                'width' => '11%',
+                'value' => function ($model) {
                     $due_date = $model->due_date ?: '';
                     return [
                         'data' => $due_date,
@@ -182,8 +186,9 @@ class InvoiceDatatable extends EntityDatatable
                 },
             ],
             [
-                'amount',
-                function ($model) {
+                'field' => 'amount',
+                'width' => '14%',
+                'value' => function ($model) {
                     return [
                         'data' => [
                             'currency_id' => $model->currency_id,
@@ -194,8 +199,9 @@ class InvoiceDatatable extends EntityDatatable
                 },
             ],
             [
-                'paid_in',
-                function ($model) {
+                'field' => 'paid_in',
+                'width' => '14%',
+                'value' => function ($model) {
                     $partial = $model->getAmountPaid(true);
                     return [
                         'data' => [
@@ -207,11 +213,12 @@ class InvoiceDatatable extends EntityDatatable
                             Utils::formatMoney(0, $model->currency_id, $model->country_id)
                     ];
                 },
-                $entityType == ENTITY_INVOICE,
+                'visible' => $entityType == ENTITY_INVOICE,
             ],
             [
-                'status',
-                function ($model) use ($entityType) {
+                'field' => 'status',
+                'width' => '12%',
+                'value' => function ($model) use ($entityType) {
                     return [
                         'data' => $model->invoice_status_name,
                         'display' => $model->quote_invoice_id ? link_to("invoices/{$model->quote_invoice_id}/edit", trans('texts.converted'))->toHtml() : self::getStatusLabel($model)
@@ -317,8 +324,8 @@ class InvoiceDatatable extends EntityDatatable
 
     private function getStatusLabel($model)
     {
-        $class = Invoice::calcStatusClass($model->invoice_status->id, $model->balance, $model->due_date, $model->is_recurring);
-        $label = Invoice::calcStatusLabel($model->invoice_status->name, $class, $this->entityType, $model->quote_invoice_id);
+        $class = Invoice::calcStatusClass($model, $model->invoice_status->id, $model->balance, $model->due_date, $model->is_recurring);
+        $label = Invoice::calcStatusLabel($model, $model->invoice_status->name, $class, $this->entityType, $model->quote_invoice_id);
 
         return "<h4><div class=\"label label-{$class}\">$label</div></h4>";
     }

@@ -99,17 +99,17 @@ class Product extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'archived':
-                    $query->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;

@@ -227,8 +227,14 @@ class Expense extends EntityModel
         return $statuses;
     }
 
-    public static function calcStatusLabel($shouldBeInvoiced, $invoiceId, $balance)
+    public static function calcStatusLabel($model, $shouldBeInvoiced, $invoiceId, $balance)
     {
+        if ($model->isArchived()) {
+            return trans('texts.archived');
+        }
+        if ($model->isDeleted()) {
+            return trans('texts.deleted');
+        }
         if ($invoiceId) {
             if (floatval($balance) > 0) {
                 $label = 'invoiced';
@@ -244,8 +250,14 @@ class Expense extends EntityModel
         return trans("texts.{$label}");
     }
 
-    public static function calcStatusClass($shouldBeInvoiced, $invoiceId, $balance)
+    public static function calcStatusClass($model, $shouldBeInvoiced, $invoiceId, $balance)
     {
+        if ($model->isArchived()) {
+            return 'warning';
+        }
+        if ($model->isDeleted()) {
+            return 'danger';
+        }
         if ($invoiceId) {
             if (floatval($balance) > 0) {
                 return 'default';
@@ -278,17 +290,17 @@ class Expense extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->orWhere(function ($query) {
+                    $query = $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'inactive':
-                    $query = $query->orWhere(function ($query) {
+                    $query = $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->orWhere(function ($query) {
+                    $query = $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;

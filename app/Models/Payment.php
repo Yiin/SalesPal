@@ -324,8 +324,14 @@ class Payment extends EntityModel
         return $value ? str_pad($value, 4, '0', STR_PAD_LEFT) : null;
     }
 
-    public static function calcStatusLabel($statusId, $statusName, $amount)
+    public static function calcStatusLabel($model, $statusId, $statusName, $amount)
     {
+        if ($model->isArchived()) {
+            return trans('texts.archived');
+        }
+        if ($model->isDeleted()) {
+            return trans('texts.deleted');
+        }
         if ($statusId == PAYMENT_STATUS_PARTIALLY_REFUNDED) {
             return trans('texts.status_partially_refunded_amount', [
                 'amount' => $amount,
@@ -335,8 +341,14 @@ class Payment extends EntityModel
         }
     }
 
-    public static function calcStatusClass($statusId)
+    public static function calcStatusClass($model, $statusId)
     {
+        if ($model->isArchived()) {
+            return 'warning';
+        }
+        if ($model->isDeleted()) {
+            return 'danger';
+        }
         return static::$statusClasses[$statusId];
     }
 

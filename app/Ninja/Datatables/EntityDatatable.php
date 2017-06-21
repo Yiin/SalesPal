@@ -63,13 +63,12 @@ class EntityDatatable
         }
 
         foreach ($columns as $column) {
-            if (count($column) == 3) {
-                // third column is optionally used to determine visibility
-                if (! $column[2]) {
+            if (isset($column['visible'])) {
+                if (! $column['visible']) {
                     continue;
                 }
             }
-            $data[] = $column[0];
+            $data[] = $column['field'];
         }
 
         //--

@@ -53,7 +53,31 @@ class ProductDatatable extends EntityDatatable
                 'value' => 'out_of_stock',
                 'label' => trans('texts.out_of_stock'),
             ],
+            $this->currenciesDropdown()
         ];
+    }
+
+    public function currenciesDropdown()
+    {
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas('clients', function ($query) {
+            
+        })->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -92,8 +116,9 @@ class ProductDatatable extends EntityDatatable
     {
         return [
             [
-                'product_key',
-                function ($model) {
+                'field' => 'product_key',
+                'width' => '20%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->product_key,
                         'display' => link_to('products/' . $model->public_id . '/edit', $model->product_key)->toHtml()
@@ -101,8 +126,9 @@ class ProductDatatable extends EntityDatatable
                 },
             ],
             [
-                'notes',
-                function ($model) {
+                'field' => 'notes',
+                'width' => '46%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->notes,
                         'display' => nl2br(Str::limit($model->notes, 100))
@@ -110,8 +136,9 @@ class ProductDatatable extends EntityDatatable
                 },
             ],
             [
-                'cost',
-                function ($model) {
+                'field' => 'cost',
+                'width' => '16%',
+                'value' => function ($model) {
                     return [
                         'data' => $model->cost,
                         'display' => Utils::formatMoney($model->cost)
@@ -119,24 +146,9 @@ class ProductDatatable extends EntityDatatable
                 },
             ],
             [
-                'tax_rate',
-                function ($model) {
-                    $tax_rate = $model->default_tax_rate ? $model->default_tax_rate->rate : 0;
-                    $tax_name = $model->default_tax_rate ? $model->default_tax_rate->name : '';
-
-                    return [
-                        'data' => [
-                            'rate' => $tax_rate,
-                            'name' => $tax_name
-                        ],
-                        'display' => $tax_rate ? ($tax_name . ' ' . $tax_rate . '%') : ''
-                    ];
-                },
-                Auth::user()->account->invoice_item_taxes,
-            ],
-            [
-                'stock',
-                function ($model) {
+                'field' => 'stock',
+                'width' => '14%',
+                'value' => function ($model) {
                     if($model->qty === null) {
                         $text = trans('texts.service');
                     }

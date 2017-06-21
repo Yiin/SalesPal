@@ -348,17 +348,17 @@ class Vendor extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->orWhere(function($query) {
+                    $query = $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'archived':
-                    $query = $query->orWhere(function($query) {
+                    $query = $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->orWhere(function($query) {
+                    $query = $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;

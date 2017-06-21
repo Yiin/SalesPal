@@ -72,31 +72,35 @@ class CreditDatatable extends EntityDatatable
     {
         return [
             [
-                'client_name',
-                function ($model) {
+                'field' => 'client_name',
+                'width' => '20%',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                         return ['display' => Utils::getClientDisplayName($model->client)];
                     }
 
                     return ['display' => $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : ''];
                 },
-                ! $this->hideClient,
+                'visible' => !$this->hideClient,
             ],
             [
-                'public_notes',
-                function ($model) {
+                'field' => 'public_notes',
+                'width' => '19%',
+                'value' => function ($model) {
                     return ['display' => $model->public_notes];
                 },
             ],
             [
-                'private_notes',
-                function ($model) {
+                'field' => 'private_notes',
+                'width' => '20%',
+                'value' => function ($model) {
                     return ['display' => $model->private_notes];
                 },
             ],
             [
-                'credit_date',
-                function ($model) {
+                'field' => 'credit_date',
+                'width' => '11%',
+                'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CREDIT, $model->user_id])) {
                         return Utils::fromSqlDate($model->credit_date);
                     }
@@ -105,14 +109,16 @@ class CreditDatatable extends EntityDatatable
                 },
             ],
             [
-                'amount',
-                function ($model) {
+                'field' => 'amount',
+                'width' => '13%',
+                'value' => function ($model) {
                     return ['display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id) . '<span '.Utils::getEntityRowClass($model).'/>'];
                 },
             ],
             [
-                'balance',
-                function ($model) {
+                'field' => 'balance',
+                'width' => '13%',
+                'value' => function ($model) {
                     return ['display' => Utils::formatMoney($model->balance, $model->currency_id, $model->country_id)];
                 },
             ],
