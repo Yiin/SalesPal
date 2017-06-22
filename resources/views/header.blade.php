@@ -350,14 +350,6 @@
       <div class="">
         <div id="left-sidebar-wrapper" class="hide-phone">
               <div class="btn-group user-dropdown">
-              <button type="button" class="btn btn-default btn-sm devel-dropdown-toggle" data-toggle="dropdown">
-                <div id="myAccountButton" class="ellipsis" style="max-width:{{ Utils::hasFeature(FEATURE_USERS) ? '130' : '100' }}px;">
-                    @if (session(SESSION_USER_ACCOUNTS) && count(session(SESSION_USER_ACCOUNTS)))
-                        {{ Auth::user()->account->getDisplayName() }}
-                    @else
-                        {{ Auth::user()->getDisplayName() }}
-                    @endif
-                  <span class="caret"></span>
                 </div>
               </button>
               <div class="profile-photo-container">

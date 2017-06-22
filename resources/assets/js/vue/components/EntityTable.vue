@@ -1,5 +1,6 @@
 <template>
     <div>
+        <ol class="breadcrumb"><li><a class="glyphicon glyphicon-home" href="http://185.81.165.216/index.php/index.php"></a></li><li class="active">Clients</li></ol>
         <div class="row">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
@@ -74,13 +75,23 @@
                 Table Controls
              -->
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
+            <div class="calculator">
+                        <span>Total</span>
+                            <div class="calculator-show" >
+                                <select class="calculator-buton">
+                                    <option value="">Show</option>
+                                    <option value="balance">Balance</option>
+                                </select>
+                            </div>
+                        <span>for selected is {{ selected }}</span>
+                    </div>
                 <div class="table-controls">
                     <span>Page</span>
                     <div class="pagination">
-                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev disabled">
-                            <a>«</a>
+                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
+                             <a>«</a>
                         </li>
-                        <li class="active"><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active"></li>
+                        <li><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active page-count"></li>
                         <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
                             <a>»</a>
                         </li>
@@ -555,6 +566,84 @@ export default {
 </script>
 
 <style scoped>
+
+    .calculator-buton option {
+        padding: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    .breadcrumb a {
+        margin-right: 10px;
+        text-decoration: none;
+        color: #01a8fe;
+    }
+
+    .breadcrumb {
+        font-size: 18px;
+        margin-bottom: 7px;
+    }
+    .create-btn-wrapper > .btn {
+    width: 190px;
+    display: inline-flex;
+    font-size: 18px;
+    }
+
+    .devel-dropdown-toggle {
+    display: none;
+    }
+    .page-count {
+        border: none;
+        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+            box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        border-radius: 4px;
+    }
+
+    li.active input {
+        padding-bottom: 13px;
+        padding-top: 13px;
+    }
+
+    .calculator {
+        display: inline-flex;
+        float: left;
+        margin-top: 34px;
+    }
+
+    .calculator span {
+        vertical-align: top;
+        font-size: 16px;
+        font-weight: 600;
+        color: #949494 !important;
+        margin: 7px 0;
+        display: inline-block;
+    }
+
+     .calculator-buton {
+        width: 160px !important;
+        border: white;
+        width: 160px;
+        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        font-size: 16px;
+        padding-top: 11px;
+        margin-top: -4px;
+        text-align: center;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 15px;
+        padding-left: 15px;
+        border-radius: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .active {
+        padding-bottom: 12px;
+        padding-top: 12px;
+    }
     .create-btn-wrapper {
         display: inline-block;
         float: left;
@@ -571,16 +660,18 @@ export default {
     }
 
     .context-menu {
-        background: #FAFAFA;
-        border: 1px solid #BDBDBD;
+        background: #FFFFFF;
         box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
         display: block;
         list-style: none;
         margin: 0;
-        padding: 0;
+        padding: 0px;
         position: absolute;
-        width: 250px;
+        width: 320px;
         z-index: 999999;
+        padding-top: 18px;
+        padding-bottom: 23px;
+        border: 4px;
     }
 
     .context-menu li, .context-menu li > a {
@@ -590,13 +681,16 @@ export default {
     }
 
     .context-menu li {
-        padding: 10px 20px;
+        padding-bottom: 6px;
+        padding-top: 7px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
 
     .context-menu li.divider {
         padding: 0;
         border-bottom: 1px solid #e0e0e0;
-        width: 85%;
+        width: 100%;
         margin: 5px auto;
     }
 
@@ -637,12 +731,19 @@ export default {
         background: #ffffff !important;
         color: #373737 !important;
         border: none;
-        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         font-size: 16px;
-        padding: 7px 10px 7px;
-        margin-right: 10px;
+        padding: 7px 15px 7px;
         width: 80px;
+        padding-bottom: 11px;
+        padding-top: 11px;
+        font-family: 'Open Sans', sans-serif;
+        border-radius: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
     }
+
     .table-controls {
         float: right;
         margin-top: 30px;
@@ -654,6 +755,7 @@ export default {
         vertical-align: middle;
         margin: 0 !important;
         padding: 0 !important;
+        margin-right: -15px;
     }
 
     .pagination > span, template, .table-controls > span, .elements-control > span, .dataTables_info {
@@ -661,8 +763,10 @@ export default {
         font-size: 16px;
         font-weight: 600;
         color: #949494 !important;
-        margin: 7px 0;
+        margin: 12px 0;
         display: inline-block;
+        margin-right: 14px;
+        margin-left: 14px;
     }
 
     .pagination > ul {
@@ -691,17 +795,19 @@ export default {
     }
 
     .pagination > .prev a {
-        padding-right: 7px;
+        padding-right: 6px;
         padding-bottom: 10px; 
-            border: none;
-        background: none;  
+        border: none;
+        background: none;
+        padding-top: 5px;  
     }
 
     .pagination > .next a {
-        padding-left: 7px;
+        padding-left: 6px;
         padding-bottom: 10px; 
-            border: none;
-        background: none;   
+        border: none;
+        background: none;
+        padding-top: 5px;
     }
 
     .pagination > .prev a:hover {
