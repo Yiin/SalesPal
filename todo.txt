@@ -1,0 +1,15 @@
+
+DONE search by currency
+
+DONE search filter list
+
+DONE created -> date created
+
+calculator
+
+outside of table context menu
+
+a/d single select
+
+calendar style
+

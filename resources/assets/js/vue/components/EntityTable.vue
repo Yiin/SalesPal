@@ -77,7 +77,7 @@
                 <div class="table-controls">
                     <span>Page</span>
                     <div class="pagination">
-                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev disabled">
+                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
                             <a>«</a>
                         </li>
                         <li class="active"><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active"></li>
@@ -623,7 +623,7 @@ export default {
 
     /* Datatable rows */
     .currency_value {
-        color: #01a7fd;
+        color: #01a8fe;
         padding-left: 4px;
     }
 
@@ -729,5 +729,41 @@ export default {
         color: #373737 !important;
         background: none;
         border: none;
+    }
+
+    /*
+        Status Labels
+    */
+   
+   .label {
+        padding-top: 6px;
+        padding-bottom: 5px;
+        font-size: 100%;
+        width: 102px;
+        display: inline-block;
+   }
+   
+   .label-viewed {
+        background-color: #01A7FD;
+    }
+
+    .label-draft {
+        background-color: #383838;
+    }
+
+    .label-sent {
+        background-color: #5BC0DE;
+    }
+
+    .label-paid {
+        background-color: #4ECD09;
+    }
+
+    .label-overdue {
+        background-color: #E2492F;
+    }
+
+    .label-partial {
+        background-color: #FF6C11;
     }
 </style>

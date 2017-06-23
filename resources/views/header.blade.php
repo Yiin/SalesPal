@@ -431,25 +431,51 @@
               </ul>
             <ul class="sidebar-nav">
                 @foreach([
-                    'dashboard',
-                    'test',
-                    'clients',
-                    'products',
-                    'invoices',
-                    'payments',
-                    'recurring_invoices',
-                    'credits',
-                    'quotes',
-                    'tasks',
-                    'expenses',
-                    'vendors',
-                ] as $option)
-                @if (in_array($option, ['dashboard', 'settings'])
-                    || Auth::user()->can('view', substr($option, 0, -1))
-                    || Auth::user()->can('create', substr($option, 0, -1)))
-                    @include('partials.navigation_option')
-                @endif
+                    [
+                        'name' => null,
+                        'options' => [
+                            'dashboard',
+                            'products',
+                            'clients',
+                            'invoices',
+                            'recurring_invoices',
+                        ]
+                    ],
+                    [
+                        'name' => 'category 1',
+                        'options' => [
+                            'payments',
+                            'expenses',
+                            'credits',
+                        ]
+                    ],
+                    [
+                        'name' => 'category 2',
+                        'options' => [
+                            'quotes',
+                            'tasks',
+                            'vendors',
+                        ]
+                    ]
+                ] as $category)
+                    @if ($category['name'])
+
+                        <li>{{ $category['name'] }}</li>
+
+                    @endif
+                    @foreach ($category['options'] as $option)
+
+                        @if (in_array($option, ['dashboard', 'settings'])
+                            || Auth::user()->can('view', substr($option, 0, -1))
+                            || Auth::user()->can('create', substr($option, 0, -1)))
+                                @include('partials.navigation_option')
+                        @endif
+
+                    @endforeach
                 @endforeach
+                
+                <li>Category 3</li>
+
                 @if ( ! Utils::isNinjaProd())
                     @foreach (Module::all() as $module)
                         @include('partials.navigation_option', [
