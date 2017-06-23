@@ -13907,7 +13907,7 @@ thead {
 }
 
 .sidebar-nav li > a:hover {
-    background-color: #00a8fe;
+    background-color: #373737;
     color: white;
 }
 
@@ -14257,9 +14257,7 @@ div.dataTables_length select {
     }
 
     #left-sidebar-wrapper .sidebar-nav li {
-        text-indent: 28px; /*28px*/
         line-height: 20px;
-        margin-top:10px;
     }
 
     #left-sidebar-wrapper .sidebar-nav li span.badge {
@@ -14280,6 +14278,7 @@ div.dataTables_length select {
 
     #left-sidebar-wrapper ul {
         min-height: 730px;
+        padding: 0 19px 0;
     }
 
     @media (max-height: 744px) {
@@ -14466,6 +14465,35 @@ div.dataTables_length select {
     min-height: 1px !important;
     top: 118px;
 }
+
+#left-sidebar-wrapper .sidebar-nav li a i {
+    padding: 0 5px 0 12px;
+}
+
+#left-sidebar-wrapper .sidebar-nav li i:active {
+    color: #fff;
+}
+
+#left-sidebar-wrapper .sidebar-nav li a {
+    font-weight: 600;
+    font-size: 14px;
+    font-style: normal;
+}
+
+#left-sidebar-wrapper .sidebar-nav hr {
+    margin-top: 10px; 
+    margin-bottom: 4px; 
+    color: #e1e1e1;
+}
+
+#left-sidebar-wrapper .sidebar-nav .sidebar-category {
+    padding: 0 5px 0;
+    font-weight: 600;
+    font-size: 13px;
+    font-style: normal;
+    color: #01a8fe;
+    text-transform: uppercase;
+}
 body {
   background-color: #f5f5f5;
 }
@@ -14515,9 +14543,9 @@ thead th {
     border-bottom:solid 0px #444444;
 }
 
-.sidebar-nav i.fa {
+/*.sidebar-nav i.fa {
     color: rgba(0,0,0,0.6);
-}
+}*/
 
 .menu-toggle i
 {
@@ -14554,6 +14582,10 @@ thead th {
 
 .menu-toggle:hover {
     color: #fff !important;
+}
+
+.sidebar-nav li i.active {
+    color: #fff;
 }
 
 @font-face {

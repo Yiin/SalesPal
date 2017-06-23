@@ -97,9 +97,7 @@
     }
 
     #left-sidebar-wrapper .sidebar-nav li {
-        text-indent: 28px; /*28px*/
         line-height: 20px;
-        margin-top:10px;
     }
 
     #left-sidebar-wrapper .sidebar-nav li span.badge {
@@ -120,6 +118,7 @@
 
     #left-sidebar-wrapper ul {
         min-height: 730px;
+        padding: 0 19px 0;
     }
 
     @media (max-height: 744px) {
@@ -305,4 +304,33 @@
 {
     min-height: 1px !important;
     top: 118px;
+}
+
+#left-sidebar-wrapper .sidebar-nav li a i {
+    padding: 0 5px 0 12px;
+}
+
+#left-sidebar-wrapper .sidebar-nav li i:active {
+    color: #fff;
+}
+
+#left-sidebar-wrapper .sidebar-nav li a {
+    font-weight: 600;
+    font-size: 14px;
+    font-style: normal;
+}
+
+#left-sidebar-wrapper .sidebar-nav hr {
+    margin-top: 10px; 
+    margin-bottom: 4px; 
+    color: #e1e1e1;
+}
+
+#left-sidebar-wrapper .sidebar-nav .sidebar-category {
+    padding: 0 5px 0;
+    font-weight: 600;
+    font-size: 13px;
+    font-style: normal;
+    color: #01a8fe;
+    text-transform: uppercase;
 }
