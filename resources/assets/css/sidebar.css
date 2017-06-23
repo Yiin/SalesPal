@@ -261,6 +261,9 @@
     }
 
 }
+.sidebar-nav {
+    margin-top: 24px;
+}
 .nav-header{
     border-top: 0px;
     display: block;
@@ -308,6 +311,7 @@
 
 #left-sidebar-wrapper .sidebar-nav li a i {
     padding: 0 5px 0 12px;
+    width: 35px;
 }
 
 #left-sidebar-wrapper .sidebar-nav li i:active {

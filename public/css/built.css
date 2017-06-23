@@ -12184,13 +12184,15 @@ table.dataTable tbody th, table.dataTable tbody td {
 
 /*buttons*/
 .btn {
-    font-weight: bold;
     border-radius: 2px;
+}
+
+.create-btn-wrapper > .btn {
     padding: 9px 12px;
     width: 190px;
     display: inline-flex;
     font-size: 18px;
-    border-radius: 4px;
+    font-weight: 500;
 }
 
 .btn-success {
@@ -14425,6 +14427,9 @@ div.dataTables_length select {
     }
 
 }
+.sidebar-nav {
+    margin-top: 24px;
+}
 .nav-header{
     border-top: 0px;
     display: block;
@@ -14472,6 +14477,7 @@ div.dataTables_length select {
 
 #left-sidebar-wrapper .sidebar-nav li a i {
     padding: 0 5px 0 12px;
+    width: 35px;
 }
 
 #left-sidebar-wrapper .sidebar-nav li i:active {

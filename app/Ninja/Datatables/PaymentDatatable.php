@@ -2,6 +2,7 @@
 
 namespace App\Ninja\Datatables;
 
+use App\Models\Currency;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use Auth;

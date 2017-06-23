@@ -75,16 +75,15 @@
                 Table Controls
              -->
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
-            <div class="calculator">
-                        <span>Total</span>
-                            <div class="calculator-show" >
-                                <select class="calculator-buton">
-                                    <option value="">Show</option>
-                                    <option value="balance">Balance</option>
-                                </select>
-                            </div>
-                        <span>for selected is {{ selected }}</span>
+
+                <div v-if="calculator.value" class="calculator">
+                    <span>Total</span>
+                    <div class="calculator-show">
+                        <dropdown :default="calculator.default" :options="calculator.options" @change="calculate"></dropdown>
                     </div>
+                    <span>for selected is {{ calculator_result }}</span>
+                </div>
+
                 <div class="table-controls">
                     <span>Page</span>
                     <div class="pagination">
@@ -189,6 +188,12 @@ export default {
             table_columns: [],
             table_rows: [],
 
+            calculator: {
+                default: '',
+                options: [],
+                value: ''
+            },
+
             promise: {
                 loadEntities: null,
             },
@@ -217,6 +222,10 @@ export default {
 
         showing_out_of() {
             return this.table_state.entities_count;
+        },
+
+        calculator_result() {
+            return this.calculator.value;
         }
 
     },
@@ -266,6 +275,11 @@ export default {
                         break;
                 }
             });
+        },
+
+
+        calculate(option) {
+            this.$set(this.calculator, 'value', option.name);
         },
 
 
@@ -360,6 +374,9 @@ export default {
         },
 
 
+        /*
+            Handlers
+        */
         handleFilters(filters) {
             this.filters = filters;
         },
@@ -370,8 +387,16 @@ export default {
         },
 
 
-        handleColumns(columns) {
-            this.table_columns = columns;
+        handleColumns(data) {
+            this.table_columns = data.columns;
+
+            if (data.calculator) {
+                this.calculator = {
+                    default: data.calculator.default,
+                    options: data.calculator.options,
+                    value: data.calculator.default
+                };
+            }
         },
 
 
@@ -567,7 +592,7 @@ export default {
 
 <style scoped>
 
-    .calculator-buton option {
+    .calculator-button option {
         padding: 15px;
         padding-top: 15px;
         padding-bottom: 15px;
@@ -583,14 +608,9 @@ export default {
         font-size: 18px;
         margin-bottom: 7px;
     }
-    .create-btn-wrapper > .btn {
-    width: 190px;
-    display: inline-flex;
-    font-size: 18px;
-    }
 
     .devel-dropdown-toggle {
-    display: none;
+        display: none;
     }
     .page-count {
         border: none;
@@ -621,7 +641,7 @@ export default {
         display: inline-block;
     }
 
-     .calculator-buton {
+     .calculator-button {
         width: 160px !important;
         border: white;
         width: 160px;

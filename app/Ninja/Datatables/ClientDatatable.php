@@ -16,6 +16,23 @@ class ClientDatatable extends EntityDatatable
         return $model->name;
     }
 
+    public function calculator()
+    {
+        return [
+            'default' => 'balance',
+            'options' => [
+                [
+                    'name' => 'balance',
+                    'label' => trans('texts.balance')
+                ],
+                [
+                    'name' => 'amount',
+                    'label' => trans('texts.amount')
+                ]
+            ]
+        ];
+    }
+
     public function filters()
     {
         $filters = [
