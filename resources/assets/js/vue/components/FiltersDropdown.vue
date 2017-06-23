@@ -2,6 +2,7 @@
     <div class="vue-dropdown" v-on-clickaway="clickAway">
         <button @click="toggleDropdown" type="button">
             {{ title }}
+            <span class="caret"></span>
         </button>
 
         <div :class="{ open: is_open }" class="vue-dropdown-menu">
@@ -160,6 +161,9 @@ export default {
 
 
 <style scoped>
+    .caret {
+        margin-left: 120px;
+    }
     .vue-dropdown {
         position: relative;
         display: inline-block;
@@ -171,29 +175,38 @@ export default {
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
-        height: 42px;
+        height: 47px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
+        width: 270px;
+        border-radius: 4px;
     }
 
     .vue-dropdown-menu {
-        background: #FAFAFA;
-        border: 1px solid #BDBDBD;
+        background: #FFFFFF;
         box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
         display: none;
         margin: 0;
         padding: 0;
         position: absolute;
-        width: 250px;
+        width: 270px;
         z-index: 999999;
+
     }
 
     .vue-dropdown-menu.open {
         display: block;
         position: absolute;
         left: 0;
+        padding-bottom: 23px;
+        padding-top: 18px;
+    }
+
+    .vue-dropdown-menu.open label {
+        font-weight: 400;
+
     }
 
     .vue-dropdown-menu .vue-dropdown-menu.open {
@@ -214,7 +227,11 @@ export default {
     }
 
     .vue-dropdown-menu .vue-dropdown-option {
-        padding: 10px 20px;
+        padding-bottom: 4px;
+        padding-right: 10px;
+        padding-left: 66px !important;
+        text-align: left;
+        padding-top: 4px;
     }
 
     .vue-dropdown-option.--checkbox::before {
@@ -223,9 +240,19 @@ export default {
         position: absolute;
         width: 20px;
         height: 20px;
-        border: 1px solid black;
+        border: 2px solid black;
         vertical-align: middle;
         margin-left: -30px;
+    }
+
+    .vue-dropdown-option.--checkbox label::before {     
+        content: '';
+        top: 6px;
+        left: 6px;
+        margin: 0px;
+        background: #01a8fe;
+        width: 10px;
+        height: 10px;
     }
 
     .vue-dropdown-option.--checkbox {

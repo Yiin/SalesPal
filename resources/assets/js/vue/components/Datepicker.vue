@@ -424,8 +424,8 @@
         outline: none;
     }
     .cancel-btn{
-        height: 14px;
-        width: 14px;
+        height: 12px;
+        width: 12px;
     }
     .date-panel{
         position: absolute;
@@ -495,7 +495,7 @@
                 color: #fff;
             }
             &.selected{
-                background-color: #0097a7;
+                background-color: #01a8fe;
                 color: #fff;
             }
             &.invalid{

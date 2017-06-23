@@ -43,8 +43,8 @@
         -o-transition: all 0.5s ease;
         transition: all 0.5s ease;
         padding-top: 4px;
+        margin-top: -25px; 
     }
-
     #right-sidebar-wrapper {
         z-index: 1000;
         position: fixed;

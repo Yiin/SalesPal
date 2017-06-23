@@ -3,7 +3,7 @@
     {!! Former::hidden('public_id')->id('public_id_' . $entityType) !!}
     {!! Former::hidden('datatable')->value('true') !!}
 
-    <div class="vue-app" id="vueapp_{{ str_random() }}">
+    <div class="vue-app btn-client" id="vueapp_{{ str_random() }}">
         {{-- Entities Table --}}
         <entity-table 
             entity="{{ $entityType }}"
