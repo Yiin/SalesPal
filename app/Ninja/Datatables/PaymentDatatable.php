@@ -69,8 +69,32 @@ class PaymentDatatable extends EntityDatatable
         }
 
         $filters [] = $methodDropdown;
+        // $filters [] = $this->currenciesDropdown();
 
         return $filters;
+    }
+
+    public function currenciesDropdown()
+    {
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas('payments', function ($query) {
+            
+        })->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -168,7 +192,7 @@ class PaymentDatatable extends EntityDatatable
                 'value' => function ($model) {
                     return [
                         'data' => [
-                            'currency_id' => $model->currency_id,
+                            'currency' => Currency::find($model->currency_id),
                             'amount' => $model->amount,
                         ],
                         'display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id)
@@ -176,7 +200,7 @@ class PaymentDatatable extends EntityDatatable
                 },
             ],
             [
-                'field' => 'date',
+                'field' => 'date_created',
                 'width' => '11%',
                 'value' => function ($model) {
                     if ($model->is_deleted) {

@@ -13,4 +13,7 @@ a/d single select
 
 calendar style
 
+<<<<<<< HEAD
 remove power by whitelabel
+=======
+>>>>>>> 06-23

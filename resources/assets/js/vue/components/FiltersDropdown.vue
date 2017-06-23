@@ -23,10 +23,21 @@
 
                     <template v-if="option.type === 'dropdown'">
 
+                        <!-- 
+                            Dropdown
+                         -->
                         <div @mouseover="openChildDropdown(option)" @mouseleave="closeChildDropdown" class="vue-dropdown-option --dropdown">
                             <label>{{ option.label }}</label>
                             <div :class="{ open: openedDropdown === option }" class="vue-dropdown-menu">
-                                
+
+                                <!-- 
+                                    Search
+                                 -->
+                                <input v-if="option.options.length > 6" v-model="searchQuery" placeholder="Type In or Select From List" type="text" class="vue-dropdown-option --search">
+
+                                <!-- 
+                                    Dropdown Items
+                                 -->
                                 <template v-for="_option in option.options">
                                     <template v-if="_option.type === 'separator'">
 
@@ -35,7 +46,7 @@
                                     </template>
                                     <template v-else>
 
-                                        <div @click="toggle(_option)" :class="{ checked: _option.selected }" class="vue-dropdown-option --checkbox">
+                                        <div v-if="!searchFor || _option.label.toLowerCase().indexOf(searchFor) !== -1" @click="toggle(_option)" :class="{ checked: _option.selected }" class="vue-dropdown-option --checkbox">
                                             <label>{{ _option.label }}</label>
                                         </div>
 
@@ -85,7 +96,8 @@ export default {
         return {
             openedDropdown: null,
             is_open: false,
-            childDropdownTimeout: null
+            childDropdownTimeout: null,
+            searchQuery: ''
         }
     },
 
@@ -100,6 +112,11 @@ export default {
         option_all() {
             let selected = this.checkboxes.filter(option => option.selected).length;
             return selected === this.checkboxes.length;
+        },
+
+
+        searchFor() {
+            return this.searchQuery.trim().toLowerCase();
         }
     },
 
@@ -132,7 +149,7 @@ export default {
 
 
         openChildDropdown(option) {
-            if (this.childDropdownTimeout && this.childDropdownTimeout.label === option.label) {
+            if (this.childDropdownTimeout) {
                 clearTimeout(this.childDropdownTimeout.timeout);
                 this.childDropdownTimeout = null;
             }
@@ -232,6 +249,19 @@ export default {
         padding-left: 66px !important;
         text-align: left;
         padding-top: 4px;
+    }
+
+    .vue-dropdown-option.--search {
+        width: 90%;
+        margin: 0 auto 15px auto;
+        display: block;
+        padding-left: 0;
+        padding-right: 0;
+        border-bottom: 1px solid #e2e2e2;
+    }
+
+    .vue-dropdown-option.--search:hover {
+        background: white;
     }
 
     .vue-dropdown-option.--checkbox::before {

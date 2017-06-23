@@ -451,6 +451,7 @@
                     ]
                 ] as $category)
                     @if ($category['name'])
+
                         <hr>
                         <li class="sidebar-category">{{ $category['name'] }}</li>
 
@@ -464,6 +465,7 @@
                         @endif
 
                     @endforeach
+
                 @endforeach                
                 <hr>
                 <li class="sidebar-category">Category 3</li>

@@ -186,7 +186,7 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                'field' => 'created_at',
+                'field' => 'date_created',
                 'width' => '11%',
                 'value' => function ($model) {
                     return [
