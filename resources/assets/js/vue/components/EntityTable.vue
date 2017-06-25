@@ -226,6 +226,10 @@ export default {
 
         calculator_result() {
             return this.calculator.value;
+        },
+
+        entity_singular() {
+            return this.entity[0].toUpperCase() + this.entity.slice(1);
         }
 
     },
@@ -490,9 +494,18 @@ export default {
         },
 
 
+        unselectAllBut(id) {
+            return () => {
+                this.selected_entities = [id];
+            };
+        },
+
+
         showContextMenu(e, row) {
+            let id = null;
+
             if (row.__checkbox) {
-                let id = row.__checkbox.data.id;
+                id = row.__checkbox.data.id;
 
                 if (this.selected_entity_id && this.selected_entity_id !== id) {
                     this.toggleSelectOff(this.selected_entity_id);
@@ -508,7 +521,7 @@ export default {
                 this.contextMenu.elements.push({ title: 'Archive', action: `javascript:submitForm_${this.entity}('archive');` });
                 this.contextMenu.elements.push({ title: 'Delete', action: `javascript:submitForm_${this.entity}('delete');` });
                 this.contextMenu.elements.push('');
-                this.contextMenu.elements.push({ title: this.entity[0].toUpperCase() + `${this.entity}: ${row.__title}`.slice(1) });
+                this.contextMenu.elements.push({ title: `${this.entity_singular}: ${row.__title}` });
             }
 
             row.__actions.forEach(action => {
@@ -516,6 +529,10 @@ export default {
             });
 
             if (this.contextMenu.elements.length) {
+                this.contextMenu.elements.push('');
+                this.contextMenu.elements.push({ title: `Archive ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('archive');`, before: this.unselectAllBut(id) });
+                this.contextMenu.elements.push({ title: `Delete ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('delete');`, before: this.unselectAllBut(id) });
+
                 this.contextMenu.visible = true;
                 this.contextMenu.row = row;
 
@@ -528,7 +545,11 @@ export default {
             if (typeof element.action !== 'undefined') {
                 this.clickAway(false);
 
-                eval(element.action);
+                if (typeof element.before === 'function') {
+                    element.before();
+                }
+
+                Vue.nextTick(() => eval(element.action));
             }
         },
 
