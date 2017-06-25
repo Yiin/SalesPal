@@ -519,21 +519,6 @@
           @endif
 
           @yield('content')
-          <br/>
-          <div class="row">
-            <div class="col-md-12">
-
-              @if (Utils::isNinjaProd())
-                @if (Auth::check() && Auth::user()->isTrial())
-                  {!! trans(Auth::user()->account->getCountTrialDaysLeft() == 0 ? 'texts.trial_footer_last_day' : 'texts.trial_footer', [
-                          'count' => Auth::user()->account->getCountTrialDaysLeft(),
-                          'link' => '<a href="javascript:showUpgradeModal()">' . trans('texts.click_here') . '</a>'
-                      ]) !!}
-                @endif
-              @else
-                @include('partials.white_label', ['company' => Auth::user()->account->company])
-              @endif
-            </div>
         </div>
     </div>
     <!-- /#page-content-wrapper -->
