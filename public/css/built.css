@@ -14503,6 +14503,7 @@ div.dataTables_length select {
     font-style: normal;
     color: #01a8fe;
     text-transform: uppercase;
+    margin-bottom: 5px;
 }
 body {
   background-color: #f5f5f5;

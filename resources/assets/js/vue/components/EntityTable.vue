@@ -510,8 +510,11 @@ export default {
                 if (this.selected_entity_id && this.selected_entity_id !== id) {
                     this.toggleSelectOff(this.selected_entity_id);
                 }
-                this.selected_entity_id = id;
-                this.toggleSelectOn(id);
+
+                if (this.selected_entities.indexOf(id) === -1) {
+                    this.selected_entity_id = id;
+                    this.toggleSelectOn(id);
+                }
             }
 
             this.contextMenu.elements = [];
