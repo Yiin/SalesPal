@@ -19,6 +19,11 @@ class EntityDatatable
         }
     }
 
+    public function calculator()
+    {
+        return null;
+    }
+
     public function filters()
     {
         return [];

@@ -1,5 +1,4 @@
 <li class="nav-{{ $option }} {{ Request::is("{$option}*") ? 'active' : '' }}">
-
     @if ($option == 'settings')
 
         <a type="button" class="btn btn-default btn-sm pull-right" title="{{ Utils::getReadableUrl(request()->path()) }}"
@@ -17,11 +16,10 @@
     @endif
 
     <a href="{{ url($option == 'recurring' ? 'recurring_invoice' : $option) }}"
-        style="font-size:16px; padding-top:6px; padding-bottom:6px"
+        style="padding-top: 6px; padding-bottom: 5px"
         class="nav-link {{ Request::is("{$option}*") ? 'active' : '' }}">
-        <i class="fa fa-{{ empty($icon) ? \App\Models\EntityModel::getIcon($option) : $icon }}" style="width:47px; padding-right:10px"></i>
+        <i class="fa fa-{{ empty($icon) ? \App\Models\EntityModel::getIcon($option) : $icon }}" style=""></i>
         {{ ($option == 'recurring_invoices') ? trans('texts.recurring') : mtrans($option) }}
         {!! Utils::isTrial() && in_array($option, ['quotes', 'tasks', 'expenses', 'vendors', 'reports']) ? '&nbsp;<sup>' . trans('texts.pro') . '</sup>' : '' !!}
     </a>
-
 </li>

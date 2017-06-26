@@ -275,14 +275,14 @@ class Expense extends EntityModel
     {
         $balance = $this->invoice ? $this->invoice->balance : 0;
 
-        return static::calcStatusClass($this->should_be_invoiced, $this->invoice_id, $balance);
+        return static::calcStatusClass($this, $this->should_be_invoiced, $this->invoice_id, $balance);
     }
 
     public function statusLabel()
     {
         $balance = $this->invoice ? $this->invoice->balance : 0;
 
-        return static::calcStatusLabel($this->should_be_invoiced, $this->invoice_id, $balance);
+        return static::calcStatusLabel($this, $this->should_be_invoiced, $this->invoice_id, $balance);
     }
 
     public function scopeFilter($query, $filter)

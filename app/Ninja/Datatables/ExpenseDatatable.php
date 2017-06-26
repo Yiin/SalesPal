@@ -64,7 +64,31 @@ class ExpenseDatatable extends EntityDatatable
                     ],
                 ],
             ],
+            $this->currenciesDropdown()
         ];
+    }
+
+    public function currenciesDropdown()
+    {
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas('expenses', function ($query) {
+
+        })->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -167,14 +191,15 @@ class ExpenseDatatable extends EntityDatatable
                 'value' => function ($model) {
                     $amount = Utils::calculateTaxes($model->amount, $model->tax_rate1, $model->tax_rate2);
                     $str = Utils::formatMoney($amount, $model->expense_currency_id);
+                    $parts = explode(' ', $str);
 
                     // show both the amount and the converted amount
-                    if ($model->exchange_rate != 1) {
-                        $converted = round($amount * $model->exchange_rate, 2);
-                        $str .= ' | ' . Utils::formatMoney($converted, $model->invoice_currency_id);
-                    }
+                    // if ($model->exchange_rate != 1) {
+                    //     $converted = round($amount * $model->exchange_rate, 2);
+                    //     $str .= ' | ' . Utils::formatMoney($converted, $model->invoice_currency_id);
+                    // }
 
-                    return $str;
+                    return "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>";
                 },
             ],
             [

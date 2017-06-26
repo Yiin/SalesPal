@@ -45,10 +45,6 @@
 
 {{-- Styles --}}
 <style type="text/css">
-    th .custom-checkbox > [type="checkbox"]:checked + label::after {
-        background: #ffffff;
-    }
-
     @foreach ($datatable->rightAlignIndices() as $index)
         table.dataTable td:nth-child({{ $index }}) { text-align: right; }
     @endforeach

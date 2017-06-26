@@ -2,6 +2,7 @@
 
 namespace App\Ninja\Datatables;
 
+use App\Models\Currency;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use Auth;
@@ -69,8 +70,32 @@ class PaymentDatatable extends EntityDatatable
         }
 
         $filters [] = $methodDropdown;
+        // $filters [] = $this->currenciesDropdown();
 
         return $filters;
+    }
+
+    public function currenciesDropdown()
+    {
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas('payments', function ($query) {
+            
+        })->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -166,17 +191,20 @@ class PaymentDatatable extends EntityDatatable
                 'field' => 'amount',
                 'width' => '10%',
                 'value' => function ($model) {
+                    $currency = Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
+                    $parts = explode(' ', $currency);
+
                     return [
                         'data' => [
-                            'currency_id' => $model->currency_id,
+                            'currency' => Currency::find($model->currency_id),
                             'amount' => $model->amount,
                         ],
-                        'display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id)
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>"
                     ];
                 },
             ],
             [
-                'field' => 'date',
+                'field' => 'date_created',
                 'width' => '11%',
                 'value' => function ($model) {
                     if ($model->is_deleted) {

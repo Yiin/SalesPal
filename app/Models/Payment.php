@@ -354,14 +354,14 @@ class Payment extends EntityModel
 
     public function statusClass()
     {
-        return static::calcStatusClass($this->payment_status_id);
+        return static::calcStatusClass($this, $this->payment_status_id);
     }
 
     public function statusLabel()
     {
         $amount = $this->account->formatMoney($this->refunded, $this->client);
 
-        return static::calcStatusLabel($this->payment_status_id, $this->payment_status->name, $amount);
+        return static::calcStatusLabel($this, $this->payment_status_id, $this->payment_status->name, $amount);
     }
 
     public function invoiceJsonBackup()

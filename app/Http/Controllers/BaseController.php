@@ -26,13 +26,16 @@ class BaseController extends Controller
 
     public function getDatatableColumns()
     {
-        return array_map(function ($column) {
-            return [
-                'field' => $column['field'],
-                'label' => trans('texts.' . $column['field']),
-                'width' => $column['width'] ?? 'auto'
-            ];
-        }, $this->datatable->columns());
+        return [
+            'columns' => array_map(function ($column) {
+                    return [
+                        'field' => $column['field'],
+                        'label' => trans('texts.' . $column['field']),
+                        'width' => $column['width'] ?? 'auto'
+                    ];
+                }, $this->datatable->columns()),
+            'calculator' => $this->datatable->calculator()
+        ];
     }
 
     public function getDatatable(Request $request, $entityPublicId = null)

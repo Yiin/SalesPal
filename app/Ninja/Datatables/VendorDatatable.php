@@ -49,6 +49,14 @@ class VendorDatatable extends EntityDatatable
             // ],
         ];
 
+        $filters [] = $this->getCountriesDropdown();
+        // $filters [] = $this->getCurrenciesDropdown();
+
+        return $filters;
+    }
+
+    public function getCountriesDropdown()
+    {
         $countriesDropdown = [
             'type' => 'dropdown',
             'label' => trans('texts.country'),
@@ -63,9 +71,30 @@ class VendorDatatable extends EntityDatatable
             ];
         }
 
-        $filters [] = $countriesDropdown;
+        return $countriesDropdown;
+    }
 
-        return $filters;
+    public function currenciesDropdown()
+    {
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas('vendors', function ($query) {
+            // nothing
+        })->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -137,7 +166,7 @@ class VendorDatatable extends EntityDatatable
                 },
             ],
             [
-                'field' => 'created_at',
+                'field' => 'date_created',
                 'width' => '12%',
                 'value' => function ($model) {
                     return Utils::timestampToDateString(strtotime($model->created_at));
@@ -159,7 +188,10 @@ class VendorDatatable extends EntityDatatable
                         }
                     }
 
-                    return Utils::formatMoney($sum, $currency_id, $vendor->country_id);
+                    $currency = Utils::formatMoney($sum, $currency_id, $vendor->country_id);
+                    $parts = explode(' ', $currency);
+
+                    return "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>";
                 }
             ],
         ];

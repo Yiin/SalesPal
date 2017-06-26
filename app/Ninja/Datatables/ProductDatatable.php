@@ -53,7 +53,7 @@ class ProductDatatable extends EntityDatatable
                 'value' => 'out_of_stock',
                 'label' => trans('texts.out_of_stock'),
             ],
-            $this->currenciesDropdown()
+            // $this->currenciesDropdown()
         ];
     }
 
@@ -65,7 +65,7 @@ class ProductDatatable extends EntityDatatable
             'options' => [],
         ];
 
-        $currencies = \App\Models\Currency::whereHas('clients', function ($query) {
+        $currencies = \App\Models\Currency::whereHas('products', function ($query) {
             
         })->get();
 

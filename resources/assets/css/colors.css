@@ -47,9 +47,9 @@ thead th {
     border-bottom:solid 0px #444444;
 }
 
-.sidebar-nav i.fa {
+/*.sidebar-nav i.fa {
     color: rgba(0,0,0,0.6);
-}
+}*/
 
 .menu-toggle i
 {
@@ -80,10 +80,24 @@ thead th {
     background: rgba(255,255,255,0.1);
 }
 
+.currency_value.--color-a {
+    color: #ff6c11;
+}
+
 .menu-toggle {
     color: #999 !important;
 }
 
 .menu-toggle:hover {
     color: #fff !important;
+}
+
+.sidebar-nav li i.active {
+    color: #fff;
+}
+
+body table.dataTable thead > tr > th, body table.invoice-table thead > tr > th {
+    background: white !important;
+    color: black;
+    border-left: 0;
 }

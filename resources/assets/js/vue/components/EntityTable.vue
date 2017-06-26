@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th v-if="bulkEdit" style="width: 4%">
-                            <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox-datatables-header">
+                            <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox">
                                 <input type="checkbox" v-model="checkboxAll">
                                 <label></label>
                             </div>
@@ -75,21 +75,20 @@
                 Table Controls
              -->
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
-            <div class="calculator">
-                        <span>Total</span>
-                            <div class="calculator-show" >
-                                <select class="calculator-buton">
-                                    <option value="">Show</option>
-                                    <option value="balance">Balance</option>
-                                </select>
-                            </div>
-                        <span>for selected is {{ selected }}</span>
+
+                <div v-if="calculator.value" class="calculator">
+                    <span>Total</span>
+                    <div class="calculator-show">
+                        <dropdown :default="calculator.default" :options="calculator.options" @change="calculate"></dropdown>
                     </div>
+                    <span>for selected is {{ calculator_result }}</span>
+                </div>
+
                 <div class="table-controls">
                     <span>Page</span>
                     <div class="pagination">
                         <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
-                             <a>«</a>
+                            <a>«</a>
                         </li>
                         <li><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active page-count"></li>
                         <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
@@ -190,6 +189,12 @@ export default {
             table_columns: [],
             table_rows: [],
 
+            calculator: {
+                default: '',
+                options: [],
+                value: ''
+            },
+
             promise: {
                 loadEntities: null,
             },
@@ -218,6 +223,14 @@ export default {
 
         showing_out_of() {
             return this.table_state.entities_count;
+        },
+
+        calculator_result() {
+            return this.calculator.value;
+        },
+
+        entity_singular() {
+            return this.entity[0].toUpperCase() + this.entity.slice(1);
         }
 
     },
@@ -267,6 +280,11 @@ export default {
                         break;
                 }
             });
+        },
+
+
+        calculate(option) {
+            this.$set(this.calculator, 'value', option.name);
         },
 
 
@@ -361,6 +379,9 @@ export default {
         },
 
 
+        /*
+            Handlers
+        */
         handleFilters(filters) {
             this.filters = filters;
         },
@@ -371,8 +392,16 @@ export default {
         },
 
 
-        handleColumns(columns) {
-            this.table_columns = columns;
+        handleColumns(data) {
+            this.table_columns = data.columns;
+
+            if (data.calculator) {
+                this.calculator = {
+                    default: data.calculator.default,
+                    options: data.calculator.options,
+                    value: data.calculator.default
+                };
+            }
         },
 
 
@@ -466,15 +495,27 @@ export default {
         },
 
 
+        unselectAllBut(id) {
+            return () => {
+                this.selected_entities = [id];
+            };
+        },
+
+
         showContextMenu(e, row) {
+            let id = null;
+
             if (row.__checkbox) {
-                let id = row.__checkbox.data.id;
+                id = row.__checkbox.data.id;
 
                 if (this.selected_entity_id && this.selected_entity_id !== id) {
                     this.toggleSelectOff(this.selected_entity_id);
                 }
-                this.selected_entity_id = id;
-                this.toggleSelectOn(id);
+
+                if (this.selected_entities.indexOf(id) === -1) {
+                    this.selected_entity_id = id;
+                    this.toggleSelectOn(id);
+                }
             }
 
             this.contextMenu.elements = [];
@@ -484,7 +525,7 @@ export default {
                 this.contextMenu.elements.push({ title: 'Archive', action: `javascript:submitForm_${this.entity}('archive');` });
                 this.contextMenu.elements.push({ title: 'Delete', action: `javascript:submitForm_${this.entity}('delete');` });
                 this.contextMenu.elements.push('');
-                this.contextMenu.elements.push({ title: this.entity[0].toUpperCase() + `${this.entity}: ${row.__title}`.slice(1) });
+                this.contextMenu.elements.push({ title: `${this.entity_singular}: ${row.__title}` });
             }
 
             row.__actions.forEach(action => {
@@ -499,6 +540,10 @@ export default {
             });
 
             if (this.contextMenu.elements.length) {
+                this.contextMenu.elements.push('');
+                this.contextMenu.elements.push({ title: `Archive ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('archive');`, before: this.unselectAllBut(id) });
+                this.contextMenu.elements.push({ title: `Delete ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('delete');`, before: this.unselectAllBut(id) });
+
                 this.contextMenu.visible = true;
                 this.contextMenu.row = row;
 
@@ -511,7 +556,11 @@ export default {
             if (typeof element.action !== 'undefined') {
                 this.clickAway(false);
 
-                eval(element.action);
+                if (typeof element.before === 'function') {
+                    element.before();
+                }
+
+                Vue.nextTick(() => eval(element.action));
             }
         },
 
@@ -527,9 +576,15 @@ export default {
 
 
         setMenuPosition(top, left) {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
             let offset = this.getElementPosition(this.$refs.table_wrapper);
-            let largestHeight = window.innerHeight - this.$refs.contextmenu.offsetHeight - 25;
-            let largestWidth = window.innerWidth - this.$refs.contextmenu.offsetWidth - 25;
+            let largestHeight = window.innerHeight - this.$refs.contextmenu.offsetHeight - 25 + scrollTop;
+            let largestWidth = window.innerWidth - this.$refs.contextmenu.offsetWidth - 25 + scrollLeft;
+
+            top += scrollTop;
+            left += scrollLeft;
             
             if (top > largestHeight) top = largestHeight;
             if (left > largestWidth) left = largestWidth;
@@ -581,7 +636,7 @@ export default {
         border-radius: 2px
     }
 
-    .calculator-buton option {
+    .calculator-button option {
         padding: 15px;
         padding-top: 15px;
         padding-bottom: 15px;
@@ -597,14 +652,9 @@ export default {
         font-size: 18px;
         margin-bottom: 7px;
     }
-    .create-btn-wrapper > .btn {
-    width: 190px;
-    display: inline-flex;
-    font-size: 18px;
-    }
 
     .devel-dropdown-toggle {
-    display: none;
+        display: none;
     }
     .page-count {
         border: none;
@@ -613,6 +663,9 @@ export default {
         font-size: 16px;
             box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         border-radius: 2px;
+    }
+    .page-count:disabled {
+        background: #ffffff;
     }
 
     li.active input {
@@ -635,9 +688,9 @@ export default {
         display: inline-block;
     }
 
-     .calculator-buton {
+     .calculator-button {
         width: 160px !important;
-        border: white;
+        border: #fff;
         width: 160px;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         font-size: 16px;
@@ -732,7 +785,7 @@ export default {
 
     /* Datatable rows */
     .currency_value {
-        color: #01a7fd;
+        color: #01a8fe;
         padding-left: 4px;
     }
 
@@ -850,5 +903,41 @@ export default {
         color: #373737 !important;
         background: none;
         border: none;
+    }
+
+    /*
+        Status Labels
+    */
+   
+   .label {
+        padding-top: 6px;
+        padding-bottom: 5px;
+        font-size: 100%;
+        width: 102px;
+        display: inline-block;
+   }
+   
+   .label-viewed {
+        background-color: #01A7FD;
+    }
+
+    .label-draft {
+        background-color: #383838;
+    }
+
+    .label-sent {
+        background-color: #5BC0DE;
+    }
+
+    .label-paid {
+        background-color: #4ECD09;
+    }
+
+    .label-overdue {
+        background-color: #E2492F;
+    }
+
+    .label-partial {
+        background-color: #FF6C11;
     }
 </style>

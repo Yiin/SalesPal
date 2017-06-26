@@ -423,25 +423,52 @@
               </ul>
             <ul class="sidebar-nav">
                 @foreach([
-                    'dashboard',
-                    'test',
-                    'clients',
-                    'products',
-                    'invoices',
-                    'payments',
-                    'recurring_invoices',
-                    'credits',
-                    'quotes',
-                    'tasks',
-                    'expenses',
-                    'vendors',
-                ] as $option)
-                @if (in_array($option, ['dashboard', 'settings'])
-                    || Auth::user()->can('view', substr($option, 0, -1))
-                    || Auth::user()->can('create', substr($option, 0, -1)))
-                    @include('partials.navigation_option')
-                @endif
-                @endforeach
+                    [
+                        'name' => null,
+                        'options' => [
+                            'dashboard',
+                            'products',
+                            'clients',
+                            'invoices',
+                            'recurring_invoices',
+                        ]
+                    ],
+                    [
+                        'name' => 'category 1',
+                        'options' => [
+                            'payments',
+                            'expenses',
+                            'credits',
+                        ]
+                    ],
+                    [
+                        'name' => 'category 2',
+                        'options' => [
+                            'quotes',
+                            'tasks',
+                            'vendors',
+                        ]
+                    ]
+                ] as $category)
+                    @if ($category['name'])
+
+                        <hr>
+                        <li class="sidebar-category">{{ $category['name'] }}</li>
+
+                    @endif
+                    @foreach ($category['options'] as $option)
+
+                        @if (in_array($option, ['dashboard', 'settings'])
+                            || Auth::user()->can('view', substr($option, 0, -1))
+                            || Auth::user()->can('create', substr($option, 0, -1)))
+                                @include('partials.navigation_option')
+                        @endif
+
+                    @endforeach
+
+                @endforeach                
+                <hr>
+                <li class="sidebar-category">Category 3</li>
                 @if ( ! Utils::isNinjaProd())
                     @foreach (Module::all() as $module)
                         @include('partials.navigation_option', [
@@ -492,21 +519,6 @@
           @endif
 
           @yield('content')
-          <br/>
-          <div class="row">
-            <div class="col-md-12">
-
-              @if (Utils::isNinjaProd())
-                @if (Auth::check() && Auth::user()->isTrial())
-                  {!! trans(Auth::user()->account->getCountTrialDaysLeft() == 0 ? 'texts.trial_footer_last_day' : 'texts.trial_footer', [
-                          'count' => Auth::user()->account->getCountTrialDaysLeft(),
-                          'link' => '<a href="javascript:showUpgradeModal()">' . trans('texts.click_here') . '</a>'
-                      ]) !!}
-                @endif
-              @else
-                @include('partials.white_label', ['company' => Auth::user()->account->company])
-              @endif
-            </div>
         </div>
     </div>
     <!-- /#page-content-wrapper -->

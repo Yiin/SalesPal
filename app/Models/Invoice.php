@@ -664,20 +664,20 @@ class Invoice extends EntityModel implements BalanceAffecting
     public static function calcStatusClass($model, $statusId, $balance, $dueDate, $isRecurring)
     {
         if ($model->isArchived()) {
-            return 'warning';
+            return 'archived';
         }
         if ($model->isDeleted()) {
-            return 'danger';
+            return 'deleted';
         }
         if ($statusId >= INVOICE_STATUS_SENT && static::calcIsOverdue($balance, $dueDate)) {
-            return 'danger';
+            return 'overdue';
         }
 
         if (isset(static::$statusClasses[$statusId])) {
             return static::$statusClasses[$statusId];
         }
 
-        return 'default';
+        return 'draft';
     }
 
     public static function calcIsOverdue($balance, $dueDate)
@@ -696,12 +696,12 @@ class Invoice extends EntityModel implements BalanceAffecting
 
     public function statusClass()
     {
-        return static::calcStatusClass($this->invoice_status_id, $this->balance, $this->getOriginal('due_date'), $this->is_recurring);
+        return static::calcStatusClass($this, $this->invoice_status_id, $this->balance, $this->getOriginal('due_date'), $this->is_recurring);
     }
 
     public function statusLabel()
     {
-        return static::calcStatusLabel($this->invoice_status->name, $this->statusClass(), $this->getEntityType(), $this->quote_invoice_id);
+        return static::calcStatusLabel($this, $this->invoice_status->name, $this->statusClass(), $this->getEntityType(), $this->quote_invoice_id);
     }
 
     /**

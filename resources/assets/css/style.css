@@ -278,9 +278,19 @@ table.dataTable tbody th, table.dataTable tbody td {
 
 /*buttons*/
 .btn {
-    font-weight: bold;
     border-radius: 2px;
+<<<<<<< HEAD
     padding: 9px 12px;
+=======
+}
+
+.create-btn-wrapper > .btn {
+    padding: 11px 12px;
+    width: 190px;
+    display: inline-flex;
+    font-size: 18px;
+    font-weight: 500;
+>>>>>>> 12c81d33a1ef5d4bcd0502617cf11bf1bf81186e
 }
 
 .btn-success {
@@ -1914,8 +1924,12 @@ span.caret-dev-top {
     margin: 13px 0 0px;
 }
 
-tbody {
-    box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+th .custom-checkbox > [type="checkbox"]:checked + label::after {
+    background: #01a8fe;
+}
+
+table.table {
+    box-shadow: 0px 1px 5px 0px rgba(161, 161, 161, 0.2);
 }
 
 .odd {
@@ -1928,10 +1942,19 @@ tbody {
 
 .table.dataTable tbody td {
     border: 1px solid #d0d0d0;
+    border-right: none;
+}
+
+.table.dataTable tbody td:first-child {
+    border-left: none;
 }
 
 tr.odd:nth-child(1) > td:nth-child {
     border-top: none;
+}
+
+.table.dataTable tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .custom-checkbox-datatables-header > [type="checkbox"]:not(:checked) + label::before {
@@ -2001,7 +2024,7 @@ thead {
 }
 
 .sidebar-nav li > a:hover {
-    background-color: #00a8fe;
+    background-color: #373737;
     color: white;
 }
 
@@ -2151,11 +2174,11 @@ td > a:hover {
 /* Datatable rows */
 .currency_value {
     color: #01a7fd;
-    padding-left: 4px;
+    padding-left: 3px;
 }
 
 .currency_symbol, .currency_value {
-    font-weight: 600;
+    font-weight: bold;
 }
 
 /* Datatable controls */
