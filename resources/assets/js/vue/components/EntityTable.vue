@@ -122,9 +122,10 @@
                 :style="{ top: contextMenu.position.top, left: contextMenu.position.left }" 
                 class="context-menu"
             >
+                <div @click="clickAway" class="context-menu-close">✕</div>
                 <li v-for="element in contextMenu.elements" 
                     v-html="element.title" 
-                    :class="{ divider: element === '',}"
+                    :class="{ divider: element === '', passive: !element.action }"
                     @click="contextMenuClickHandler(element)"
                 ></li>
             </ul>
@@ -448,7 +449,6 @@ export default {
             if (this.table_state.loading) {
                 return;
             }
-            console.log('order', field);
 
             if (this.orderBy === field) {
                 this.orderDirection = this.orderDirection === 'ASC' ? 'DESC' : 'ASC';
@@ -525,7 +525,6 @@ export default {
 
 
         deleteSelected() {
-            console.log('delete selected');
             eval(`submitForm_${this.entity}('delete');`);
         },
 
@@ -547,24 +546,39 @@ export default {
             }
 
             this.contextMenu.elements = [];
-            let icon = '<i class="glyphicon glyphicon-usd"></i>';
+
             if (this.selected_entities.length > 1) {
-                this.contextMenu.elements.push({title: `Selected ${this.entities || this.entity + 's'}: ${this.selected_entities.length}` });
-                this.contextMenu.elements.push({ title: 'Archive', action: `javascript:submitForm_${this.entity}('archive');` });
-                this.contextMenu.elements.push({ title: 'Delete', action: `javascript:submitForm_${this.entity}('delete');` });
+                this.contextMenu.elements.push({
+                    title: `Selected ${this.entities || this.entity + 's'}: ${this.selected_entities.length}`,
+                });
+                this.contextMenu.elements.push({
+                    title: 'Archive', 
+                    action: `javascript:submitForm_${this.entity}('archive');`,
+                    icon: '<i class="glyphicon glyphicon-usd"></i>'
+                });
+                this.contextMenu.elements.push({
+                    title: 'Delete', 
+                    action: `javascript:submitForm_${this.entity}('delete');`,
+                    icon: '<i class="glyphicon glyphicon-usd"></i>'
+                });
                 this.contextMenu.elements.push('');
             }
             this.contextMenu.elements.push({ title: `${this.entity_singular}: ${row.__title}` });
 
             row.__actions.forEach(action => {
-                this.contextMenu.elements.push(action);
+                let element = action;
+
+                if (element !== '') {
+                    element.icon =  '<i class="glyphicon glyphicon-usd"></i>';
+                }
+
+                this.contextMenu.elements.push(element);
             });
 
             this.contextMenu.elements.forEach(element => {
-                if (element !== '' && element.title.indexOf(icon) !== 0) {
-                    element.title = icon + element.title;
+                if (element !== '' && element.icon && element.title.indexOf(element.icon) !== 0) {
+                    element.title = element.icon + element.title;
                 }
-                
             });
 
             if (this.contextMenu.elements.length) {
@@ -798,8 +812,25 @@ export default {
         margin: 5px auto;
     }
 
-    .context-menu li:not(.divider):hover {
+    .context-menu li:not(.divider):not(.passive):hover {
         background-color: #eee;
+    }
+
+    .context-menu-close {
+        position: absolute;
+        color: black;
+        width: 10px;
+        height: 10px;
+        top: 10px;
+        right: 25px;
+        font-weight: bold;
+        font-size: 22px;
+        cursor: pointer;
+        transition: all 0.1s;
+    }
+
+    .context-menu-close:hover {
+        color: #01a8fe;
     }
 
     /* DataTables styles */
