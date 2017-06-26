@@ -1934,6 +1934,11 @@ tbody {
 
 .table.dataTable tbody td {
     border: 1px solid #d0d0d0;
+    border-right: none;
+}
+
+.table.dataTable tbody td:first-child {
+    border-left: none;
 }
 
 tr.odd:nth-child(1) > td:nth-child {
