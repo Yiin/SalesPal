@@ -240,12 +240,14 @@ class InvoiceDatatable extends EntityDatatable
                     $currency = Utils::formatMoney($partial, $model->currency_id, $model->country_id);
                     $parts = explode(' ', $currency);
 
+                    $color = $model->amount === $partial ? '' : '--color-a';
+
                     return [
                         'data' => [
                             'currency_id' => $model->currency_id,
                             'amount' => $partial,
                         ],
-                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value --color-a'>{$parts[1]}</span>"
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value {$color}'>{$parts[1]}</span>"
                     ];
                 },
                 'visible' => $entityType == ENTITY_INVOICE,
