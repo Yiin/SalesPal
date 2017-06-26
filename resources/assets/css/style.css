@@ -1945,6 +1945,10 @@ tr.odd:nth-child(1) > td:nth-child {
     border-top: none;
 }
 
+.table.dataTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
 .custom-checkbox-datatables-header > [type="checkbox"]:not(:checked) + label::before {
     border: 2px solid #ffffff;
     background-color: #373737;
