@@ -92,7 +92,7 @@ export default {
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
-        height: 47px;
+        height: 46px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
