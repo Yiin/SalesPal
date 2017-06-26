@@ -412,6 +412,8 @@ export default {
 
 
         handleError(err) {
+            this.table_state.loading = false;
+            this.entities_loaded = true;
             // console.error(err);
         },
 
@@ -427,6 +429,8 @@ export default {
             if (this.table_state.loading) {
                 return;
             }
+            console.log('order', field);
+
             if (this.orderBy === field) {
                 this.orderDirection = this.orderDirection === 'ASC' ? 'DESC' : 'ASC';
             }

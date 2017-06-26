@@ -99,5 +99,5 @@ thead th {
 body table.dataTable thead > tr > th, body table.invoice-table thead > tr > th {
     background: white !important;
     color: black;
-    border-left: 0;
+    border-left-color: #e1e1e1;
 }

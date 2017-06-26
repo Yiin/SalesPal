@@ -12188,7 +12188,7 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 .create-btn-wrapper > .btn {
-    padding: 9px 12px;
+    padding: 11px 12px;
     width: 190px;
     display: inline-flex;
     font-size: 18px;
@@ -13080,11 +13080,11 @@ table.table thead .sorting:after {
 }
 
 table.table thead .sorting_asc:after {
-    content: '' !important
+    /*content: '' !important*/
 }
 
 table.table thead .sorting_desc:after {
-    content: '' !important
+    /*content: '' !important*/
 }
 
 table.table thead .sorting_asc_disabled:after {
@@ -13826,8 +13826,12 @@ span.caret-dev-top {
     margin: 13px 0 0px;
 }
 
-tbody {
-    box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
+th .custom-checkbox > [type="checkbox"]:checked + label::after {
+    background: #01a8fe;
+}
+
+table.table {
+    box-shadow: 0px 1px 5px 0px rgba(161, 161, 161, 0.2);
 }
 
 .odd {
@@ -13839,11 +13843,20 @@ tbody {
 }
 
 .table.dataTable tbody td {
-    border: 1px solid #d0d0d0;
+    border: 1px solid #e1e1e1;
+    border-right: none;
+}
+
+.table.dataTable tbody td:first-child {
+    border-left: none;
 }
 
 tr.odd:nth-child(1) > td:nth-child {
     border-top: none;
+}
+
+.table.dataTable tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .custom-checkbox-datatables-header > [type="checkbox"]:not(:checked) + label::before {
@@ -14063,11 +14076,11 @@ td > a:hover {
 /* Datatable rows */
 .currency_value {
     color: #01a7fd;
-    padding-left: 4px;
+    padding-left: 3px;
 }
 
 .currency_symbol, .currency_value {
-    font-weight: 600;
+    font-weight: bold;
 }
 
 /* Datatable controls */
@@ -14447,7 +14460,7 @@ div.dataTables_length select {
     padding:10px 20px 10px 25px;
     text-transform: capitalize;
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
 }
 .nav-second-level li a{
     padding-left: 40px!important;
@@ -14486,7 +14499,7 @@ div.dataTables_length select {
 
 #left-sidebar-wrapper .sidebar-nav li a {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
 }
 
@@ -14499,7 +14512,7 @@ div.dataTables_length select {
 #left-sidebar-wrapper .sidebar-nav .sidebar-category {
     padding: 0 5px 0;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 15px;
     font-style: normal;
     color: #01a8fe;
     text-transform: uppercase;
@@ -14587,6 +14600,10 @@ thead th {
     background: rgba(255,255,255,0.1);
 }
 
+.currency_value.--color-a {
+    color: #ff6c11;
+}
+
 .menu-toggle {
     color: #999 !important;
 }
@@ -14599,6 +14616,11 @@ thead th {
     color: #fff;
 }
 
+body table.dataTable thead > tr > th, body table.invoice-table thead > tr > th {
+    background: white !important;
+    color: black;
+    border-left-color: #e1e1e1;
+}
 @font-face {
   font-family: 'Roboto';
   font-weight: 100;

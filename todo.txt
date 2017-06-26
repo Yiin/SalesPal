@@ -9,8 +9,8 @@ calculator
 
 outside of table context menu
 
-a/d single select
+DONE a/d single select
 
 calendar style
 
-remove power by whitelabel
+DONE remove power by whitelabel
