@@ -18,7 +18,7 @@ html {
 }
 
 hr.separator {
-  margin: 5px 0;
+  margin: 6px 0;
   border: 0;
   border-top: 1px solid #eee;
 }
@@ -279,6 +279,9 @@ table.dataTable tbody th, table.dataTable tbody td {
 /*buttons*/
 .btn {
     border-radius: 2px;
+<<<<<<< HEAD
+    padding: 9px 12px;
+=======
 }
 
 .create-btn-wrapper > .btn {
@@ -287,6 +290,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     display: inline-flex;
     font-size: 18px;
     font-weight: 500;
+>>>>>>> 12c81d33a1ef5d4bcd0502617cf11bf1bf81186e
 }
 
 .btn-success {
@@ -2270,4 +2274,8 @@ div.dataTables_length select {
     font-size: 16px;
     padding: 7px 10px 7px;
     margin-right: 10px;
+}
+
+.context-menu li > i {
+    margin-right: 18px;
 }
