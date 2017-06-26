@@ -568,9 +568,15 @@ export default {
 
 
         setMenuPosition(top, left) {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
             let offset = this.getElementPosition(this.$refs.table_wrapper);
-            let largestHeight = window.innerHeight - this.$refs.contextmenu.offsetHeight - 25;
-            let largestWidth = window.innerWidth - this.$refs.contextmenu.offsetWidth - 25;
+            let largestHeight = window.innerHeight - this.$refs.contextmenu.offsetHeight - 25 + scrollTop;
+            let largestWidth = window.innerWidth - this.$refs.contextmenu.offsetWidth - 25 + scrollLeft;
+
+            top += scrollTop;
+            left += scrollLeft;
             
             if (top > largestHeight) top = largestHeight;
             if (left > largestWidth) left = largestWidth;
