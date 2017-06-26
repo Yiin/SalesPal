@@ -191,12 +191,15 @@ class PaymentDatatable extends EntityDatatable
                 'field' => 'amount',
                 'width' => '10%',
                 'value' => function ($model) {
+                    $currency = Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
+                    $parts = explode(' ', $currency);
+
                     return [
                         'data' => [
                             'currency' => Currency::find($model->currency_id),
                             'amount' => $model->amount,
                         ],
-                        'display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id)
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>"
                     ];
                 },
             ],

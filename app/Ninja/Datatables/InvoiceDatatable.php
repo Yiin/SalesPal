@@ -218,12 +218,15 @@ class InvoiceDatatable extends EntityDatatable
                 'field' => 'amount',
                 'width' => '14%',
                 'value' => function ($model) {
+                    $currency = Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
+                    $parts = explode(' ', $currency);
+
                     return [
                         'data' => [
                             'currency_id' => $model->currency_id,
                             'amount' => $model->amount
                         ],
-                        'display' => Utils::formatMoney($model->amount, $model->currency_id, $model->country_id)
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>"
                     ];
                 },
             ],
@@ -232,14 +235,17 @@ class InvoiceDatatable extends EntityDatatable
                 'width' => '14%',
                 'value' => function ($model) {
                     $partial = $model->getAmountPaid(true);
+                    $partial = $partial > 0 ? $partial : 0;
+
+                    $currency = Utils::formatMoney($partial, $model->currency_id, $model->country_id);
+                    $parts = explode(' ', $currency);
+
                     return [
                         'data' => [
                             'currency_id' => $model->currency_id,
                             'amount' => $partial,
                         ],
-                        'display' => $partial > 0 ?
-                            Utils::formatMoney($partial, $model->currency_id, $model->country_id) :
-                            Utils::formatMoney(0, $model->currency_id, $model->country_id)
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value --color-a'>{$parts[1]}</span>"
                     ];
                 },
                 'visible' => $entityType == ENTITY_INVOICE,

@@ -188,7 +188,10 @@ class VendorDatatable extends EntityDatatable
                         }
                     }
 
-                    return Utils::formatMoney($sum, $currency_id, $vendor->country_id);
+                    $currency = Utils::formatMoney($sum, $currency_id, $vendor->country_id);
+                    $parts = explode(' ', $currency);
+
+                    return "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>";
                 }
             ],
         ];
