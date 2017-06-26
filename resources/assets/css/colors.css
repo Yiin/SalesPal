@@ -95,3 +95,9 @@ thead th {
 .sidebar-nav li i.active {
     color: #fff;
 }
+
+body table.dataTable thead > tr > th, body table.invoice-table thead > tr > th {
+    background: white !important;
+    color: black;
+    border-left: 0;
+}
