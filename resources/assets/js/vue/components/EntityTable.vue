@@ -644,6 +644,9 @@ export default {
             box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         border-radius: 4px;
     }
+    .page-count:disabled {
+        background: #ffffff;
+    }
 
     li.active input {
         padding-bottom: 13px;
@@ -667,7 +670,7 @@ export default {
 
      .calculator-button {
         width: 160px !important;
-        border: white;
+        border: #fff;
         width: 160px;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         font-size: 16px;
