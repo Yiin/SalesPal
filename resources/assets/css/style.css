@@ -2157,11 +2157,11 @@ td > a:hover {
 /* Datatable rows */
 .currency_value {
     color: #01a7fd;
-    padding-left: 4px;
+    padding-left: 3px;
 }
 
 .currency_symbol, .currency_value {
-    font-weight: 600;
+    font-weight: bold;
 }
 
 /* Datatable controls */

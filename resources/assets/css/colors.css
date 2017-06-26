@@ -80,6 +80,10 @@ thead th {
     background: rgba(255,255,255,0.1);
 }
 
+.currency_value.--color-a {
+    color: #ff6c11;
+}
+
 .menu-toggle {
     color: #999 !important;
 }
