@@ -2279,3 +2279,7 @@ div.dataTables_length select {
 .context-menu li > i {
     margin-right: 18px;
 }
+
+.vue-dropdown > button:focus {
+    outline: none;
+}
