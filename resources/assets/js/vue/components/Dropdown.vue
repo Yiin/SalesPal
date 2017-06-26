@@ -6,7 +6,7 @@
             <span class="caret"></span>
         </button>
 
-        <div :class="{ open: is_open }" class="vue-dropdown-menu">
+        <div :class="{ open: is_open }" :style="{ 'min-width': width }" class="vue-dropdown-menu">
 
             <template v-for="option in options">
 
@@ -107,7 +107,6 @@ export default {
         margin: 0;
         padding: 0;
         position: absolute;
-        min-width: 150px;
         z-index: 999999;
 
     }
