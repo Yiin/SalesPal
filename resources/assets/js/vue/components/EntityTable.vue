@@ -116,6 +116,7 @@
                 Context Menu
              -->
             <ul v-on-clickaway="clickAway" 
+                @contextmenu.prevent
                 ref="contextmenu" 
                 v-if="contextMenu.visible" 
                 :style="{ top: contextMenu.position.top, left: contextMenu.position.left }" 
@@ -275,9 +276,20 @@ export default {
 
         registerListeners() {
             window.addEventListener('keydown', e => {
+                console.log('keydown', e.keyCode);
+
                 switch(e.keyCode) {
                     /* esc */ case 27:
                         this.clickAway();
+                        break;
+                    /* <- */ case 37:
+                        this.previousPage();
+                        break;
+                    /* -> */ case 39:
+                        this.nextPage();
+                        break;
+                    /* del */ case 46:
+                        this.deleteSelected();
                         break;
                 }
             });
@@ -512,6 +524,12 @@ export default {
         },
 
 
+        deleteSelected() {
+            console.log('delete selected');
+            eval(`submitForm_${this.entity}('delete');`);
+        },
+
+
         showContextMenu(e, row) {
             let id = null;
 
@@ -530,13 +548,13 @@ export default {
 
             this.contextMenu.elements = [];
             let icon = '<i class="glyphicon glyphicon-usd"></i>';
-            if (this.selected_entities.length) {
+            if (this.selected_entities.length > 1) {
                 this.contextMenu.elements.push({title: `Selected ${this.entities || this.entity + 's'}: ${this.selected_entities.length}` });
                 this.contextMenu.elements.push({ title: 'Archive', action: `javascript:submitForm_${this.entity}('archive');` });
                 this.contextMenu.elements.push({ title: 'Delete', action: `javascript:submitForm_${this.entity}('delete');` });
                 this.contextMenu.elements.push('');
-                this.contextMenu.elements.push({ title: `${this.entity_singular}: ${row.__title}` });
             }
+            this.contextMenu.elements.push({ title: `${this.entity_singular}: ${row.__title}` });
 
             row.__actions.forEach(action => {
                 this.contextMenu.elements.push(action);
