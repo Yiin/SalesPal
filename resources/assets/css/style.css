@@ -18,7 +18,7 @@ html {
 }
 
 hr.separator {
-  margin: 5px 0;
+  margin: 6px 0;
   border: 0;
   border-top: 1px solid #eee;
 }
@@ -281,10 +281,6 @@ table.dataTable tbody th, table.dataTable tbody td {
     font-weight: bold;
     border-radius: 2px;
     padding: 9px 12px;
-    width: 190px;
-    display: inline-flex;
-    font-size: 18px;
-    border-radius: 4px;
 }
 
 .btn-success {
@@ -2255,4 +2251,8 @@ div.dataTables_length select {
     font-size: 16px;
     padding: 7px 10px 7px;
     margin-right: 10px;
+}
+
+.context-menu li > i {
+    margin-right: 18px;
 }

@@ -130,7 +130,7 @@ export default {
         font-size: 16px;
         color: #373737;
         width: 270px;
-        border-radius: 4px;
+        border-radius: 2px;
         margin-left: -5px;
     }
 
@@ -144,8 +144,9 @@ export default {
         width: 270px;
         z-index: 999999;
         margin-left: -5px;
-        padding-bottom: 23px;
-        padding-top: 18px;
+        padding-bottom: 18px;
+        padding-top: 17px;
+        border-radius: 2;
     }
 
     .vue-dropdown-menu.open {

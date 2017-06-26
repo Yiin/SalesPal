@@ -46,7 +46,6 @@
 
                     </template>
                     <template v-else>
-
                         <div @click="toggle(option)" :class="{ checked: option.selected }" class="vue-dropdown-option --checkbox">
 
                             <label>{{ option.label }}</label>
@@ -181,7 +180,7 @@ export default {
         font-size: 16px;
         color: #373737;
         width: 270px;
-        border-radius: 4px;
+        border-radius: 2px;
     }
 
     .vue-dropdown-menu {
@@ -200,13 +199,14 @@ export default {
         display: block;
         position: absolute;
         left: 0;
-        padding-bottom: 23px;
-        padding-top: 18px;
+        padding-bottom: 18px;
+        padding-top: 17px;
     }
 
     .vue-dropdown-menu.open label {
         font-weight: 400;
-
+        border-radius: 2px;
+        margin-bottom: 0px;
     }
 
     .vue-dropdown-menu .vue-dropdown-menu.open {
@@ -227,11 +227,11 @@ export default {
     }
 
     .vue-dropdown-menu .vue-dropdown-option {
-        padding-bottom: 4px;
+        padding-bottom: 6px;
         padding-right: 10px;
-        padding-left: 66px !important;
+        padding-left: 55px !important;
         text-align: left;
-        padding-top: 4px;
+        padding-top: 7px;
     }
 
     .vue-dropdown-option.--checkbox::before {

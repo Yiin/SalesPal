@@ -130,8 +130,9 @@
             >
                 <li v-for="element in contextMenu.elements" 
                     v-html="element.title" 
-                    :class="{ divider: element === '' }"
+                    :class="{ divider: element === '',}"
                     @click="contextMenuClickHandler(element)"
+
                 ></li>
             </ul>
         </div>
@@ -477,9 +478,9 @@ export default {
             }
 
             this.contextMenu.elements = [];
-
+            let icon = '<i class="glyphicon glyphicon-usd"></i>';
             if (this.selected_entities.length) {
-                this.contextMenu.elements.push({ title: `Selected ${this.entities || this.entity + 's'}: ${this.selected_entities.length}` });
+                this.contextMenu.elements.push({title: `Selected ${this.entities || this.entity + 's'}: ${this.selected_entities.length}` });
                 this.contextMenu.elements.push({ title: 'Archive', action: `javascript:submitForm_${this.entity}('archive');` });
                 this.contextMenu.elements.push({ title: 'Delete', action: `javascript:submitForm_${this.entity}('delete');` });
                 this.contextMenu.elements.push('');
@@ -488,6 +489,13 @@ export default {
 
             row.__actions.forEach(action => {
                 this.contextMenu.elements.push(action);
+            });
+
+            this.contextMenu.elements.forEach(element => {
+                if (element !== '' && element.title.indexOf(icon) !== 0) {
+                    element.title = icon + element.title;
+                }
+                
             });
 
             if (this.contextMenu.elements.length) {
@@ -566,6 +574,12 @@ export default {
 </script>
 
 <style scoped>
+    .new-client {
+         width: 190px;
+        display: inline-flex;
+        font-size: 18px;
+        border-radius: 2px
+    }
 
     .calculator-buton option {
         padding: 15px;
@@ -598,7 +612,7 @@ export default {
         font-family: 'Open Sans', sans-serif;
         font-size: 16px;
             box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
-        border-radius: 4px;
+        border-radius: 2px;
     }
 
     li.active input {
@@ -634,7 +648,7 @@ export default {
         margin-left: 20px;
         margin-right: 15px;
         padding-left: 15px;
-        border-radius: 4px;
+        border-radius: 2px;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
@@ -669,9 +683,9 @@ export default {
         position: absolute;
         width: 320px;
         z-index: 999999;
-        padding-top: 18px;
-        padding-bottom: 23px;
-        border: 4px;
+        padding-bottom: 18px;
+        padding-top: 17px;
+        border-radius: 4px;
     }
 
     .context-menu li, .context-menu li > a {
@@ -683,8 +697,9 @@ export default {
     .context-menu li {
         padding-bottom: 6px;
         padding-top: 7px;
-        padding-left: 30px;
+        padding-left: 26px;
         padding-right: 30px;
+        display: block;
     }
 
     .context-menu li.divider {
@@ -738,7 +753,7 @@ export default {
         padding-bottom: 11px;
         padding-top: 11px;
         font-family: 'Open Sans', sans-serif;
-        border-radius: 4px;
+        border-radius: 2px;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
