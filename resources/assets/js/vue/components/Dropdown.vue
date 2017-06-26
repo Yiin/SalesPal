@@ -97,7 +97,7 @@ export default {
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
-        border-radius: 4px;
+        border-radius: 2px;
     }
 
     .vue-dropdown-menu {
