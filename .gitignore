@@ -8,6 +8,8 @@
 /public/build
 /public/packages
 /public/vendor
+/public/css/built.*
+/public/compiled.*
 /resources/assets/bower
 /storage
 /bootstrap/compiled.php
