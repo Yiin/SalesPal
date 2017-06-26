@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th v-if="bulkEdit" style="width: 4%">
-                            <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox-datatables-header">
+                            <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox">
                                 <input type="checkbox" v-model="checkboxAll">
                                 <label></label>
                             </div>
