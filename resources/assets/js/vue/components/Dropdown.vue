@@ -1,7 +1,7 @@
 <template>
     
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" type="button">
+        <button @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
             {{ selected.label }}
             <span class="caret"></span>
         </button>
@@ -32,7 +32,7 @@ export default {
         clickaway
     ],
 
-    props: ['default', 'options'],
+    props: ['default', 'options', 'width'],
 
     data() {
         return {
@@ -69,7 +69,7 @@ export default {
     },
 
     mounted() {
-        this.selected = this.options.filter(option => option.name === this.default)[0];
+        this.selected = this.options.filter(option => option.name === this.default || option.value === this.default)[0];
     }
 
 }
@@ -97,7 +97,6 @@ export default {
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
-        min-width: 150px;
         border-radius: 4px;
     }
 
