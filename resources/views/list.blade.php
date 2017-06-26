@@ -46,10 +46,10 @@
 {{-- Styles --}}
 <style type="text/css">
     @foreach ($datatable->rightAlignIndices() as $index)
-        table.dataTable td:nth-child({{ $index }}) { text-align: right; }
+        table.dataTable td:nth-child({{ $index }}), table.dataTable th:nth-child({{ $index }}) { text-align: right; }
     @endforeach
 
     @foreach ($datatable->centerAlignIndices() as $index)
-        table.dataTable td:nth-child({{ $index }}) { text-align: center; }
+        table.dataTable td:nth-child({{ $index }}), table.dataTable th:nth-child({{ $index }}) { text-align: center; }
     @endforeach
 </style>

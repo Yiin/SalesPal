@@ -1,12 +1,12 @@
 <template>
     
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" type="button">
+        <button @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
             {{ selected.label }}
             <span class="caret"></span>
         </button>
 
-        <div :class="{ open: is_open }" class="vue-dropdown-menu">
+        <div :class="{ open: is_open }" :style="{ 'min-width': width }" class="vue-dropdown-menu">
 
             <template v-for="option in options">
 
@@ -32,7 +32,7 @@ export default {
         clickaway
     ],
 
-    props: ['default', 'options'],
+    props: ['default', 'options', 'width'],
 
     data() {
         return {
@@ -69,7 +69,7 @@ export default {
     },
 
     mounted() {
-        this.selected = this.options.filter(option => option.name === this.default)[0];
+        this.selected = this.options.filter(option => option.name === this.default || option.value === this.default)[0];
     }
 
 }
@@ -92,13 +92,12 @@ export default {
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
-        height: 47px;
+        height: 46px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
-        min-width: 150px;
-        border-radius: 4px;
+        border-radius: 2px;
     }
 
     .vue-dropdown-menu {
@@ -108,7 +107,6 @@ export default {
         margin: 0;
         padding: 0;
         position: absolute;
-        min-width: 150px;
         z-index: 999999;
 
     }

@@ -1178,11 +1178,11 @@ table.table thead .sorting:after {
 }
 
 table.table thead .sorting_asc:after {
-    content: '' !important
+    /*content: '' !important*/
 }
 
 table.table thead .sorting_desc:after {
-    content: '' !important
+    /*content: '' !important*/
 }
 
 table.table thead .sorting_asc_disabled:after {
@@ -1941,7 +1941,7 @@ table.table {
 }
 
 .table.dataTable tbody td {
-    border: 1px solid #d0d0d0;
+    border: 1px solid #e1e1e1;
     border-right: none;
 }
 
@@ -2278,4 +2278,8 @@ div.dataTables_length select {
 
 .context-menu li > i {
     margin-right: 18px;
+}
+
+.vue-dropdown > button:focus {
+    outline: none;
 }

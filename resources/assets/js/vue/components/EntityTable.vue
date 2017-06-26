@@ -79,7 +79,7 @@
                 <div v-if="calculator.value" class="calculator">
                     <span>Total</span>
                     <div class="calculator-show">
-                        <dropdown :default="calculator.default" :options="calculator.options" @change="calculate"></dropdown>
+                        <dropdown :default="calculator.default" :options="calculator.options" @change="calculate" width="150px"></dropdown>
                     </div>
                     <span>for selected is {{ calculator_result }}</span>
                 </div>
@@ -106,13 +106,7 @@
                         </span>
                     </div>
                     <div class="entities-count-control">
-                        <select v-model="table_state.entities_per_page">
-                            <option value="5">5</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="50">50</option>
-                        </select>
+                        <dropdown :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="85px"></dropdown>
                     </div>
                     <span>rows</span>
                 </div>
@@ -131,7 +125,6 @@
                     v-html="element.title" 
                     :class="{ divider: element === '',}"
                     @click="contextMenuClickHandler(element)"
-
                 ></li>
             </ul>
         </div>
@@ -178,7 +171,7 @@ export default {
             table_state: {
                 page: 1,
                 page_count: 1,
-                entities_per_page: 5,
+                entities_per_page: 10,
                 entities_count: 2,
                 loading: false,
                 is_empty: false
@@ -194,6 +187,14 @@ export default {
                 options: [],
                 value: ''
             },
+
+            entities_per_page: [
+                { label: '10', value: 10},
+                { label: '20', value: 20},
+                { label: '35', value: 35},
+                { label: '50', value: 50},
+                { label: '100', value: 100},
+            ],
 
             promise: {
                 loadEntities: null,
@@ -285,6 +286,11 @@ export default {
 
         calculate(option) {
             this.$set(this.calculator, 'value', option.name);
+        },
+
+
+        updateEntitiesPerPage(option) {
+            this.table_state.entities_per_page = option.value;
         },
 
 
@@ -413,6 +419,8 @@ export default {
 
 
         handleError(err) {
+            this.table_state.loading = false;
+            this.entities_loaded = true;
             // console.error(err);
         },
 
@@ -428,6 +436,8 @@ export default {
             if (this.table_state.loading) {
                 return;
             }
+            console.log('order', field);
+
             if (this.orderBy === field) {
                 this.orderDirection = this.orderDirection === 'ASC' ? 'DESC' : 'ASC';
             }
@@ -640,6 +650,14 @@ export default {
         padding: 15px;
         padding-top: 15px;
         padding-bottom: 15px;
+    }
+
+    .calculator-show button {
+        
+    }
+
+    .entities-count-control button {
+        min-width: 85px;
     }
 
     .breadcrumb a {
