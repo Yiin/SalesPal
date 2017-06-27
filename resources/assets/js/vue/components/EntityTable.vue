@@ -1,6 +1,11 @@
 <template>
     <div>
-        <ol class="breadcrumb"><li><a class="glyphicon glyphicon-home" href="http://185.81.165.216/index.php/index.php"></a></li><li class="active">Clients</li></ol>
+        <ol class="breadcrumb path">
+            <li>
+                <a class="glyphicon glyphicon-home" href="/"></a>
+            </li>
+            <li class="active">{{ entities || entity + 's' }}</li>
+        </ol>
         <div class="row">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
