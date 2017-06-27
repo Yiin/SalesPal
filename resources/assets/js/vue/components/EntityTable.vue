@@ -697,7 +697,9 @@ export default {
 
     .breadcrumb {
         font-size: 18px;
-        margin-bottom: 7px;
+        margin-bottom: 19px;
+        margin-top: -21px;
+        color: #666666;
     }
 
     .devel-dropdown-toggle {
