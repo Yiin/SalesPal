@@ -691,7 +691,6 @@ export default {
     }
 
     .breadcrumb a {
-        margin-right: 10px;
         text-decoration: none;
         color: #01a8fe;
     }
