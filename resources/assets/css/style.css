@@ -421,6 +421,11 @@ label.control-label {
     font-size: 19px;
 }
 
+.breadcrumb > li {
+  display: inline-block;
+  text-transform: capitalize;
+}
+
 .breadcrumb:not(.path) > li { 
     color: #333333;
     font-weight: 600;
