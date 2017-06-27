@@ -78,9 +78,7 @@
 
                 <div v-if="calculator.value" class="calculator">
                     <span>Total</span>
-                    <div class="calculator-show">
-                        <dropdown :default="calculator.default" :options="calculator.options" @change="calculate" width="150px"></dropdown>
-                    </div>
+                        <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="150px"></dropdown>
                     <span>for selected is {{ calculator_result }}</span>
                 </div>
 
@@ -104,10 +102,8 @@
                                 Showing 0 entries
                             </template>
                         </span>
-                    </div>
-                    <div class="entities-count-control">
-                        <dropdown :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="85px"></dropdown>
-                    </div>
+                    </div>                 
+                    <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="85px"></dropdown>
                     <span>rows</span>
                 </div>
             </div>
@@ -684,9 +680,6 @@ export default {
         padding-bottom: 15px;
     }
 
-    .calculator-show button {
-        
-    }
 
     .entities-count-control button {
         min-width: 85px;
@@ -711,8 +704,10 @@ export default {
         box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
         font-family: 'Open Sans', sans-serif;
         font-size: 16px;
-            box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         border-radius: 2px;
+        height: 44px;
+        margin-top: -3px;
     }
     .page-count:disabled {
         background: #ffffff;
@@ -736,6 +731,7 @@ export default {
         color: #949494 !important;
         margin: 7px 0;
         display: inline-block;
+        margin-right: 5px;
     }
 
      .calculator-button {
@@ -757,10 +753,6 @@ export default {
         appearance: none;
     }
 
-    .active {
-        padding-bottom: 12px;
-        padding-top: 12px;
-    }
     .create-btn-wrapper {
         display: inline-block;
         float: left;
@@ -786,7 +778,7 @@ export default {
         position: absolute;
         width: 320px;
         z-index: 999999;
-        padding-bottom: 18px;
+        padding-bottom: 17px;
         padding-top: 17px;
         border-radius: 4px;
     }
@@ -861,7 +853,7 @@ export default {
     }
 
     /* Datatable controls */
-    div.entities-count-control select {
+    .entities-count-control select {
         text-align: center;
         background: #ffffff !important;
         color: #373737 !important;
@@ -882,6 +874,7 @@ export default {
     .table-controls {
         float: right;
         margin-top: 30px;
+        margin-right: -15px;
     }
 
     .table-controls > div {
@@ -890,7 +883,6 @@ export default {
         vertical-align: middle;
         margin: 0 !important;
         padding: 0 !important;
-        margin-right: -15px;
     }
 
     .pagination > span, template, .table-controls > span, .elements-control > span, .dataTables_info {
@@ -900,8 +892,8 @@ export default {
         color: #949494 !important;
         margin: 12px 0;
         display: inline-block;
+        margin-left: 16px;
         margin-right: 14px;
-        margin-left: 14px;
     }
 
     .pagination > ul {
@@ -930,7 +922,6 @@ export default {
     }
 
     .pagination > .prev a {
-        padding-right: 6px;
         padding-bottom: 10px; 
         border: none;
         background: none;
@@ -938,11 +929,11 @@ export default {
     }
 
     .pagination > .next a {
-        padding-left: 6px;
         padding-bottom: 10px; 
         border: none;
         background: none;
         padding-top: 5px;
+        padding-left: 8px;
     }
 
     .pagination > .prev a:hover {
@@ -970,6 +961,7 @@ export default {
         color: #373737 !important;
         background: none;
         border: none;
+        padding-right: 8px;
     }
 
     /*

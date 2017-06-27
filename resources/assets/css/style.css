@@ -285,11 +285,13 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 .create-btn-wrapper > .btn {
-    padding: 11px 12px;
     width: 190px;
     display: inline-flex;
     font-size: 18px;
     font-weight: 500;
+    padding-left: 6px;
+    padding-bottom: 10px;
+    padding-top: 9px;
 >>>>>>> 12c81d33a1ef5d4bcd0502617cf11bf1bf81186e
 }
 
@@ -1925,7 +1927,7 @@ span.caret-dev-top {
 }
 
 th .custom-checkbox > [type="checkbox"]:checked + label::after {
-    background: #01a8fe;
+    background-color: #373737;
 }
 
 table.table {
@@ -2283,3 +2285,22 @@ div.dataTables_length select {
 .vue-dropdown > button:focus {
     outline: none;
 }
+.textanimation :affter {
+    color: #01a8fe;
+}
+
+.textanimation:visited {
+    color: #fff;
+    background-color: #01a8fe;
+}
+
+.vue-dropdown-option > label {
+    margin-bottom: 0px;
+}       
+
+.caret.active {
+    border-bottom: 4px solid;
+    border-top: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+

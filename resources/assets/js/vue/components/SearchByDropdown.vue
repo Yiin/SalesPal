@@ -2,7 +2,8 @@
     <div class="vue-dropdown" v-on-clickaway="clickAway">
         <button @click="toggleDropdown" type="button">
             {{ title }}
-            <span class="caret"></span>
+
+            <span :class="{ active: is_open }" class="caret"></span>
         </button>
 
         <div :class="{ open: is_open }" class="vue-dropdown-menu">
@@ -19,7 +20,6 @@
 
                 </template>
                 <template v-else>
-
                     <text-item :option="option" @changed="changed" class="vue-dropdown-option"></text-item>
 
                 </template>
@@ -190,6 +190,16 @@ export default {
         margin-left: -30px;
     }
 
+    .vue-dropdown-option.--checkbox::after {
+    font: normal normal normal 12px/1 'Glyphicons Halflings';
+    content: "\e074";
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    left: 5px;
+    color: #01a8fe;
+    }
+
     .vue-dropdown-option.--checkbox {
         padding-left: 45px;
     }
@@ -205,7 +215,5 @@ export default {
         margin: 5px auto;
     }
 
-    .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
-        background-color: #eee;
-    }
+
 </style>

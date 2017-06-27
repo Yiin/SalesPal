@@ -3,7 +3,7 @@
     <div class="vue-dropdown" v-on-clickaway="clickAway">
         <button @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
             {{ selected.label }}
-            <span class="caret"></span>
+            <span :class="{ active: is_open }" class="caret"></span>
         </button>
 
         <div :class="{ open: is_open }" :style="{ 'min-width': width }" class="vue-dropdown-menu">
@@ -92,13 +92,14 @@ export default {
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
-        height: 46px;
+        height: 44px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
         border-radius: 2px;
-    }
+        margin-top: -6px;
+        }
 
     .vue-dropdown-menu {
         background: #FFFFFF;
@@ -115,8 +116,8 @@ export default {
         display: block;
         position: absolute;
         left: 0;
-        padding-bottom: 23px;
-        padding-top: 18px;
+        padding-bottom: 17px;
+        padding-top: 17px;
     }
 
     .vue-dropdown-menu.open label {
@@ -130,11 +131,12 @@ export default {
     }
 
     .vue-dropdown-menu .vue-dropdown-option {
-        padding-bottom: 4px;
+        padding-bottom: 7px;
         padding-right: 10px;
-        padding-left: 25px;
+        padding-left: 26px;
         text-align: left;
-        padding-top: 4px;
+        padding-top: 6px;
+        margin-bottom: 0px;
     }
 
     .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
