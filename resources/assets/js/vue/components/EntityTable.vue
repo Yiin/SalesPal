@@ -575,16 +575,16 @@ export default {
                 this.contextMenu.elements.push(element);
             });
 
-            this.contextMenu.elements.forEach(element => {
-                if (element !== '' && element.icon && element.title.indexOf(element.icon) !== 0) {
-                    element.title = element.icon + element.title;
-                }
-            });
-
             if (this.contextMenu.elements.length) {
                 this.contextMenu.elements.push('');
                 this.contextMenu.elements.push({ title: `Archive ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('archive');`, before: this.unselectAllBut(id) });
                 this.contextMenu.elements.push({ title: `Delete ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('delete');`, before: this.unselectAllBut(id) });
+
+                this.contextMenu.elements.forEach(element => {
+                    if (element !== '' && element.icon && element.title.indexOf(element.icon) !== 0) {
+                        element.title = element.icon + element.title;
+                    }
+                });
 
                 this.contextMenu.visible = true;
                 this.contextMenu.row = row;

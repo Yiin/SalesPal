@@ -226,7 +226,10 @@ class InvoiceDatatable extends EntityDatatable
                             'currency_id' => $model->currency_id,
                             'amount' => $model->amount
                         ],
-                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>"
+                        'display' => "
+                            <span class='currency_symbol'>{$parts[0]}</span>
+                            <span class='currency_value'>{$parts[1]}</span>
+                        "
                     ];
                 },
             ],
@@ -247,7 +250,10 @@ class InvoiceDatatable extends EntityDatatable
                             'currency_id' => $model->currency_id,
                             'amount' => $partial,
                         ],
-                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value {$color}'>{$parts[1]}</span>"
+                        'display' => "
+                            <span class='currency_symbol'>{$parts[0]}</span>
+                            <span class='currency_value {$color}'>{$parts[1]}</span>
+                        "
                     ];
                 },
                 'visible' => $entityType == ENTITY_INVOICE,
