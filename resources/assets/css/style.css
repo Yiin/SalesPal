@@ -421,6 +421,13 @@ label.control-label {
     font-size: 19px;
 }
 
+.breadcrumb:not(.path) > li { 
+    color: #333333;
+    font-weight: 600;
+    font-size: 25px;
+    margin-top: 7px;
+}
+
 div.panel {
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -1921,7 +1928,7 @@ span.caret-dev-top {
 }
 
 th .custom-checkbox > [type="checkbox"]:checked + label::after {
-    background: #01a8fe;
+    background-color: #373737;
 }
 
 table.table {
@@ -2279,3 +2286,22 @@ div.dataTables_length select {
 .vue-dropdown > button:focus {
     outline: none;
 }
+.textanimation :affter {
+    color: #01a8fe;
+}
+
+.textanimation:visited {
+    color: #fff;
+    background-color: #01a8fe;
+}
+
+.vue-dropdown-option > label {
+    margin-bottom: 0px;
+}       
+
+.caret.active {
+    border-bottom: 4px solid;
+    border-top: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
