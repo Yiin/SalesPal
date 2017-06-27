@@ -16,6 +16,19 @@ class VendorDatatable extends EntityDatatable
         return $model->name;
     }
 
+    public function calculator()
+    {
+        return [
+            'default' => 'expenses',
+            'options' => [
+                [
+                    'name' => 'expenses',
+                    'label' => trans('texts.expenses')
+                ]
+            ]
+        ];
+    }
+
     public function filters()
     {
         $filters = [
@@ -191,7 +204,16 @@ class VendorDatatable extends EntityDatatable
                     $currency = Utils::formatMoney($sum, $currency_id, $vendor->country_id);
                     $parts = explode(' ', $currency);
 
-                    return "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>";
+                    return [
+                        'data' => [
+                            'symbol' => Utils::currencySymbol($currency_id),
+                            'value' => $sum
+                        ],
+                        'display' => "
+                            <span class='currency_symbol'>{$parts[0]}</span>
+                            <span class='currency_value'>{$parts[1]}</span>
+                        "
+                    ];
                 }
             ],
         ];

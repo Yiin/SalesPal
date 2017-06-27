@@ -82,9 +82,16 @@
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
 
                 <div v-if="calculator.value" class="calculator">
-                    <span>Total</span>
+                    <div class="block">
+                        <span>Total</span>
                         <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="150px"></dropdown>
-                    <span>for selected is {{ calculator_result }}</span>
+                        <span>for selected is</span>
+                    </div>
+                    <div class="block">
+                        <span v-for="(value, key) in calculator_result" class="result">
+                            {{ key }} {{ value }}
+                        </span>
+                    </div>
                 </div>
 
                 <div class="table-controls">
@@ -136,6 +143,7 @@
 
 <script>
 import { mixin as clickaway } from '../mixins/clickaway';
+import numeral from 'numeral';
 
 export default {
     mixins: [
@@ -230,7 +238,32 @@ export default {
         },
 
         calculator_result() {
-            return this.calculator.value;
+            let result = {};
+
+            this.table_rows.filter(row => this.selected_entities.indexOf(row.__id) !== -1).forEach(row => {
+                let field = row[this.calculator.value];
+
+                if (typeof result[field.data.symbol] === 'undefined') {
+                    result[field.data.symbol] = 0;
+                }
+                if (field.data.value) {
+                    result[field.data.symbol] += parseFloat(field.data.value);
+                }
+            });
+
+            let no_values = true;
+
+            for (let key in result) {
+                result[key] = numeral(result[key]).format('0,0.00');
+
+                no_values = false;
+            }
+
+            if (no_values) {
+                result['$'] = numeral(0).format('0,0.00');
+            }
+
+            return result;
         },
 
         entity_singular() {
@@ -730,11 +763,20 @@ export default {
         margin-top: 34px;
     }
 
+    .calculator > .block {
+        display: inline-block;
+    }
+
+    .calculator .result {
+        color: #373737;
+        display: block;
+    }
+
     .calculator span {
         vertical-align: top;
         font-size: 16px;
-        font-weight: 600;
-        color: #949494 !important;
+        font-weight: bold;
+        color: #949494;
         margin: 7px 0;
         display: inline-block;
         margin-right: 5px;

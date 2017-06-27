@@ -33,7 +33,12 @@ class BaseController extends Controller
                         'label' => trans('texts.' . $column['field']),
                         'width' => $column['width'] ?? 'auto'
                     ];
-                }, $this->datatable->columns()),
+                }, array_filter($this->datatable->columns(), function ($column) {
+                    if (isset($column['visible'])) {
+                        return $column['visible'];
+                    }
+                    return true;
+                })),
             'calculator' => $this->datatable->calculator()
         ];
     }
@@ -118,6 +123,11 @@ class BaseController extends Controller
          * Row Checkbox
          */
         $row['__checkbox'] = $this->getRowCheckboxData($model);
+
+        /**
+         * Row id
+         */
+        $row['__id'] = $model->public_id ?? $model->id;
 
         /**
          * Row Columns

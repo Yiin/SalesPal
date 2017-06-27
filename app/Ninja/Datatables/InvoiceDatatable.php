@@ -17,6 +17,28 @@ class InvoiceDatatable extends EntityDatatable
         return $this->entityType === ENTITY_INVOICE ? $model->invoice_number : $model->quote_number;
     }
 
+    public function calculator()
+    {
+        $calc = [
+            'default' => 'amount',
+            'options' => [
+                [
+                    'name' => 'amount',
+                    'label' => trans('texts.amount')
+                ]
+            ]
+        ];
+
+        if ($this->entityType === ENTITY_INVOICE) {
+            $calc['options'][] = [
+                'name' => 'paid_in',
+                'label' => trans('texts.paid_in')
+            ];
+        }
+
+        return $calc;
+    }
+
     public function filters()
     {
         $filters = [
@@ -223,8 +245,8 @@ class InvoiceDatatable extends EntityDatatable
 
                     return [
                         'data' => [
-                            'currency_id' => $model->currency_id,
-                            'amount' => $model->amount
+                            'symbol' => Utils::currencySymbol($model->currency_id),
+                            'value' => $model->amount
                         ],
                         'display' => "
                             <span class='currency_symbol'>{$parts[0]}</span>
@@ -247,8 +269,8 @@ class InvoiceDatatable extends EntityDatatable
 
                     return [
                         'data' => [
-                            'currency_id' => $model->currency_id,
-                            'amount' => $partial,
+                            'symbol' => Utils::currencySymbol($model->currency_id),
+                            'value' => $partial
                         ],
                         'display' => "
                             <span class='currency_symbol'>{$parts[0]}</span>
