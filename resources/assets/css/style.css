@@ -426,8 +426,8 @@ label.control-label {
   text-transform: capitalize;
 }
 
-.breadcrumb:not(.path) > li { 
-    color: #333333;
+.breadcrumb:not(.path) > li {
+    color: #373737;
     font-weight: 600;
     font-size: 25px;
     margin-top: 7px;
