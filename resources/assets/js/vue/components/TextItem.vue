@@ -64,8 +64,7 @@ export default {
 }
 
 [contenteditable=true]:focus::before {
-    background: none;
-    color: white;
+    display: none;
 }
 
 [contenteditable=true]:focus {
