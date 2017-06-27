@@ -242,14 +242,14 @@ class Task extends EntityModel
     {
         if ($invoiceNumber) {
             if (floatval($balance)) {
-                return 'default';
+                return 'invoiced';
             } else {
-                return 'success';
+                return 'paid';
             }
         } elseif ($isRunning) {
-            return 'primary';
+            return 'running';
         } else {
-            return 'warning';
+            return 'logged';
         }
     }
 

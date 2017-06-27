@@ -1011,40 +1011,4 @@ export default {
         border: none;
         padding-right: 8px;
     }
-
-    /*
-        Status Labels
-    */
-   
-   .label {
-        padding-top: 6px;
-        padding-bottom: 5px;
-        font-size: 100%;
-        width: 102px;
-        display: inline-block;
-   }
-   
-   .label-viewed {
-        background-color: #01A7FD;
-    }
-
-    .label-draft {
-        background-color: #383838;
-    }
-
-    .label-sent {
-        background-color: #5BC0DE;
-    }
-
-    .label-paid {
-        background-color: #4ECD09;
-    }
-
-    .label-overdue {
-        background-color: #E2492F;
-    }
-
-    .label-partial {
-        background-color: #FF6C11;
-    }
 </style>

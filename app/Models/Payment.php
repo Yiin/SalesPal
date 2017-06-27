@@ -21,12 +21,12 @@ class Payment extends EntityModel
     use SoftDeletes;
 
     public static $statusClasses = [
-        PAYMENT_STATUS_PENDING => 'info',
-        PAYMENT_STATUS_COMPLETED => 'success',
-        PAYMENT_STATUS_FAILED => 'danger',
-        PAYMENT_STATUS_PARTIALLY_REFUNDED => 'primary',
-        PAYMENT_STATUS_VOIDED => 'default',
-        PAYMENT_STATUS_REFUNDED => 'default',
+        PAYMENT_STATUS_PENDING => 'pending',
+        PAYMENT_STATUS_COMPLETED => 'completed',
+        PAYMENT_STATUS_FAILED => 'failed',
+        PAYMENT_STATUS_PARTIALLY_REFUNDED => 'partially-refunded',
+        PAYMENT_STATUS_VOIDED => 'voided',
+        PAYMENT_STATUS_REFUNDED => 'refunded',
     ];
 
     /**
@@ -344,10 +344,10 @@ class Payment extends EntityModel
     public static function calcStatusClass($model, $statusId)
     {
         if ($model->isArchived()) {
-            return 'warning';
+            return 'archived';
         }
         if ($model->isDeleted()) {
-            return 'danger';
+            return 'deleted';
         }
         return static::$statusClasses[$statusId];
     }

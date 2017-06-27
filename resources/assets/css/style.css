@@ -2310,3 +2310,60 @@ div.dataTables_length select {
     border-left: 4px solid transparent;
 }
 
+/*
+    Status Labels
+*/
+
+.label {
+    padding-top: 6px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    width: 102px;
+    display: inline-block;
+    text-transform: uppercase;
+    background-color: #FF6CC3;
+}
+
+.label-viewed {
+    background-color: #01A7FD;
+}
+
+.label-draft {
+    background-color: #383838;
+}
+
+.label-sent {
+    background-color: #5BC0DE;
+}
+
+.label-paid {
+    background-color: #4ECD09;
+}
+
+.label-overdue {
+    background-color: #E2492F;
+}
+
+.label-partial {
+    background-color: #FF6C11;
+}
+
+.label-pending {}
+
+.label-completed {}
+
+.label-failed {}
+
+.label-partially-refunded {}
+
+.label-voided {}
+
+.label-refunded {}
+
+.label-invoiced {}
+
+.label-logged {}
+
+.label-approved {}
+
+.label-running {}
