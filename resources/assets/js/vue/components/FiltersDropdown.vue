@@ -2,7 +2,7 @@
     <div class="vue-dropdown" v-on-clickaway="clickAway">
         <button @click="toggleDropdown" type="button">
             {{ title }}
-            <span class="caret"></span>
+            <span :class="{ active: is_open }" class="caret"></span>
         </button>
 
         <div :class="{ open: is_open }" class="vue-dropdown-menu">
@@ -47,6 +47,8 @@
                                     <template v-else>
 
                                         <div v-if="!searchFor || _option.label.toLowerCase().indexOf(searchFor) !== -1" @click="toggle(_option)" :class="{ checked: _option.selected }" class="vue-dropdown-option --checkbox">
+                                            <input type="checkbox" name="asdasd[]" class="" value="1">
+                                            <label class="checkinthebox"></label>
                                             <label>{{ _option.label }}</label>
                                         </div>
 
@@ -57,8 +59,7 @@
 
                     </template>
                     <template v-else>
-                        <div @click="toggle(option)" :class="{ checked: option.selected }" class="vue-dropdown-option --checkbox">
-
+                        <div @click="toggle(option)" :class="{ checked: option.selected }" class="vue-dropdown-option">
                             <label>{{ option.label }}</label>
 
                         </div>
@@ -176,7 +177,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style scoped>  
     .caret {
         margin-left: 120px;
     }
@@ -198,6 +199,8 @@ export default {
         color: #373737;
         width: 270px;
         border-radius: 2px;
+        height: 46px;
+
     }
 
     .vue-dropdown-menu {
@@ -244,12 +247,13 @@ export default {
     }
 
     .vue-dropdown-menu .vue-dropdown-option {
-        padding-bottom: 6px;
-        padding-right: 10px;
-        padding-left: 55px !important;
-        text-align: left;
-        padding-top: 7px;
+    padding-bottom: 7px;
+    padding-right: 10px;
+    text-align: left;
+    padding-top: 6px;
+    padding-left: 26px;
     }
+    
 
     .vue-dropdown-option.--search {
         width: 90%;
@@ -286,7 +290,7 @@ export default {
     }
 
     .vue-dropdown-option.--checkbox {
-        padding-left: 45px;
+            padding-left: 56px;
     }
 
     .vue-dropdown-option.--checkbox.checked::before {
@@ -302,5 +306,34 @@ export default {
 
     .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
         background-color: #eee;
+    }
+
+    .checkinthebox > [type="checkbox"]:not(:checked) + label, .checkinthebox > [type="checkbox"]:checked + label {
+    font-weight: 300;
+    }
+
+    .checkinthebox > [type="checkbox"]:not(:checked) + label::before, .checkinthebox > [type="checkbox"]:checked + label::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin-top: 0;
+        width: 22px;
+        height: 22px;
+    }
+
+    .checkinthebox > [type="checkbox"]:checked + label::after {
+        content: '';
+        top: 6px;
+        left: 6px;
+        margin: 0px;
+        background: #01a8fe;
+        width: 10px;
+        height: 10px;
+    }
+
+    .checkinthebox > [type="checkbox"]:checked + label::after {
+        transform: scale(1);
     }
 </style>
