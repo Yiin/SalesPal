@@ -230,6 +230,7 @@
 
     #page-content-wrapper {
         padding: 20px;
+        padding-bottom: 200px;
         position: relative;
     }
 
