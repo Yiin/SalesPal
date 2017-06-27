@@ -2,7 +2,7 @@
     <div>
         <ol class="breadcrumb path">
             <li>
-                <a class="glyphicon glyphicon-home" href="/"></a>
+                <a class="fa fa-home" href="/"></a>
             </li>
             <li class="active">{{ entities || entity + 's' }}</li>
         </ol>
