@@ -2348,22 +2348,36 @@ div.dataTables_length select {
     background-color: #FF6C11;
 }
 
-.label-pending {}
+.label-pending {
+    background-color: #5BC0DE;
+}
 
-.label-completed {}
+.label-completed {
+    background-color: #4FCD09;
+}
 
 .label-failed {}
 
-.label-partially-refunded {}
+.label-partially-refunded {
+    background-color:  #FF6C11;
+}
 
 .label-voided {}
 
-.label-refunded {}
+.label-refunded {
+    background-color: #373737;
+}
 
-.label-invoiced {}
+.label-invoiced {
+    background-color: #940E96;
+}
 
-.label-logged {}
+.label-logged {
+    background-color: #337AB7;
+}
 
-.label-approved {}
+.label-approved {
+    background-color: #4FCD09;
+}
 
 .label-running {}
