@@ -44,7 +44,7 @@ export default {
 }
 
 [contenteditable=true] {
-    font-weight: bold;
+    font-weight: 600;
     color: #01a8fe;
 }
 
