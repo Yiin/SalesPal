@@ -747,7 +747,7 @@ export default {
         box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
         font-family: 'Open Sans', sans-serif;
         font-size: 16px;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0,  0.05), 1px 2px 5px rgba(0, 0, 0,  0.05), 0px 3px 5px rgba(0, 0, 0,  0.05);
         border-radius: 2px;
         height: 44px;
         margin-top: -3px;
@@ -790,7 +790,7 @@ export default {
         width: 160px !important;
         border: #fff;
         width: 160px;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0,  0.05), 1px 2px 5px rgba(0, 0, 0,  0.05), 0px 3px 5px rgba(0, 0, 0,  0.05);
         font-size: 16px;
         padding-top: 11px;
         margin-top: -4px;
@@ -913,7 +913,7 @@ export default {
         background: #ffffff !important;
         color: #373737 !important;
         border: none;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0,  0.05), 1px 2px 5px rgba(0, 0, 0,  0.05), 0px 3px 5px rgba(0, 0, 0,  0.05);
         font-size: 16px;
         padding: 7px 15px 7px;
         width: 80px;
