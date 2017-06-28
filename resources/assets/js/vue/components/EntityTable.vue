@@ -870,7 +870,7 @@ export default {
     }
 
     .context-menu li:not(.divider):not(.passive):hover {
-        background-color: #eee;
+        background-color: #f5f5f5;
     }
 
     .context-menu .value {
