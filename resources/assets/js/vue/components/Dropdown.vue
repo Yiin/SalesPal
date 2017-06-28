@@ -80,6 +80,7 @@ export default {
     .caret {
         float: right;
         margin-top: 9px;
+        color: #373737;
     }
 
     .vue-dropdown {
@@ -109,7 +110,6 @@ export default {
         padding: 0;
         position: absolute;
         z-index: 999999;
-
     }
 
     .vue-dropdown-menu.open {

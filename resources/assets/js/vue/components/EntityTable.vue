@@ -95,17 +95,19 @@
                 </div>
 
                 <div class="table-controls">
-                    <span>Page</span>
-                    <div class="pagination">
-                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
-                            <a>«</a>
-                        </li>
-                        <li><input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active page-count"></li>
-                        <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
-                            <a>»</a>
-                        </li>
-                    </div>
-                    <div class="elements-control">
+                    <div class="block">
+                        <span>Page</span>
+                        <div class="pagination">
+                            <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
+                                <a>«</a>
+                            </li>
+                            <li>
+                                <input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active page-count">
+                            </li>
+                            <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
+                                <a>»</a>
+                            </li>
+                        </div>
                         <span>
                             <template v-if="table_state.entities_count > 0">
                                 Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
@@ -114,9 +116,9 @@
                                 Showing 0 entries
                             </template>
                         </span>
+                        <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
+                        <span>rows</span>
                     </div>
-                    <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
-                    <span>rows</span>
                 </div>
             </div>
 
@@ -792,12 +794,13 @@ export default {
     .calculator .result {
         color: #373737;
         display: block;
+        font-weight: bold;
     }
 
     .calculator span {
         vertical-align: top;
         font-size: 16px;
-        font-weight: bold;
+        font-weight: 500;
         color: #949494;
         margin: 7px 0;
         display: inline-block;
@@ -946,32 +949,29 @@ export default {
     }
 
     .table-controls {
+        display: inline-flex;
         float: right;
-        margin-top: 30px;
-        margin-right: -15px;
+        margin-top: 35px;
     }
 
-    .table-controls > div {
-        float: none !important;
+    .table-controls > .block {
         display: inline-block;
-        vertical-align: middle;
-        margin: 0 !important;
-        padding: 0 !important;
     }
 
-    .pagination > span, template, .table-controls > span, .elements-control > span, .dataTables_info {
+    .table-controls span {
+        display: inline-block;
         vertical-align: top;
-        font-size: 16px;
+        margin: 7px 0;
         font-weight: 600;
-        color: #949494 !important;
-        margin: 12px 0;
-        display: inline-block;
-        margin-left: 14px;
-        margin-right: 14px;
+        color: #949494;
+        font-size: 16px;
     }
 
-    .pagination > ul {
-        margin: 0 20px;
+    .pagination {
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 4px;
+        margin: 0 15px;
     }
 
     .pagination > li {
@@ -982,7 +982,6 @@ export default {
     .pagination .page {
         width: 70px;
         text-align: center;
-        margin-top: 1px;
     }
 
     .pagination > .prev a, .pagination > .next a {
@@ -1008,18 +1007,16 @@ export default {
         padding-bottom: 10px; 
         border: none;
         background: none;
-        padding-top: 5px;
         padding-left: 6px;
         margin-right: -2px;
-
     }
 
     .pagination > .prev a:hover {
-    color: #333;
+        color: #333;
     }
 
     .pagination > .next a:hover {
-    color: #333;
+        color: #333;
     }
 
     .pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
@@ -1040,9 +1037,10 @@ export default {
         background: none;
         border: none;
     }
+
     th .custom-checkbox > [type="checkbox"] + label::before {
-    border-color: #ffffff !important;
-    background: #333333 !important;
+        border-color: #ffffff !important;
+        background: #333333 !important;
     }
 
     th .custom-checkbox > [type="checkbox"]:checked + label::after {
