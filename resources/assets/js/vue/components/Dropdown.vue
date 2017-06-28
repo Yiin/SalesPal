@@ -95,7 +95,7 @@ export default {
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0px 3px 5px rgba(0, 0, 0, 0.05);
         height: 44px;
         text-align: left;
-        padding: 0 15px 1px;
+        padding: 0 15px 2px;
         font-size: 16px;
         color: #373737;
         border-radius: 2px;
