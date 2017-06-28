@@ -844,7 +844,7 @@ export default {
         width: 320px;
         z-index: 999999;
         padding-bottom: 17px;
-        padding-top: 5px;
+        padding-top: 6px;
         border-radius: 2px;
     }
 
