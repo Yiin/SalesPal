@@ -765,7 +765,7 @@ export default {
         border-radius: 2px;
         height: 44px;
         margin-top: -3px;
-        padding-bottom: 2px;
+        padding-bottom: 3px;
     }
 
     .page-count:disabled {
