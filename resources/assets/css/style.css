@@ -2310,6 +2310,11 @@ div.dataTables_length select {
     border-left: 4px solid transparent;
 }
 
+.table-heading-controls > .create-btn-wrapper,
+.table-heading-controls > .vue-dropdown {
+    vertical-align: middle;
+}
+
 /*
     Status Labels
 */

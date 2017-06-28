@@ -188,19 +188,16 @@ export default {
     }
 
     .vue-dropdown > button {
-        width: 200px;
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        width: 270px;
         height: 47px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
-        width: 270px;
         border-radius: 2px;
-        height: 46px;
-
     }
 
     .vue-dropdown-menu {

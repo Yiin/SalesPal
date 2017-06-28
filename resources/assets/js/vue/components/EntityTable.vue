@@ -6,7 +6,7 @@
             </li>
             <li class="active">{{ entities || entity + 's' }}</li>
         </ol>
-        <div class="row">
+        <div class="row table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
             <filters-dropdown v-if="filters.length" :options="filters"></filters-dropdown>
@@ -803,7 +803,6 @@ export default {
 
     .create-btn-wrapper {
         display: inline-block;
-        float: left;
         margin: 0 15px;
     }
 
