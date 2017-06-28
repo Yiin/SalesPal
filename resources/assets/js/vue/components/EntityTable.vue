@@ -79,7 +79,7 @@
             <!-- 
                 Table Controls
              -->
-            <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
+            <div v-show="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
 
                 <div v-if="calculator.value" class="calculator">
                     <div class="block">
@@ -114,7 +114,7 @@
                                 Showing 0 entries
                             </template>
                         </span>
-                    </div>                 
+                    </div>
                     <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="85px"></dropdown>
                     <span>rows</span>
                 </div>
