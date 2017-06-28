@@ -80,6 +80,7 @@ export default {
     .caret {
         float: right;
         margin-top: 8px;
+
     }
 
     .vue-dropdown {
@@ -98,7 +99,7 @@ export default {
         font-size: 16px;
         color: #373737;
         border-radius: 2px;
-        margin-top: -6px;
+        margin-top: -3px;
         }
 
     .vue-dropdown-menu {
@@ -141,5 +142,12 @@ export default {
 
     .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
         background-color: #eee;
+    }
+
+    .caret.active {
+    border-bottom: 4px solid;
+    border-top: 4px solid transparent;
+    border-left: 4px solid transparent;
+    margin-top: 3px !important;
     }
 </style>

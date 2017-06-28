@@ -50,6 +50,6 @@
     @endforeach
 
     @foreach ($datatable->centerAlignIndices() as $index)
-        table.dataTable td:nth-child({{ $index }}), table.dataTable th:nth-child({{ $index }}) { text-align: center; padding-left: 0; padding-right: 0; }
+        table.dataTable td:nth-child({{ $index }}), table.dataTable th:nth-child({{ $index }}) { text-align: center; padding: 0; }
     @endforeach
 </style>
