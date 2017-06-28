@@ -199,7 +199,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'client_name',
-                'width' => $entityType == ENTITY_INVOICE ? '20%' : '26%',
+                'width' => $entityType == ENTITY_INVOICE ? '21%' : '27%',
                 'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                         return [
@@ -217,7 +217,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'date',
-                'width' => '11%',
+                'width' => '10%',
                 'value' => function ($model) {
                     return [
                         'data' => $model->invoice_date,
