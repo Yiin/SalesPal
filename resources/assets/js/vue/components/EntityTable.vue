@@ -709,10 +709,8 @@ export default {
 </script>
 
 <style scoped>
-
-
     .new-client {
-         width: 190px;
+        width: 190px;
         display: inline-flex;
         font-size: 18px;
         border-radius: 2px
