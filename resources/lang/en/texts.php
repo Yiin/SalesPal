@@ -2125,6 +2125,7 @@ $LANG = array(
     'unassigned' => 'Unassigned',
     'task' => 'Task',
     'contact_name' => 'Contact Name',
+    'contact_number' => 'Contact Number',
     'city_state_postal' => 'City/State/Postal',
     'custom_field' => 'Custom Field',
     'account_fields' => 'Company Fields',
