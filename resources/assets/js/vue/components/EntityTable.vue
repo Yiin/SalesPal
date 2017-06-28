@@ -791,6 +791,10 @@ export default {
         margin-left: 4px;
     }
 
+    .calculator .block:first-child {
+        margin-right: 9px;
+    }
+
     .calculator .result {
         color: #373737;
         display: block;
