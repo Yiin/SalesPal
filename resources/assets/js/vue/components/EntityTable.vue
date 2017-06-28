@@ -87,7 +87,7 @@
                         <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
                         <span>for selected is</span>
                     </div>
-                    <div class="block">
+                    <div class="block calculatormargin">
                         <span v-for="(value, key) in calculator_result" class="result">
                             {{ key }} {{ value }}
                         </span>
@@ -797,7 +797,8 @@ export default {
         color: #949494;
         margin: 7px 0;
         display: inline-block;
-        margin-right: 5px;
+        margin-left: -4px;
+        margin-right: -4px;
     }
 
      .calculator-button {
@@ -977,6 +978,7 @@ export default {
     .pagination .page {
         width: 70px;
         text-align: center;
+        margin-top: 1px;
     }
 
     .pagination > .prev a, .pagination > .next a {
@@ -995,7 +997,7 @@ export default {
         border: none;
         background: none;
         padding-top: 5px;
-        padding-right: 7px;
+        padding-right: 6px;
     }
 
     .pagination > .next a {
@@ -1003,7 +1005,8 @@ export default {
         border: none;
         background: none;
         padding-top: 5px;
-        padding-left: 7px;
+        padding-left: 6px;
+        margin-right: -2px;
 
     }
 
@@ -1043,5 +1046,8 @@ export default {
         background: #ffffff;
     }
 
+    .calculatormargin {
+        margin-left: 11px;
+    }
 
 </style>

@@ -56,7 +56,7 @@ export default {
 
 [contenteditable=true]:hover {
     color: black;
-    background: #d4d4d4;
+    background: #f5f5f5;
 }
 
 [contenteditable=true]:hover::before {

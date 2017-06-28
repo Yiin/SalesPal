@@ -286,6 +286,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     display: inline-flex;
     font-size: 18px;
     font-weight: 500;
+    height: 46px;
 }
 
 .btn-success {
