@@ -199,7 +199,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'client_name',
-                'width' => $entityType == ENTITY_INVOICE ? '21%' : '27%',
+                'width' => $entityType == ENTITY_INVOICE ? '19%' : '25%',
                 'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                         return [
@@ -217,7 +217,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'date',
-                'width' => '10%',
+                'width' => '11%',
                 'value' => function ($model) {
                     return [
                         'data' => $model->invoice_date,
@@ -238,7 +238,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'amount',
-                'width' => '14%',
+                'width' => '15%',
                 'value' => function ($model) {
                     $currency = Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
                     $parts = explode(' ', $currency);
