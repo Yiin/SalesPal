@@ -783,6 +783,8 @@ export default {
 
     .calculator > .block {
         display: inline-block;
+        margin-right: 7px;
+        margin-left: 4px;
     }
 
     .calculator .result {
