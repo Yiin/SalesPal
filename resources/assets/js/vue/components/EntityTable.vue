@@ -267,7 +267,7 @@ export default {
         },
 
         entity_singular() {
-            return this.entity[0].toUpperCase() + this.entity.slice(1);
+            return this.entity.split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
         },
 
         entity_plural() {
@@ -587,7 +587,7 @@ export default {
 
             if (this.selected_entities.length > 1) {
                 this.contextMenu.elements.push({
-                    title: `Selected ${this.entities || this.entity + 's'}: ${this.selected_entities.length}`,
+                    title: `Selected ${this.entities || this.entity + 's'}: <span class="valuecolor"> ${this.selected_entities.length}</span>`,
                 });
                 this.contextMenu.elements.push({
                     title: 'Archive', 
