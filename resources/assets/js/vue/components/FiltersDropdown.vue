@@ -184,7 +184,7 @@ export default {
         border-left: 4px solid transparent;
         margin-top: -4px;
     }
-    
+
     .caret {
         margin-left: 118px;
     }
@@ -199,7 +199,7 @@ export default {
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
         width: 268px;
-        height: 47px;
+        height: 44px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
@@ -343,5 +343,9 @@ export default {
 
     .checkinthebox > [type="checkbox"]:checked + label::after {
         transform: scale(1);
+    }
+
+    .vue-dropdown-option::hover {
+    background-color: #f5f5f5;
     }
 </style>
