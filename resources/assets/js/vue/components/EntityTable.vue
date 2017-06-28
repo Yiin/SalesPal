@@ -4,7 +4,7 @@
             <li>
                 <a class="fa fa-home" href="/"></a>
             </li>
-            <li class="active">{{ entities || entity + 's' }}</li>
+            <li class="active">{{ entity_plural }}</li>
         </ol>
         <div class="row table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
@@ -268,6 +268,10 @@ export default {
 
         entity_singular() {
             return this.entity[0].toUpperCase() + this.entity.slice(1);
+        },
+
+        entity_plural() {
+            return (this.entities || this.entity + 's').replace('_', ' ');
         }
 
     },
@@ -943,7 +947,7 @@ export default {
         color: #949494 !important;
         margin: 12px 0;
         display: inline-block;
-        margin-left: 16px;
+        margin-left: 14px;
         margin-right: 14px;
     }
 
@@ -973,10 +977,11 @@ export default {
     }
 
     .pagination > .prev a {
-        padding-bottom: 10px; 
+        padding-bottom: 10px;
         border: none;
         background: none;
-        padding-top: 5px;  
+        padding-top: 5px;
+        padding-right: 8px;
     }
 
     .pagination > .next a {
@@ -1012,6 +1017,5 @@ export default {
         color: #373737 !important;
         background: none;
         border: none;
-        padding-right: 8px;
     }
 </style>
