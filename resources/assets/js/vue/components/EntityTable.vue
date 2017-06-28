@@ -973,10 +973,11 @@ export default {
     }
 
     .pagination > .prev a {
-        padding-bottom: 10px; 
+        padding-bottom: 10px;
         border: none;
         background: none;
-        padding-top: 5px;  
+        padding-top: 5px;
+        padding-right: 8px;
     }
 
     .pagination > .next a {
@@ -1012,6 +1013,5 @@ export default {
         color: #373737 !important;
         background: none;
         border: none;
-        padding-right: 8px;
     }
 </style>
