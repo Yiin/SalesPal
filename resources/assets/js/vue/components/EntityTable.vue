@@ -943,7 +943,7 @@ export default {
         color: #949494 !important;
         margin: 12px 0;
         display: inline-block;
-        margin-left: 16px;
+        margin-left: 14px;
         margin-right: 14px;
     }
 
