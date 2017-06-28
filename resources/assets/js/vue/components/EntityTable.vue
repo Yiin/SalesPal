@@ -559,7 +559,7 @@ export default {
                 });
                 this.contextMenu.elements.push('');
             }
-            this.contextMenu.elements.push({ title: `${this.entity_singular}: ${row.__title}` });
+            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="value">${row.__title}</span>` });
 
             row.__actions.forEach(action => {
                 let element = action;
@@ -806,6 +806,10 @@ export default {
 
     .context-menu li:not(.divider):not(.passive):hover {
         background-color: #eee;
+    }
+
+    .context-menu .value {
+        color: #01a8fe;
     }
 
     .context-menu-close {
