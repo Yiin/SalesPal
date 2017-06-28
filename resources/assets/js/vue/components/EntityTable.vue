@@ -29,7 +29,7 @@
                     <tr>
                         <th v-if="bulkEdit" style="width: 4%">
                             <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox">
-                                <input type="checkbox" v-model="checkboxAll">
+                                <input type="checkbox" v-model="all_rows_are_checked">
                                 <label></label>
                             </div>
                         </th>
@@ -219,7 +219,14 @@ export default {
     computed: {
 
         all_rows_are_checked() {
-            return (this.selected_entities.length === this.table_rows.filter(row => row.__checkbox.show).length);
+            let missing = false;
+
+            this.table_rows.forEach(row => {
+                if (this.selected_entities.indexOf(row.__id) === -1) {
+                    missing = true;
+                }
+            });
+            return !missing;
         },
 
         showing_from() {
@@ -544,14 +551,21 @@ export default {
 
 
         toggleSelectAll() {
-            let select = !this.all_rows_are_checked;
-
-            this.checkboxAll = select;
-            this.selected_entities = [];
-
-            if (select) {
-                this.table_rows.forEach(row => this.selected_entities.push(row.__checkbox.data.id));
+            if (this.all_rows_are_checked) {
+                this.table_rows
+                    .filter(row => this.selected_entities.indexOf(row.__id) !== -1)
+                    .forEach(row => {
+                        let index = this.selected_entities.indexOf(row.__id);
+                        this.selected_entities.splice(index, 1);
+                    });
             }
+            else {
+                this.table_rows
+                    .filter(row => this.selected_entities.indexOf(row.__id) === -1)
+                    .forEach(row => this.selected_entities.push(row.__id));
+            }
+
+            this.$forceUpdate();
         },
 
 
@@ -821,7 +835,7 @@ export default {
 
     .context-menu {
         background: #FFFFFF;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05),0 3px 1px -2px rgba(0,0,0,0.05),0 1px 5px 0 rgba(0,0,0,0.05);
         display: block;
         list-style: none;
         margin: 0;
