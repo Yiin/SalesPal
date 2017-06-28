@@ -844,8 +844,8 @@ export default {
         width: 320px;
         z-index: 999999;
         padding-bottom: 17px;
-        padding-top: 17px;
-        border-radius: 4px;
+        padding-top: 5px;
+        border-radius: 2px;
     }
 
     .context-menu li, .context-menu li > a {
