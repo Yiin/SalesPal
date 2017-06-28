@@ -351,6 +351,19 @@ class Client extends EntityModel
             ->sum('balance');
     }
 
+    public function getVatState()
+    {
+        $lastCheck = $this->vatChecks()->where(DB::raw("CONCAT(`vat_checks`.`country_code`, `vat_checks`.`vat_number`)", '=', $this->vat_number))->orderBy('id', 'desc')->first();
+
+        if ($lastCheck) {
+            if ($lastCheck->is_valid) {
+                return 'valid';
+            }
+            return 'invalid';
+        }
+        return 'unknown';
+    }
+
     /**
      * @return mixed
      */

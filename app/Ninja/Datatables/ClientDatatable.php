@@ -170,7 +170,11 @@ class ClientDatatable extends EntityDatatable
                 'width' => '20%',
                 'value' => function ($model) {
                     return [
-                        'data' => $model->vat_number,
+                        'data' => [
+                            'feature' => 'CHECK_VAT',
+                            'vat' => $model->vat_number,
+                            'state' => $model->getVatState()
+                        ],
                         'display' => link_to("clients/{$model->public_id}", $model->vat_number)->toHtml()
                     ];
                 },
