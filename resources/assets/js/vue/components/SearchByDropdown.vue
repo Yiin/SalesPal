@@ -117,6 +117,7 @@ export default {
     }
     .caret {
         margin-left: 153px;
+        margin-top: -2px;
     }
 
     .vue-dropdown {
