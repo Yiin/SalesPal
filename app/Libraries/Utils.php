@@ -446,6 +446,22 @@ class Utils
         return $data->first();
     }
 
+    public static function currencySymbol($currencyId = null)
+    {
+        if (!$currencyId) {
+            $currencyId = Session::get(SESSION_CURRENCY, DEFAULT_CURRENCY);
+        }
+
+        $currency = self::getFromCache($currencyId, 'currencies');
+
+        $symbol = trim($currency->symbol);
+
+        if ($symbol) {
+            return $symbol;
+        }
+        return trim($currency->code);
+    }
+
     public static function formatMoney($value, $currencyId = false, $countryId = false, $decorator = false)
     {
         $value = floatval($value);
@@ -487,8 +503,6 @@ class Utils
             return " $value";
         } elseif ($decorator == CURRENCY_DECORATOR_CODE || !$symbol) {
             return "{$code} {$value}";
-        } elseif ($swapSymbol) {
-            return "{$symbol} {$value}";
         } else {
             return "{$symbol} {$value}";
         }

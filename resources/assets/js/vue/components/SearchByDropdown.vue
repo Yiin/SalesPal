@@ -116,22 +116,20 @@ export default {
     .vue-dropdown {
         position: relative;
         display: inline-block;
-        margin: 0 15px;
+        margin: 0 15px 0 0;
     }
 
     .vue-dropdown > button {
-        width: 200px;
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        width: 270px;
         height: 47px;
         text-align: left;
         padding: 0 15px;
         font-size: 16px;
         color: #373737;
-        width: 270px;
         border-radius: 2px;
-        margin-left: -5px;
     }
 
     .vue-dropdown-menu {
@@ -143,7 +141,6 @@ export default {
         position: absolute;
         width: 270px;
         z-index: 999999;
-        margin-left: -5px;
         padding-bottom: 18px;
         padding-top: 17px;
         border-radius: 2;
@@ -177,35 +174,6 @@ export default {
         padding-bottom: 6px;
         padding-left: 25px;
         padding-right: 15px;
-    }
-
-    .vue-dropdown-option.--checkbox::before {
-        content: " ";
-        display: block;
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        border: 1px solid black;
-        vertical-align: middle;
-        margin-left: -30px;
-    }
-
-    .vue-dropdown-option.--checkbox::after {
-    font: normal normal normal 12px/1 'Glyphicons Halflings';
-    content: "\e074";
-    position: absolute;
-    top: 50%;
-    margin-top: -11px;
-    left: 5px;
-    color: #01a8fe;
-    }
-
-    .vue-dropdown-option.--checkbox {
-        padding-left: 45px;
-    }
-
-    .vue-dropdown-option.--checkbox.checked::before {
-        background: #000000;
     }
 
     .vue-dropdown-menu .vue-dropdown-option.separator {

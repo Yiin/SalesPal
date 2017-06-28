@@ -279,20 +279,14 @@ table.dataTable tbody th, table.dataTable tbody td {
 /*buttons*/
 .btn {
     border-radius: 2px;
-<<<<<<< HEAD
-    padding: 9px 12px;
-=======
 }
 
 .create-btn-wrapper > .btn {
+    padding: 11px 12px;
     width: 190px;
     display: inline-flex;
     font-size: 18px;
     font-weight: 500;
-    padding-left: 6px;
-    padding-bottom: 10px;
-    padding-top: 9px;
->>>>>>> 12c81d33a1ef5d4bcd0502617cf11bf1bf81186e
 }
 
 .btn-success {
@@ -425,6 +419,18 @@ label.control-label {
 .breadcrumb {
     background-color: inherit;
     font-size: 19px;
+}
+
+.breadcrumb > li {
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.breadcrumb:not(.path) > li {
+    color: #373737;
+    font-weight: 600;
+    font-size: 25px;
+    margin-top: 7px;
 }
 
 div.panel {
@@ -2304,3 +2310,79 @@ div.dataTables_length select {
     border-left: 4px solid transparent;
 }
 
+.table-heading-controls > .create-btn-wrapper,
+.table-heading-controls > .vue-dropdown {
+    vertical-align: middle;
+}
+
+/*
+    Status Labels
+*/
+
+.label {
+    padding-top: 6px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    width: 102px;
+    display: inline-block;
+    text-transform: uppercase;
+    background-color: #FF6CC3;
+}
+
+.label-viewed {
+    background-color: #01A7FD;
+}
+
+.label-draft {
+    background-color: #383838;
+}
+
+.label-sent {
+    background-color: #5BC0DE;
+}
+
+.label-paid {
+    background-color: #4ECD09;
+}
+
+.label-overdue {
+    background-color: #E2492F;
+}
+
+.label-partial {
+    background-color: #FF6C11;
+}
+
+.label-pending {
+    background-color: #5BC0DE;
+}
+
+.label-completed {
+    background-color: #4FCD09;
+}
+
+.label-failed {}
+
+.label-partially-refunded {
+    background-color:  #FF6C11;
+}
+
+.label-voided {}
+
+.label-refunded {
+    background-color: #373737;
+}
+
+.label-invoiced {
+    background-color: #940E96;
+}
+
+.label-logged {
+    background-color: #337AB7;
+}
+
+.label-approved {
+    background-color: #4FCD09;
+}
+
+.label-running {}

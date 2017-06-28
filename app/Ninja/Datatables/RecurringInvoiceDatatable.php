@@ -16,6 +16,19 @@ class RecurringInvoiceDatatable extends EntityDatatable
         return 'ID ' . $model->public_id;
     }
 
+    public function calculator()
+    {
+        return [
+            'default' => 'amount',
+            'options' => [
+                [
+                    'name' => 'amount',
+                    'label' => trans('texts.amount')
+                ]
+            ]
+        ];
+    }
+
     public function filters()
     {
         return [
@@ -170,7 +183,13 @@ class RecurringInvoiceDatatable extends EntityDatatable
                     $currency = Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
                     $parts = explode(' ', $currency);
 
-                    return "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>";
+                    return [
+                        'data' => [
+                            'symbol' => Utils::currencySymbol($model->currency_id),
+                            'value' => $model->amount
+                        ],
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>"
+                    ];
                 },
             ],
             [

@@ -17,6 +17,19 @@ class ProductDatatable extends EntityDatatable
         return $model->product_key;
     }
 
+    public function calculator()
+    {
+        return [
+            'default' => 'cost',
+            'options' => [
+                [
+                    'name' => 'cost',
+                    'label' => trans('texts.cost')
+                ]
+            ]
+        ];
+    }
+
     public function filters()
     {
         return [
@@ -140,7 +153,10 @@ class ProductDatatable extends EntityDatatable
                 'width' => '16%',
                 'value' => function ($model) {
                     return [
-                        'data' => $model->cost,
+                        'data' => [
+                            'symbol' => Utils::currencySymbol(),
+                            'value' => $model->cost
+                        ],
                         'display' => Utils::formatMoney($model->cost)
                     ];
                 },

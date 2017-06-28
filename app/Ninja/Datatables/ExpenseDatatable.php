@@ -17,6 +17,19 @@ class ExpenseDatatable extends EntityDatatable
         return 'ID ' . $model->public_id;
     }
 
+    public function calculator()
+    {
+        return [
+            'default' => 'amount',
+            'options' => [
+                [
+                    'name' => 'amount',
+                    'label' => trans('texts.amount')
+                ]
+            ]
+        ];
+    }
+
     public function filters()
     {
         return [
@@ -199,7 +212,13 @@ class ExpenseDatatable extends EntityDatatable
                     //     $str .= ' | ' . Utils::formatMoney($converted, $model->invoice_currency_id);
                     // }
 
-                    return "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>";
+                    return [
+                        'data' => [
+                            'symbol' => Utils::currencySymbol($model->expense_currency_id),
+                            'value' => $amount
+                        ],
+                        'display' => "<span class='currency_symbol'>{$parts[0]}</span><span class='currency_value'>{$parts[1]}</span>"
+                    ];
                 },
             ],
             [

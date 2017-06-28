@@ -24,10 +24,6 @@ class ClientDatatable extends EntityDatatable
                 [
                     'name' => 'balance',
                     'label' => trans('texts.balance')
-                ],
-                [
-                    'name' => 'amount',
-                    'label' => trans('texts.amount')
                 ]
             ]
         ];
@@ -217,12 +213,18 @@ class ClientDatatable extends EntityDatatable
                 'width' => '14%',
                 'value' => function ($model) {
                     $currency_id = $model->currency_id ?: Auth::user()->account->currency_id;
-                    $currency = Utils::formatMoney($model->balance, $currency_id);
-                    $parts = explode(' ', $currency);
+                    $balance = Utils::formatMoney($model->balance, $currency_id);
+                    $parts = explode(' ', $balance);
 
                     return [
-                        'data' => $model->parts,
-                        'display' => "<span class='currency_symbol'>{$parts[0]}</span> <span class='currency_value'>{$parts[1]}</span>"
+                        'data' => [
+                            'symbol' => Utils::currencySymbol($currency_id),
+                            'value' => $model->balance
+                        ],
+                        'display' => "
+                            <span class='currency_symbol'>{$parts[0]}</span>
+                            <span class='currency_value'>{$parts[1]}</span>
+                        "
                     ];
                 },
             ]

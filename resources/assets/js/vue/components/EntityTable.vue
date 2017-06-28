@@ -1,7 +1,12 @@
 <template>
     <div>
-        <ol class="breadcrumb"><li><a class="glyphicon glyphicon-home" href="http://185.81.165.216/index.php/index.php"></a></li><li class="active">Clients</li></ol>
-        <div class="row">
+        <ol class="breadcrumb path">
+            <li>
+                <a class="fa fa-home" href="/"></a>
+            </li>
+            <li class="active">{{ entities || entity + 's' }}</li>
+        </ol>
+        <div class="row table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
 
             <filters-dropdown v-if="filters.length" :options="filters"></filters-dropdown>
@@ -77,9 +82,16 @@
             <div v-if="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
 
                 <div v-if="calculator.value" class="calculator">
-                    <span>Total</span>
+                    <div class="block">
+                        <span>Total</span>
                         <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="150px"></dropdown>
-                    <span>for selected is {{ calculator_result }}</span>
+                        <span>for selected is</span>
+                    </div>
+                    <div class="block">
+                        <span v-for="(value, key) in calculator_result" class="result">
+                            {{ key }} {{ value }}
+                        </span>
+                    </div>
                 </div>
 
                 <div class="table-controls">
@@ -131,6 +143,7 @@
 
 <script>
 import { mixin as clickaway } from '../mixins/clickaway';
+import numeral from 'numeral';
 
 export default {
     mixins: [
@@ -225,7 +238,32 @@ export default {
         },
 
         calculator_result() {
-            return this.calculator.value;
+            let result = {};
+
+            this.table_rows.filter(row => this.selected_entities.indexOf(row.__id) !== -1).forEach(row => {
+                let field = row[this.calculator.value];
+
+                if (typeof result[field.data.symbol] === 'undefined') {
+                    result[field.data.symbol] = 0;
+                }
+                if (field.data.value) {
+                    result[field.data.symbol] += parseFloat(field.data.value);
+                }
+            });
+
+            let no_values = true;
+
+            for (let key in result) {
+                result[key] = numeral(result[key]).format('0,0.00');
+
+                no_values = false;
+            }
+
+            if (no_values) {
+                result['$'] = numeral(0).format('0,0.00');
+            }
+
+            return result;
         },
 
         entity_singular() {
@@ -571,16 +609,16 @@ export default {
                 this.contextMenu.elements.push(element);
             });
 
-            this.contextMenu.elements.forEach(element => {
-                if (element !== '' && element.icon && element.title.indexOf(element.icon) !== 0) {
-                    element.title = element.icon + element.title;
-                }
-            });
-
             if (this.contextMenu.elements.length) {
                 this.contextMenu.elements.push('');
                 this.contextMenu.elements.push({ title: `Archive ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('archive');`, before: this.unselectAllBut(id) });
                 this.contextMenu.elements.push({ title: `Delete ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('delete');`, before: this.unselectAllBut(id) });
+
+                this.contextMenu.elements.forEach(element => {
+                    if (element !== '' && element.icon && element.title.indexOf(element.icon) !== 0) {
+                        element.title = element.icon + element.title;
+                    }
+                });
 
                 this.contextMenu.visible = true;
                 this.contextMenu.row = row;
@@ -686,14 +724,15 @@ export default {
     }
 
     .breadcrumb a {
-        margin-right: 10px;
         text-decoration: none;
         color: #01a8fe;
     }
 
     .breadcrumb {
         font-size: 18px;
-        margin-bottom: 7px;
+        margin-bottom: 19px;
+        margin-top: -21px;
+        color: #666666;
     }
 
     .devel-dropdown-toggle {
@@ -724,11 +763,20 @@ export default {
         margin-top: 34px;
     }
 
+    .calculator > .block {
+        display: inline-block;
+    }
+
+    .calculator .result {
+        color: #373737;
+        display: block;
+    }
+
     .calculator span {
         vertical-align: top;
         font-size: 16px;
-        font-weight: 600;
-        color: #949494 !important;
+        font-weight: bold;
+        color: #949494;
         margin: 7px 0;
         display: inline-block;
         margin-right: 5px;
@@ -755,7 +803,6 @@ export default {
 
     .create-btn-wrapper {
         display: inline-block;
-        float: left;
         margin: 0 15px;
     }
 
@@ -966,41 +1013,5 @@ export default {
         background: none;
         border: none;
         padding-right: 8px;
-    }
-
-    /*
-        Status Labels
-    */
-   
-   .label {
-        padding-top: 6px;
-        padding-bottom: 5px;
-        font-size: 100%;
-        width: 102px;
-        display: inline-block;
-   }
-   
-   .label-viewed {
-        background-color: #01A7FD;
-    }
-
-    .label-draft {
-        background-color: #383838;
-    }
-
-    .label-sent {
-        background-color: #5BC0DE;
-    }
-
-    .label-paid {
-        background-color: #4ECD09;
-    }
-
-    .label-overdue {
-        background-color: #E2492F;
-    }
-
-    .label-partial {
-        background-color: #FF6C11;
     }
 </style>

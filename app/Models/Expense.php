@@ -253,21 +253,21 @@ class Expense extends EntityModel
     public static function calcStatusClass($model, $shouldBeInvoiced, $invoiceId, $balance)
     {
         if ($model->isArchived()) {
-            return 'warning';
+            return 'archived';
         }
         if ($model->isDeleted()) {
-            return 'danger';
+            return 'deleted';
         }
         if ($invoiceId) {
             if (floatval($balance) > 0) {
-                return 'default';
+                return 'invoiced';
             } else {
-                return 'success';
+                return 'paid';
             }
         } elseif ($shouldBeInvoiced) {
-            return 'warning';
+            return 'pending';
         } else {
-            return 'primary';
+            return 'logged';
         }
     }
 

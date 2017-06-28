@@ -86,11 +86,11 @@ class Invoice extends EntityModel implements BalanceAffecting
     ];
 
     public static $statusClasses = [
-        INVOICE_STATUS_SENT => 'info',
-        INVOICE_STATUS_VIEWED => 'warning',
-        INVOICE_STATUS_APPROVED => 'success',
-        INVOICE_STATUS_PARTIAL => 'primary',
-        INVOICE_STATUS_PAID => 'success',
+        INVOICE_STATUS_SENT => 'sent',
+        INVOICE_STATUS_VIEWED => 'viewed',
+        INVOICE_STATUS_APPROVED => 'approved',
+        INVOICE_STATUS_PARTIAL => 'partial',
+        INVOICE_STATUS_PAID => 'paid',
     ];
 
     /**
