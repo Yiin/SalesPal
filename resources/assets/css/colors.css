@@ -67,7 +67,7 @@ thead th {
 
 }
 .sidebar-nav li > a.active {
-    /*border-left: 4px solid #01a8fe; */
+    font-weight: 600;
     background-color: #01a8fe;
     color: white;
 }
