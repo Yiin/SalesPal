@@ -92,7 +92,7 @@ export default {
     .vue-dropdown > button {
         background:  white;
         border: none;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0px 3px 5px rgba(0, 0, 0, 0.05);
+        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
         height: 44px;
         text-align: left;
         padding: 0 15px 2px;
@@ -104,7 +104,7 @@ export default {
 
     .vue-dropdown-menu {
         background: #FFFFFF;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05),0 3px 1px -2px rgba(0,0,0,0.05),0 1px 5px 0 rgba(0,0,0,0.05);
+        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
         display: none;
         margin: 0;
         padding: 0;
