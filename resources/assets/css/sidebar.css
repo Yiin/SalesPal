@@ -325,6 +325,10 @@
     font-style: normal;
 }
 
+#left-sidebar-wrapper .sidebar-nav li a.active {
+    font-weight: 600;
+}
+
 #left-sidebar-wrapper .sidebar-nav hr {
     margin-top: 10px; 
     margin-bottom: 4px; 
