@@ -84,7 +84,7 @@
                 <div v-if="calculator.value" class="calculator">
                     <div class="block">
                         <span>Total</span>
-                        <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="150px"></dropdown>
+                        <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
                         <span>for selected is</span>
                     </div>
                     <div class="block">
@@ -115,7 +115,7 @@
                             </template>
                         </span>
                     </div>
-                    <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="85px"></dropdown>
+                    <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
                     <span>rows</span>
                 </div>
             </div>
@@ -601,7 +601,7 @@ export default {
                 });
                 this.contextMenu.elements.push('');
             }
-            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="value">${row.__title}</span>` });
+            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="valuecolor"> ${row.__title}</span>` });
 
             row.__actions.forEach(action => {
                 let element = action;
@@ -709,6 +709,8 @@ export default {
 </script>
 
 <style scoped>
+
+
     .new-client {
          width: 190px;
         display: inline-flex;
@@ -764,7 +766,7 @@ export default {
     .calculator {
         display: inline-flex;
         float: left;
-        margin-top: 34px;
+        margin-top: 35px;
     }
 
     .calculator > .block {
@@ -981,7 +983,7 @@ export default {
         border: none;
         background: none;
         padding-top: 5px;
-        padding-right: 8px;
+        padding-right: 7px;
     }
 
     .pagination > .next a {
@@ -989,7 +991,8 @@ export default {
         border: none;
         background: none;
         padding-top: 5px;
-        padding-left: 8px;
+        padding-left: 7px;
+
     }
 
     .pagination > .prev a:hover {
@@ -1018,4 +1021,15 @@ export default {
         background: none;
         border: none;
     }
+    th .custom-checkbox > [type="checkbox"] + label::before {
+    border-color: #ffffff !important;
+    background: #333333 !important;
+    }
+
+    th .custom-checkbox > [type="checkbox"]:checked + label::after {
+        content: '';
+        background: #ffffff;
+    }
+
+
 </style>

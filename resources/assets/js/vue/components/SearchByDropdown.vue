@@ -109,8 +109,14 @@ export default {
 
 
 <style scoped>
+    .caret.active {
+        border-bottom: 4px solid;
+        border-top: 4px solid transparent;
+        border-left: 4px solid transparent;
+        margin-top: -4px;
+    }
     .caret {
-        margin-left: 155px;
+        margin-left: 153px;
     }
 
     .vue-dropdown {
@@ -123,7 +129,7 @@ export default {
         background:  white;
         border: none;
         box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
-        width: 270px;
+        width: 268px;
         height: 47px;
         text-align: left;
         padding: 0 15px;
@@ -139,9 +145,9 @@ export default {
         margin: 0;
         padding: 0;
         position: absolute;
-        width: 270px;
+        width: 268px;
         z-index: 999999;
-        padding-bottom: 18px;
+        padding-bottom: 17px;
         padding-top: 17px;
         border-radius: 2;
     }
@@ -170,9 +176,9 @@ export default {
     }
 
     .vue-dropdown-menu .vue-dropdown-option {
-        padding-top: 7px;
-        padding-bottom: 6px;
-        padding-left: 25px;
+        padding-top: 6px;
+        padding-bottom: 7px;
+        padding-left: 26px;
         padding-right: 15px;
     }
 

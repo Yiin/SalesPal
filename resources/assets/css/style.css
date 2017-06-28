@@ -163,10 +163,10 @@ table.table thead .sorting_desc {
 }
 
 table.dataTable thead th, table.dataTable thead td, table.invoice-table thead th, table.invoice-table thead td {
-    padding-top: 14px;
+    padding-top: 15px;
     padding-right: 3px;
-    padding-bottom: 14px;
-    padding-left: 21px;
+    padding-bottom: 15px;
+    padding-left: 20px;
 
 }
 
@@ -174,7 +174,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     padding-top: 10px;
     padding-right: 2px;
     padding-bottom: 10px;
-    padding-left: 21px;
+    padding-left: 20px;
 }
 
 .datepicker {
@@ -2127,6 +2127,7 @@ span.caret-dev-top {
     margin-top: 0;
     width: 22px;
     height: 22px;
+    margin-left: 2px;
 }
 
 .custom-checkbox > [type="checkbox"]:checked + label::after {
@@ -2137,6 +2138,7 @@ span.caret-dev-top {
     background: #01a8fe;
     width: 10px;
     height: 10px;
+    margin-left: 2px;
 }
 
 .custom-checkbox > [type="checkbox"]:checked + label::after {
@@ -2308,11 +2310,6 @@ div.dataTables_length select {
     margin-bottom: 0px;
 }       
 
-.caret.active {
-    border-bottom: 4px solid;
-    border-top: 4px solid transparent;
-    border-left: 4px solid transparent;
-}
 
 .table-heading-controls > .create-btn-wrapper,
 .table-heading-controls > .vue-dropdown {
@@ -2331,6 +2328,7 @@ div.dataTables_length select {
     display: inline-block;
     text-transform: uppercase;
     background-color: #FF6CC3;
+    border-radius: 2px;
 }
 
 .label-viewed {
@@ -2390,3 +2388,7 @@ div.dataTables_length select {
 }
 
 .label-running {}
+
+.valuecolor {
+    color: #01a8fe; 
+}
