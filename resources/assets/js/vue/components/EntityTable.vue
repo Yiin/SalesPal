@@ -601,7 +601,7 @@ export default {
 
             if (this.selected_entities.length > 1) {
                 this.contextMenu.elements.push({
-                    title: `Selected ${this.entities || this.entity + 's'}: <span class="valuecolor"> ${this.selected_entities.length}</span>`,
+                    title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
                 });
                 this.contextMenu.elements.push({
                     title: 'Archive', 
@@ -615,7 +615,7 @@ export default {
                 });
                 this.contextMenu.elements.push('');
             }
-            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="valuecolor"> ${row.__title}</span>` });
+            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>` });
 
             row.__actions.forEach(action => {
                 let element = action;
