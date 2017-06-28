@@ -79,8 +79,7 @@ export default {
 <style scoped>
     .caret {
         float: right;
-        margin-top: 8px;
-
+        margin-top: 9px;
     }
 
     .vue-dropdown {
@@ -100,7 +99,7 @@ export default {
         color: #373737;
         border-radius: 2px;
         margin-top: -3px;
-        }
+    }
 
     .vue-dropdown-menu {
         background: #FFFFFF;
@@ -145,9 +144,9 @@ export default {
     }
 
     .caret.active {
-    border-bottom: 4px solid;
-    border-top: 4px solid transparent;
-    border-left: 4px solid transparent;
-    margin-top: 3px !important;
+        border-bottom: 4px solid;
+        border-top: 4px solid transparent;
+        border-left: 4px solid transparent;
+        margin-top: 3px !important;
     }
 </style>
