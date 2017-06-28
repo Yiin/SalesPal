@@ -2391,5 +2391,6 @@ div.dataTables_length select {
 .label-running {}
 
 .valuecolor {
-    color: #01a8fe; 
+    color: #01a8fe;
+    font-weight: 600;
 }

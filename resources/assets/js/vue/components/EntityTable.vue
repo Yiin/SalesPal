@@ -29,7 +29,7 @@
                     <tr>
                         <th v-if="bulkEdit" style="width: 4%">
                             <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox">
-                                <input type="checkbox" v-model="checkboxAll">
+                                <input type="checkbox" v-model="all_rows_are_checked">
                                 <label></label>
                             </div>
                         </th>
@@ -219,7 +219,14 @@ export default {
     computed: {
 
         all_rows_are_checked() {
-            return (this.selected_entities.length === this.table_rows.filter(row => row.__checkbox.show).length);
+            let missing = false;
+
+            this.table_rows.forEach(row => {
+                if (this.selected_entities.indexOf(row.__id) === -1) {
+                    missing = true;
+                }
+            });
+            return !missing;
         },
 
         showing_from() {
@@ -544,14 +551,21 @@ export default {
 
 
         toggleSelectAll() {
-            let select = !this.all_rows_are_checked;
-
-            this.checkboxAll = select;
-            this.selected_entities = [];
-
-            if (select) {
-                this.table_rows.forEach(row => this.selected_entities.push(row.__checkbox.data.id));
+            if (this.all_rows_are_checked) {
+                this.table_rows
+                    .filter(row => this.selected_entities.indexOf(row.__id) !== -1)
+                    .forEach(row => {
+                        let index = this.selected_entities.indexOf(row.__id);
+                        this.selected_entities.splice(index, 1);
+                    });
             }
+            else {
+                this.table_rows
+                    .filter(row => this.selected_entities.indexOf(row.__id) === -1)
+                    .forEach(row => this.selected_entities.push(row.__id));
+            }
+
+            this.$forceUpdate();
         },
 
 
@@ -587,7 +601,7 @@ export default {
 
             if (this.selected_entities.length > 1) {
                 this.contextMenu.elements.push({
-                    title: `Selected ${this.entities || this.entity + 's'}: <span class="valuecolor"> ${this.selected_entities.length}</span>`,
+                    title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
                 });
                 this.contextMenu.elements.push({
                     title: 'Archive', 
@@ -601,7 +615,7 @@ export default {
                 });
                 this.contextMenu.elements.push('');
             }
-            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="valuecolor"> ${row.__title}</span>` });
+            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>` });
 
             row.__actions.forEach(action => {
                 let element = action;
@@ -709,10 +723,8 @@ export default {
 </script>
 
 <style scoped>
-
-
     .new-client {
-         width: 190px;
+        width: 190px;
         display: inline-flex;
         font-size: 18px;
         border-radius: 2px
@@ -749,7 +761,7 @@ export default {
         box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
         font-family: 'Open Sans', sans-serif;
         font-size: 16px;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0,  0.05), 1px 2px 5px rgba(0, 0, 0,  0.05), 0px 3px 5px rgba(0, 0, 0,  0.05);
         border-radius: 2px;
         height: 44px;
         margin-top: -3px;
@@ -793,7 +805,7 @@ export default {
         width: 160px !important;
         border: #fff;
         width: 160px;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0,  0.05), 1px 2px 5px rgba(0, 0, 0,  0.05), 0px 3px 5px rgba(0, 0, 0,  0.05);
         font-size: 16px;
         padding-top: 11px;
         margin-top: -4px;
@@ -824,7 +836,7 @@ export default {
 
     .context-menu {
         background: #FFFFFF;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05),0 3px 1px -2px rgba(0,0,0,0.05),0 1px 5px 0 rgba(0,0,0,0.05);
         display: block;
         list-style: none;
         margin: 0;
@@ -833,8 +845,8 @@ export default {
         width: 320px;
         z-index: 999999;
         padding-bottom: 17px;
-        padding-top: 17px;
-        border-radius: 4px;
+        padding-top: 6px;
+        border-radius: 2px;
     }
 
     .context-menu li, .context-menu li > a {
@@ -859,7 +871,7 @@ export default {
     }
 
     .context-menu li:not(.divider):not(.passive):hover {
-        background-color: #eee;
+        background-color: #f5f5f5;
     }
 
     .context-menu .value {
@@ -916,7 +928,7 @@ export default {
         background: #ffffff !important;
         color: #373737 !important;
         border: none;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.08), 1px 2px 5px rgba(0, 0, 0, 0.08), 0px 3px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: -1px 2px 5px rgba(0, 0, 0,  0.05), 1px 2px 5px rgba(0, 0, 0,  0.05), 0px 3px 5px rgba(0, 0, 0,  0.05);
         font-size: 16px;
         padding: 7px 15px 7px;
         width: 80px;
