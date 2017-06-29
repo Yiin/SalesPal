@@ -806,7 +806,7 @@ export default {
         font-size: 16px;
         font-weight: 500;
         color: #949494;
-        margin: 7px 0;
+        margin: 8px 0;
         display: inline-block;
         margin-left: -4px;
         margin-right: -4px;
@@ -965,7 +965,7 @@ export default {
     .table-controls span {
         display: inline-block;
         vertical-align: top;
-        margin: 7px 0;
+        margin: 8px 0;
         font-weight: 600;
         color: #949494;
         font-size: 16px;
