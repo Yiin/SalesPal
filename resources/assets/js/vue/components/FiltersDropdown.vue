@@ -178,19 +178,7 @@ export default {
 </script>
 
 
-<style scoped>  
-    .caret.active {
-        border-bottom: 4px solid;
-        border-top: 4px solid transparent;
-        border-left: 4px solid transparent;
-        margin-top: -4px;
-    }
-
-    .caret {
-        margin-left: 118px;
-        margin-top: -2px;
-    }
-
+<style scoped>
     .vue-dropdown {
         position: relative;
         display: inline-block;
@@ -276,7 +264,7 @@ export default {
         display: block;
         padding-left: 0;
         padding-right: 0;
-        border-bottom: 1px solid #e2e2e2;
+        border-bottom: 1px solid #ebebeb;
     }
 
     .vue-dropdown-option.--search:hover {
@@ -305,7 +293,7 @@ export default {
     }
 
     .vue-dropdown-option.--checkbox {
-            padding-left: 56px;
+        padding-left: 56px;
     }
 
     .vue-dropdown-option.--checkbox.checked::before {
@@ -314,17 +302,17 @@ export default {
 
     .vue-dropdown-menu .vue-dropdown-option.separator {
         padding: 0;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid #ebebeb;
         width: 85%;
         margin: 5px auto;
     }
 
-    .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
-        background-color: #eee;
+    .vue-dropdown-option:not(.separator):hover {
+        background-color: #f5f5f5;
     }
 
     .checkinthebox > [type="checkbox"]:not(:checked) + label, .checkinthebox > [type="checkbox"]:checked + label {
-    font-weight: 300;
+        font-weight: 300;
     }
 
     .checkinthebox > [type="checkbox"]:not(:checked) + label::before, .checkinthebox > [type="checkbox"]:checked + label::before {
@@ -350,9 +338,5 @@ export default {
 
     .checkinthebox > [type="checkbox"]:checked + label::after {
         transform: scale(1);
-    }
-
-    .vue-dropdown-option::hover {
-        background-color: #f5f5f5;
     }
 </style>

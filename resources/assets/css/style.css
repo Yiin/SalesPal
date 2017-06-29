@@ -364,10 +364,6 @@ border-color: #0a456c;
     cursor: pointer;
 }
 
-.caret {
-    margin-left: 0px;
-}
-
 .btn i.glyphicon {
     font-size: 16px;
     margin-left: 7px;
@@ -2396,4 +2392,25 @@ div.dataTables_length select {
 .valuecolor {
     color: #01a8fe;
     font-weight: 600;
+}
+
+.caret {
+  color: #373737;
+
+  width: 0;
+  height: 0;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+
+  position: relative;
+  float: right;
+  top: 10px;
+}
+
+.caret.active {
+  border-bottom: 4px solid;
+  border-top: 4px solid transparent;
+  border-left: 4px solid transparent;
+  top: 6px;
 }

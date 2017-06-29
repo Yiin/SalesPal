@@ -109,17 +109,6 @@ export default {
 
 
 <style scoped>
-    .caret.active {
-        border-bottom: 4px solid;
-        border-top: 4px solid transparent;
-        border-left: 4px solid transparent;
-        margin-top: -4px;
-    }
-    .caret {
-        margin-left: 153px;
-        margin-top: -2px;
-    }
-
     .vue-dropdown {
         position: relative;
         display: inline-block;
@@ -196,7 +185,7 @@ export default {
         margin: 5px auto;
     }
 
-    .vue-dropdown-option::hover {
+    .vue-dropdown-option:hover {
         background-color: #f5f5f5;
     }
 
