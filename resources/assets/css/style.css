@@ -2406,12 +2406,12 @@ div.dataTables_length select {
 
   position: relative;
   float: right;
-  top: 10px;
+  top: 9px;
 }
 
 .caret.active {
   border-bottom: 4px solid;
   border-top: 4px solid transparent;
   border-left: 4px solid transparent;
-  top: 6px;
+  top: 5px;
 }

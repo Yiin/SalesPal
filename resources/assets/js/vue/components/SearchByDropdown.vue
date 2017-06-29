@@ -109,12 +109,6 @@ export default {
 
 
 <style scoped>
-    .caret {
-        top: 9px;
-    }
-    .caret.active {
-        top: 5px;
-    }
     .vue-dropdown {
         position: relative;
         display: inline-block;
