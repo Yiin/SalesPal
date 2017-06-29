@@ -758,6 +758,7 @@ export default {
     .devel-dropdown-toggle {
         display: none;
     }
+
     .page-count {
         border: none;
         box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
@@ -767,7 +768,6 @@ export default {
         border-radius: 2px;
         height: 44px;
         margin-top: -3px;
-        padding-bottom: 3px;
     }
 
     .page-count:disabled {

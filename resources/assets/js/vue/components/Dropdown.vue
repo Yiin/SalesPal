@@ -89,7 +89,7 @@ export default {
         box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
         height: 44px;
         text-align: left;
-        padding: 0 15px 2px;
+        padding: 11px 15px;
         font-size: 16px;
         color: #373737;
         border-radius: 2px;
