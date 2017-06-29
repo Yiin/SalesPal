@@ -1,7 +1,7 @@
 <template>
     
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
+        <button :class="{ open: is_open }" @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
             {{ selected.label }}
             <span :class="{ active: is_open }" class="caret"></span>
         </button>
