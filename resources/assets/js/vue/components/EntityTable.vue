@@ -1000,17 +1000,16 @@ export default {
     }
 
     .pagination > .prev a {
-        padding-bottom: 10px;
         border: none;
         background: none;
-        padding-top: 5px;
+        padding-top: 2px;
         padding-right: 6px;
     }
 
     .pagination > .next a {
-        padding-bottom: 10px; 
         border: none;
         background: none;
+        padding-bottom: 2px;
         padding-left: 6px;
         margin-right: -2px;
     }
