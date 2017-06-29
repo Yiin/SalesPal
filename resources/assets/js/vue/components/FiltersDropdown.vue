@@ -1,6 +1,6 @@
 <template>
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button :class="{ open: openedDropdown === option }" @click="toggleDropdown" type="button">
+        <button :class="{ open: is_open }" @click="toggleDropdown" type="button">
             {{ title }}
             <span :class="{ active: is_open }" class="caret"></span>
         </button>
@@ -60,6 +60,7 @@
                     </template>
                     <template v-else>
                         <div @click="toggle(option)" :class="{ checked: option.selected }" class="vue-dropdown-option">
+
                             <label>{{ option.label }}</label>
 
                         </div>
