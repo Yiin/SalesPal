@@ -879,7 +879,8 @@ export default {
     }
 
     .context-menu li.heading {
-        padding-bottom: 8px;
+        padding-bottom: 7px;
+        padding-top: 8px;
     }
 
     .context-menu li.divider {
