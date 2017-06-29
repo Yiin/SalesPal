@@ -102,6 +102,10 @@ export default {
         margin-top: -3px;
     }
 
+    .vue-dropdown > button.open {
+        border-radius: 2px 2px 0 0;
+    }
+
     .vue-dropdown-menu {
         background: #FFFFFF;
         box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
@@ -118,6 +122,8 @@ export default {
         left: 0;
         padding-bottom: 17px;
         padding-top: 17px;
+        border-top: 1px solid #ebebeb;
+        border-radius: 0 0 2px 2px;
     }
 
     .vue-dropdown-menu.open label {
