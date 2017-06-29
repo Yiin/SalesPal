@@ -900,7 +900,8 @@
 
     .context-menu-close {
         position: absolute;
-        background: url(/img/icons/cross.svg);
+        background: url(/img/icons/cross.svg) no-repeat;
+        background-size: contain;
         width: 12px;
         height: 12px;
         top: 15px;
