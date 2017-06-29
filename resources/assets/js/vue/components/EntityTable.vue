@@ -901,8 +901,8 @@
     .context-menu-close {
         position: absolute;
         background: url(/img/icons/cross.svg);
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
         top: 15px;
         right: 15px;
         cursor: pointer;
