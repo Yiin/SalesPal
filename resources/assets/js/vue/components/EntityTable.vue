@@ -847,7 +847,7 @@ export default {
 
     .context-menu {
         background: #FFFFFF;
-        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
+        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px -2px 5px rgba(0, 0, 0, 0.05);
         display: block;
         list-style: none;
         margin: 0;
