@@ -1009,7 +1009,7 @@ export default {
     .pagination > .next a {
         border: none;
         background: none;
-        padding-bottom: 2px;
+        padding-top: 2px;
         padding-left: 6px;
         margin-right: -2px;
     }
