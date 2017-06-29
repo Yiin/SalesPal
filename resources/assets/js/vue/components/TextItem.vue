@@ -61,10 +61,11 @@ export default {
 
 .clear-input {
     position: absolute;
-    background: url(/img/icons/cross.svg);
-    width: 10px;
-    height: 10px;
-    top: 13px;
+    background: url(/img/icons/cross.svg) no-repeat;
+    background-size: contain;
+    width: 11px;
+    height: 11px;
+    top: 12px;
     right: 15px;
     cursor: pointer;
 }
