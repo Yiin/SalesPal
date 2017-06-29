@@ -140,6 +140,6 @@ export default {
     }
 
     .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
-        background-color: #eee;
+        background-color: #f5f5f5;
     }
 </style>
