@@ -63,9 +63,9 @@ export default {
     position: absolute;
     background: url(/img/icons/cross.svg) no-repeat;
     background-size: contain;
-    width: 11px;
-    height: 11px;
-    top: 12px;
+    width: 12px;
+    height: 12px;
+    top: 11px;
     right: 15px;
     cursor: pointer;
 }
