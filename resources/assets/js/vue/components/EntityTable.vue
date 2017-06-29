@@ -903,7 +903,7 @@
         background: url(/img/icons/cross.svg);
         width: 10px;
         height: 10px;
-        top: 20px;
+        top: 15px;
         right: 15px;
         cursor: pointer;
     }

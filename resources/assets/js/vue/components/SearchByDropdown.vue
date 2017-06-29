@@ -189,4 +189,8 @@ export default {
         background-color: #f5f5f5;
     }
 
+    .vue-dropdown-option:hover [contenteditable=true]:empty::before {
+        background-color: #f5f5f5;
+    }
+
 </style>
