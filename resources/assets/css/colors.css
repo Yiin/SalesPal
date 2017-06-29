@@ -100,3 +100,15 @@ body table.dataTable thead > tr > th, body table.invoice-table thead > tr > th {
     color: #fff;
     border-left-color: #e1e1e1;
 }
+
+.stock-label {
+    font-weight: bold;
+}
+
+.stock-label.--service {
+    color: #940e96;
+}
+
+.stock-label.--out-of-stock {
+    color: #e2492f;
+}
