@@ -135,7 +135,7 @@
                 <div @click="clickAway" class="context-menu-close">✕</div>
                 <li v-for="element in contextMenu.elements" 
                     v-html="element.title" 
-                    :class="{ divider: element === '', passive: !element.action }"
+                    :class="[{ divider: element === '', passive: !element.action }, element.class]"
                     @click="contextMenuClickHandler(element)"
                 ></li>
             </ul>
@@ -603,6 +603,7 @@ export default {
 
             if (this.selected_entities.length > 1) {
                 this.contextMenu.elements.push({
+                    class: 'heading',
                     title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
                 });
                 this.contextMenu.elements.push({
@@ -617,7 +618,10 @@ export default {
                 });
                 this.contextMenu.elements.push('');
             }
-            this.contextMenu.elements.push({ title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>` });
+            this.contextMenu.elements.push({
+                class: 'heading',
+                title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>`
+            });
 
             row.__actions.forEach(action => {
                 let element = action;
@@ -872,6 +876,10 @@ export default {
         padding-left: 26px;
         padding-right: 30px;
         display: block;
+    }
+
+    .context-menu li.heading {
+        padding-bottom: 8px;
     }
 
     .context-menu li.divider {
