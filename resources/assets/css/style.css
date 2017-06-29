@@ -493,7 +493,7 @@ table.table thead .sorting {
 /* navigation */
 .sidebar-nav {
     padding: 9px 0;
-    background: none;
+    background: none !important;
 }
 
 .dropdown-menu .sub-menu {
