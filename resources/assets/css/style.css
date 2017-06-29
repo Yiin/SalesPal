@@ -493,6 +493,7 @@ table.table thead .sorting {
 /* navigation */
 .sidebar-nav {
     padding: 9px 0;
+    background: none;
 }
 
 .dropdown-menu .sub-menu {
@@ -1679,7 +1680,6 @@ div.panel-body div.panel-body {
 }
 
 .nav-header {
-    background-color: white;
 }
 
 .devel-dropdown-toggle {
