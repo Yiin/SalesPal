@@ -1,6 +1,6 @@
 <template>
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" type="button">
+        <button :class="{ open: openedDropdown === option }" @click="toggleDropdown" type="button">
             {{ title }}
             <span :class="{ active: is_open }" class="caret"></span>
         </button>
@@ -211,6 +211,10 @@ export default {
         margin-left: -3px;
     }
 
+    .vue-dropdown > button.open {
+        border-radius: 2px 2px 0 0;
+    }
+
     .vue-dropdown-menu {
         background: #FFFFFF;
         box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
@@ -229,7 +233,8 @@ export default {
         padding-bottom: 18px;
         padding-top: 17px;
         margin-left: -3px;
-
+        border-top: 1px solid #ebebeb;
+        border-radius: 0 0 2px 2px;
     }
 
     .vue-dropdown-menu.open label {
