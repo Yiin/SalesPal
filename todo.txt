@@ -8,3 +8,7 @@ fix table width
 outside of table context menu
 
 calendar style
+
+select to show checkboxes
+
+select to shoow scrollbar style
