@@ -772,7 +772,7 @@
     .breadcrumb {
         font-size: 18px;
         margin-top: 3px;
-        margin-bottom: 10px;
+        margin-bottom: 21px;
     }
 
     .breadcrumb, .breadcrumb > .active {
