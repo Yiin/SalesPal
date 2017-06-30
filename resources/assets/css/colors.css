@@ -21,7 +21,7 @@ body {
 
 .navbar,
 .navbar-collapse {
-    background-color: #01a8fe !important;
+    background-color: #ffffff !important;
 }
 
 .panel-heading {
@@ -53,12 +53,21 @@ thead th {
 
 .menu-toggle i
 {
-
-    color: white;
+    color: #373737;
 }
 .sidebar-nav li > a 
 {
     color: rgba(0,0,0,1);
+}
+.button-wave {
+    cursor: pointer;
+    user-select: none;
+}
+.button-wave > i.fa {
+    color: #373737;
+}
+.button-wave:hover > i.fa {
+    color: #01a8fe;
 }
 
 .menu-toggle:hover i,

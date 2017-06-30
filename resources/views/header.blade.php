@@ -248,51 +248,12 @@
     </div>
 
     <ul class="nav navbar-nav navbar-right navbar-top-drops">
-                      <li class="dropdown"><a href="javascript:;" class="dropdown-toggle button-wave" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge badge-xs badge-warning">6</span></a>
-
-                    <ul class="dropdown-menu dropdown-lg">
-                        <li class="notify-title">
-                            3 New messages
-                        </li>
-                        <li class="clearfix">
-                            <a href="javascript:;">
-                                        <span class="pull-left">
-                                            <i class="fa fa-envelope"></i>
-                                        </span>
-
-                                        <span class="media-body">
-                                            15 New Messages
-                                            <em>20 Minutes ago</em>
-                                        </span>
-                            </a>
-                        </li>
-                        <li class="clearfix">
-                            <a href="javascript:;">
-                                        <span class="pull-left">
-                                            <i class="fa fa-twitter"></i>
-                                        </span>
-
-                                        <span class="media-body">
-                                            13 New Followers
-                                            <em>2 hours ago</em>
-                                        </span>
-                            </a>
-                        </li>
-                        <li class="clearfix">
-                            <a href="javascript:;">
-                                        <span class="pull-left">
-                                            <i class="fa fa-download"></i>
-                                        </span>
-
-                                        <span class="media-body">
-                                            Download complete
-                                            <em>2 hours ago</em>
-                                        </span>
-                            </a>
-                        </li>
-                        <li class="read-more"><a href="javascript:;">View All Alerts <i class="fa fa-angle-right"></i></a></li>
-                    </ul>
-                </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle button-wave">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-xs badge-warning">6</span>
+            </a>
+        </li>
     </ul>
 
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
