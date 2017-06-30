@@ -1,10 +1,10 @@
 <template>
     <div class="text-input">
-        <div v-if="option && option.value && option.value.length" 
+        <div ref="input" class="animation" :data-placeholder="option.label"></div>
+        <div v-show="option && option.value && option.value.length" 
              @click="clear"
              class="clear-input"
         ></div>
-        <div ref="input" class="animation" :data-placeholder="option.label"></div>
     </div>
 </template>
 
@@ -72,6 +72,10 @@ export default {
 
 .clear-input:hover {
     opacity: 0.8;
+}
+
+[contenteditable="true"]:focus + .clear-input {
+    background-image: url(/img/icons/white-cross.svg);
 }
 
 [contenteditable=true] {
