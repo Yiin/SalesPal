@@ -3,12 +3,10 @@ multipage selected rows
 
 context menu recurring invoice -> invoice
 
-fix table width
-
 outside of table context menu
 
 calendar style
 
 select to show checkboxes
 
-select to shoow scrollbar style
+select to show scrollbar style

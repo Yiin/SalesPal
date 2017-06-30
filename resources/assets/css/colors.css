@@ -65,6 +65,7 @@ thead th {
 }
 .button-wave > i.fa {
     color: #373737;
+    font-size: 15px;
 }
 .button-wave:hover > i.fa {
     color: #01a8fe;
