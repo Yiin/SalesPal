@@ -16,72 +16,74 @@
 
 
         <div ref="table_wrapper" class="dataTables_wrapper form-inline no-footer">
-            <table class="table table-striped data-table dataTable no-footer">
-                <!-- 
-                    Table Columns
-                 -->
-                <thead>
-                    <tr v-if="!columns_loaded">
-                        <th>
-                            Loading columns...
-                        </th>
-                    </tr>
-                    <tr>
-                        <th v-if="bulkEdit" style="width: 4%">
-                            <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox">
-                                <input type="checkbox" v-model="all_rows_are_checked">
-                                <label></label>
-                            </div>
-                        </th>
-                        <th v-for="column in table_columns" 
-                            @click="order(column.field)"
-                            :class="{ 
-                                sorting_asc: orderBy === column.field && orderDirection === 'ASC', 
-                                sorting_desc: orderBy === column.field && orderDirection === 'DESC'
-                            }"
-                            :style="{ width: column.width }"
-                        >
-                            {{ column.label }}
-                        </th>
-                    </tr>
-                </thead>
+            <div class="table-wrapper">
+                <table class="table table-striped data-table dataTable no-footer">
+                    <!-- 
+                        Table Columns
+                     -->
+                    <thead>
+                        <tr v-if="!columns_loaded">
+                            <th>
+                                Loading columns...
+                            </th>
+                        </tr>
+                        <tr>
+                            <th v-if="bulkEdit" style="width: 4%">
+                                <div @click="toggleSelectAll()" class="custom-checkbox custom-checkbox">
+                                    <input type="checkbox" v-model="all_rows_are_checked">
+                                    <label></label>
+                                </div>
+                            </th>
+                            <th v-for="column in table_columns" 
+                                @click="order(column.field)"
+                                :class="{ 
+                                    sorting_asc: orderBy === column.field && orderDirection === 'ASC', 
+                                    sorting_desc: orderBy === column.field && orderDirection === 'DESC'
+                                }"
+                                :style="{ width: column.width }"
+                            >
+                                {{ column.label }}
+                            </th>
+                        </tr>
+                    </thead>
 
-                <!-- 
-                    Table Rows
-                 -->
-                <tbody>
-                    <tr v-if="!entities_loaded">
-                        <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
-                            Loading data...
-                        </td>
-                    </tr>
-                    <tr v-if="table_state.is_empty">
-                        <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
-                            No data available in table
-                        </td>
-                    </tr>
-                    <tr v-for="row in table_rows" 
-                        @click="(row.__checkbox.show ? toggleSelect(row.__checkbox.data.id) : null)"
-                        @contextmenu.prevent="showContextMenu($event, row)"
-                        :class="{ hover: row === contextMenu.row }"
-                    >
-                        <td v-if="bulkEdit">
-                            <div v-if="row.__checkbox.show" class="custom-checkbox custom-checkbox-datatable">
-                                <input type="checkbox" name="ids[]" :value="row.__checkbox.data.id" v-model="selected_entities" :class="row.__checkbox.data.class">
-                                <label></label>
-                            </div>
-                        </td>
-                        <td v-for="column in table_columns">
-                            <div v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></div>
-                            <template v-if="typeof row[column.field] === 'object' && row[column.field].data">
-                                <template v-if="row[column.field].data.feature === 'CHECK_VAT'">
-                                    <feature-check-vat :vat="row[column.field].data.vat" :state="row[column.field].data.state"></feature-check-vat>
+                    <!-- 
+                        Table Rows
+                     -->
+                    <tbody>
+                        <tr v-if="!entities_loaded">
+                            <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
+                                Loading data...
+                            </td>
+                        </tr>
+                        <tr v-if="table_state.is_empty">
+                            <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
+                                No data available in table
+                            </td>
+                        </tr>
+                        <tr v-for="row in table_rows" 
+                            @click="(row.__checkbox.show ? toggleSelect(row.__checkbox.data.id) : null)"
+                            @contextmenu.prevent="showContextMenu($event, row)"
+                            :class="{ hover: row === contextMenu.row }"
+                        >
+                            <td v-if="bulkEdit">
+                                <div v-if="row.__checkbox.show" class="custom-checkbox custom-checkbox-datatable">
+                                    <input type="checkbox" name="ids[]" :value="row.__checkbox.data.id" v-model="selected_entities" :class="row.__checkbox.data.class">
+                                    <label></label>
+                                </div>
+                            </td>
+                            <td v-for="column in table_columns">
+                                <div v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></div>
+                                <template v-if="typeof row[column.field] === 'object' && row[column.field].data">
+                                    <template v-if="row[column.field].data.feature === 'CHECK_VAT'">
+                                        <feature-check-vat :vat="row[column.field].data.vat" :state="row[column.field].data.state"></feature-check-vat>
+                                    </template>
                                 </template>
-                            </template>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <!-- 
                 Table Controls
@@ -937,6 +939,10 @@
     }
 
     /* DataTables styles */
+    .table-wrapper {
+        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
+    }
+
     td, td > a {
         color: #373737;
         font-family: "Open Sans", sans-serif;
