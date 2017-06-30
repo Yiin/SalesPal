@@ -769,11 +769,10 @@
         color: #01a8fe;
     }
 
-    .breadcrumb {
+    .breadcrumb, .breadcrumb > .active {
         font-size: 18px;
-        margin-bottom: 19px;
-        margin-top: -21px;
-        color: #666666;
+        margin-bottom: 10px;
+        color: #373737;
     }
 
     .devel-dropdown-toggle {

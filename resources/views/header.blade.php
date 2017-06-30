@@ -477,10 +477,6 @@
               <div class="alert alert-danger">{!! Session::get('error') !!}</div>
           @endif
 
-          @if (!isset($showBreadcrumbs) || $showBreadcrumbs)
-            {!! Form::breadcrumbs((isset($entity) && $entity->exists) ? $entity->present()->statusLabel : false) !!}
-          @endif
-
           @yield('content')
         </div>
     </div>
