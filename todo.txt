@@ -1,16 +1,10 @@
 
-DONE search by currency
+multipage selected rows
 
-DONE search filter list
+context menu recurring invoice -> invoice
 
-DONE created -> date created
-
-calculator
+fix table width
 
 outside of table context menu
 
-DONE a/d single select
-
 calendar style
-
-DONE remove power by whitelabel

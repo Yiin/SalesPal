@@ -71,7 +71,14 @@
                                 <label></label>
                             </div>
                         </td>
-                        <td v-for="column in table_columns" v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></td>
+                        <td v-for="column in table_columns">
+                            <template v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></template>
+                            <template v-if="typeof row[column.field] === 'object' && row[column.field].data">
+                                <template v-if="row[column.field].data.feature === 'CHECK_VAT'">
+                                    <feature-check-vat :vat="row[column.field].data.vat" :state="row[column.field].data.state"></feature-check-vat>
+                                </template>
+                            </template>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -221,6 +228,10 @@
         computed: {
 
             all_rows_are_checked() {
+                if (! this.selected_entities.length) {
+                    return false;
+                }
+
                 let missing = false;
 
                 this.table_rows.forEach(row => {
@@ -900,17 +911,25 @@
 
     .context-menu-close {
         position: absolute;
-        background: url(/img/icons/cross.svg) no-repeat;
-        background-size: contain;
-        width: 12px;
-        height: 12px;
-        top: 15px;
-        right: 15px;
+        padding: 15px;
+        top: 6px;
+        right: 6px;
         cursor: pointer;
     }
 
     .context-menu-close:hover {
         opacity: 0.8;
+    }
+
+    .context-menu-close::before {
+        content: "";
+        position: absolute;
+        background: url(/img/icons/cross.svg) no-repeat;
+        background-size: contain;
+        width: 12px;
+        height: 12px;
+        top: 9px;
+        right: 9px;
     }
 
     /* DataTables styles */
