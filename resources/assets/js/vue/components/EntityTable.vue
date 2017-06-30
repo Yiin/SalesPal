@@ -769,9 +769,13 @@
         color: #01a8fe;
     }
 
-    .breadcrumb, .breadcrumb > .active {
+    .breadcrumb {
         font-size: 18px;
+        margin-top: 3px;
         margin-bottom: 10px;
+    }
+
+    .breadcrumb, .breadcrumb > .active {
         color: #373737;
     }
 
