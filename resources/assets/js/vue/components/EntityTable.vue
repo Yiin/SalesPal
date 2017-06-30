@@ -72,7 +72,7 @@
                             </div>
                         </td>
                         <td v-for="column in table_columns">
-                            <template v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></template>
+                            <div v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></div>
                             <template v-if="typeof row[column.field] === 'object' && row[column.field].data">
                                 <template v-if="row[column.field].data.feature === 'CHECK_VAT'">
                                     <feature-check-vat :vat="row[column.field].data.vat" :state="row[column.field].data.state"></feature-check-vat>
@@ -740,6 +740,10 @@
 </script>
 
 <style scoped>
+    td {
+        position: relative;
+    }
+
     .new-client {
         width: 190px;
         display: inline-flex;

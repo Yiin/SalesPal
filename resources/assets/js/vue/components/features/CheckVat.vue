@@ -1,5 +1,5 @@
 <template>
-    <span></span>
+    <span class="feature"></span>
 </template>
 
 <script>
@@ -11,5 +11,11 @@
 </script>
 
 <style>
-    
+
+    .feature {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
 </style>

@@ -2166,13 +2166,13 @@ tr .custom-checkbox > [type="checkbox"]:checked + label::after {
 /* //END 'Search by' */
 
 /* DataTables styles */
-td, td > a {
+td, td a {
     color: #373737;
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
 }
 
-td > a:hover {
+td a:hover {
     color: #ed492f;
     text-decoration: none;
 }
