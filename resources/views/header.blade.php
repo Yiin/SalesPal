@@ -231,18 +231,20 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="height:50px;">
 
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="#" id="left-menu-toggle" class="menu-toggle" title="{{ trans('texts.toggle_navigation') }}">
-          <div class="navbar-brand">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">
+            <a href="#" id="left-menu-toggle" class="menu-toggle" title="{{ trans('texts.toggle_navigation') }}">
                 <i class="fa fa-bars hide-phone" style="width:32px;float:left"></i>
+            </a>
+            <a href="/">
                 <img src="{{ asset('images/salespal-logo.svg') }}" width="163" height="auto" style="float:left"/>
-          </div>
-      </a>
+            </a>
+        </div>
     </div>
 
     <ul class="nav navbar-nav navbar-right navbar-top-drops">

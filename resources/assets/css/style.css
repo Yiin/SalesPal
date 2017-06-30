@@ -625,7 +625,7 @@ canvas {
     padding-top: 14px;
 }
 
-.navbar-brand > img {
+.navbar-brand img {
     display: block;
     height: 17px;
     padding-top: 2px;
