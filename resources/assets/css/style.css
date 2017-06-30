@@ -564,9 +564,7 @@ table.table thead .sorting {
 .navbar,
 ul.dropdown-menu,
 .twitter-typeahead .tt-menu {
-    x-moz-box-shadow: 0 0 10px 2px rgba(0, 0, 0, .05);
-    x-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, .05);
-    box-shadow: 0 0 10px 2px rgba(0, 0, 0, .05);
+    box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
 }
 
 .twitter-typeahead .tt-menu {
