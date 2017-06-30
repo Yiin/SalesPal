@@ -491,11 +491,6 @@ table.table thead .sorting {
 }
 
 /* navigation */
-.sidebar-nav {
-    padding: 9px 0;
-    background: none !important;
-}
-
 .dropdown-menu .sub-menu {
     left: 100%;
     position: absolute;
@@ -1675,9 +1670,6 @@ div.panel-body div.panel-body {
     padding: 4px 20px;
     color: #01a8fe;
     padding-top: 15px;
-}
-
-.nav-header {
 }
 
 .devel-dropdown-toggle {

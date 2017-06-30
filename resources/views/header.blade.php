@@ -312,35 +312,38 @@
     <nav class="">
       <div class="">
         <div id="left-sidebar-wrapper" class="hide-phone">
-              <div class="btn-group user-dropdown">
-                </div>
-              </button>
-              <div class="profile-photo-container">
-              <li class="nav-header">
-                        <div class="dropdown side-profile text-left">
-                                    <span style="display: block;">
-                                        <img alt="image" class="img-circle" src="{{ asset('images/placeholder.png') }}" width="40">
-                                    </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                        <span class="clear" style="display: block;"> <span class="block m-t-xs">                     @if (session(SESSION_USER_ACCOUNTS) && count(session(SESSION_USER_ACCOUNTS)))
-                        {{ Auth::user()->account->getDisplayName() }}
-                    @else
-                        {{ Auth::user()->getDisplayName() }}
-                    @endif  <b class="caret"></b>
-                                            </span></span> </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs devel-dropdown-sidebar">
-                                <li><a href="javascript:;"><i class="fa fa-user"></i>My Profile</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-calendar"></i>My Calendar</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-envelope"></i>My Inbox</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-barcode"></i>My Task</a></li>
-                                <li class="divider"></li>
-                                <li><a href="javascript:;"><i class="fa fa-lock"></i>Screen lock</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-key"></i>Logout</a></li>
-                            </ul>
-                        </div>
+            <div class="btn-group user-dropdown"></div>
+
+            <div class="profile-photo-container">
+                <li class="nav-header">
+                    <div class="dropdown side-profile text-left">
+                        <img alt="image" class="img-circle" src="{{ asset('images/placeholder.png') }}" width="40">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear" style="display: block;">
+                                <span class="block m-t-xs">
+                                    @if (session(SESSION_USER_ACCOUNTS) && count(session(SESSION_USER_ACCOUNTS)))
+                                        {{ Auth::user()->account->getDisplayName() }}
+                                    @else
+                                        {{ Auth::user()->getDisplayName() }}
+                                    @endif
+                                    <b class="caret"></b>
+                                </span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs devel-dropdown-sidebar">
+                            <li><a href="javascript:;"><i class="fa fa-user"></i> My Profile</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-calendar"></i> My Calendar</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-envelope"></i> My Inbox</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-barcode"></i> My Task</a></li>
+                            <li class="divider"></li>
+                            <li><a href="javascript:;"><i class="fa fa-lock"></i> Screen lock</a></li>
+                            <li><a href="{{ route('logout') }}"><i class="fa fa-key"></i> Logout</a></li>
+                        </ul>
+                    </div>
                 </li>
-              </div>
-              <ul class="dropdown-menu user-accounts" style="display: none">
+            </div>
+            
+            <ul class="dropdown-menu user-accounts" style="display: none">
                 @if (session(SESSION_USER_ACCOUNTS))
                     @foreach (session(SESSION_USER_ACCOUNTS) as $item)
                         @if ($item->user_id == Auth::user()->id)

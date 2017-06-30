@@ -86,14 +86,9 @@
     /* Sidebar Styles */
 
     .sidebar-nav {
-        padding-top: 0px;
-        position: absolute;
-        top: 164px;
-        width: 220px;
-        margin: 0;
+        width: 182px;
         list-style: none;
         height: 100%;
-        font-transform: capitalize;
     }
 
     #left-sidebar-wrapper .sidebar-nav li {
@@ -118,7 +113,7 @@
 
     #left-sidebar-wrapper ul {
         min-height: 730px;
-        padding: 0 19px 0;
+        margin: 25px;
     }
 
     @media (max-height: 744px) {
@@ -263,16 +258,26 @@
 
 }
 .sidebar-nav {
-    margin-top: 24px;
+    padding: 0;
+    background: none !important;
 }
-.nav-header{
-    border-top: 0px;
+
+.profile-photo-container {
+    width: 182px;
+    margin-top: 40px;
+    margin-left: 25px;
+}
+.profile-photo-container .nav-header {
     display: block;
-    border: 0px;
-    padding: 20px 30px;
-    height: 164px;
-    width: 220px;
 }
+.profile-photo-container .side-profile {
+    text-align: center;
+}
+.profile-photo-container .caret {
+    float: none;
+    top: 0;
+}
+
 .navbar-aside .nav>li:first-child{
     border-top: 0px;
 }

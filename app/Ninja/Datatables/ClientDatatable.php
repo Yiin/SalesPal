@@ -99,7 +99,7 @@ class ClientDatatable extends EntityDatatable
     {
         $currenciesDropdown = [
             'type' => 'dropdown',
-            'label' => trans('texts.currency'),
+            'label' => trans('texts.currency_id'),
             'options' => [],
         ];
 
