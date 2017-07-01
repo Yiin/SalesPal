@@ -132,6 +132,7 @@ if (! defined('APP_NAME')) {
     define('ACTIVITY_TYPE_DELETE_TASK', 45);
     define('ACTIVITY_TYPE_RESTORE_TASK', 46);
     define('ACTIVITY_TYPE_UPDATE_EXPENSE', 47);
+    define('ACTIVITY_TYPE_CHECK_CLIENT_VAT', 48);
 
     define('DEFAULT_INVOICE_NUMBER', '0001');
     define('RECENTLY_VIEWED_LIMIT', 20);

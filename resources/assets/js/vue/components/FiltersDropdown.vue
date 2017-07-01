@@ -8,7 +8,7 @@
         <div :class="{ open: is_open }" class="vue-dropdown-menu">
 
             <div @click="toggleAll" class="vue-dropdown-option">
-                <label>Toggle All</label>
+                <div class="option-label">Toggle All</div>
             </div>
 
             <hr class="separator"/>
@@ -27,41 +27,19 @@
                             Dropdown
                          -->
                         <div @mouseover="openChildDropdown(option)" @mouseleave="closeChildDropdown" class="vue-dropdown-option --dropdown">
-                            <label>{{ option.label }}</label>
-                            <div :class="{ open: openedDropdown === option }" class="vue-dropdown-menu">
-
-                                <!-- 
-                                    Search
-                                 -->
-                                <input v-if="option.options.length > 6" v-model="searchQuery" placeholder="Type In or Select From List" type="text" class="vue-dropdown-option --search">
-
-                                <!-- 
-                                    Dropdown Items
-                                 -->
-                                <template v-for="_option in option.options">
-                                    <template v-if="_option.type === 'separator'">
-
-                                        <hr class="separator"></hr>
-
-                                    </template>
-                                    <template v-else>
-
-                                        <div v-if="!searchFor || _option.label.toLowerCase().indexOf(searchFor) !== -1" @click="toggle(_option)" :class="{ checked: _option.selected }" class="vue-dropdown-option --checkbox">
-                                            <input type="checkbox" name="asdasd[]" class="" value="1">
-                                            <label class="checkinthebox"></label>
-                                            <label>{{ _option.label }}</label>
-                                        </div>
-
-                                    </template>
-                                </template>
-                            </div>
+                            <div class="option-label">{{ option.label }}</div>
+                            <child-dropdown-menu 
+                                :parent="option" 
+                                :class="{ open: openedDropdown === option }"
+                            ></child-dropdown-menu>
                         </div>
 
                     </template>
                     <template v-else>
-                        <div @click="toggle(option)" :class="{ checked: option.selected }" class="vue-dropdown-option">
+                        <div @click="toggle(option)" :class="{ checked: option.selected }" class="vue-dropdown-option --checkbox">
 
-                            <label>{{ option.label }}</label>
+                            <div class="checkbox-holder"></div>
+                            <div class="option-label">{{ option.label }}</div>
 
                         </div>
                     </template>
@@ -74,6 +52,7 @@
 
 <script>
 import { mixin as clickaway } from '../mixins/clickaway';
+import { medium } from '../medium.patched.js';
 
 export default {
     mixins: [
@@ -97,8 +76,7 @@ export default {
         return {
             openedDropdown: null,
             is_open: false,
-            childDropdownTimeout: null,
-            searchQuery: ''
+            childDropdownTimeout: null
         }
     },
 
@@ -114,16 +92,12 @@ export default {
             let selected = this.checkboxes.filter(option => option.selected).length;
             return selected === this.checkboxes.length;
         },
-
-
-        searchFor() {
-            return this.searchQuery.trim().toLowerCase();
-        }
     },
 
 
 
     methods: {
+
         toggleAll() {
             let selected = !!this.checkboxes.filter(option => !option.selected).length;
             this.checkboxes.forEach(option => {
@@ -163,7 +137,7 @@ export default {
             this.childDropdownTimeout = {
                 label: this.openedDropdown.label,
                 timeout: setTimeout(() => {
-                    this.openedDropdown = null;  
+                    // this.openedDropdown = null;  
                 }, 300)
             };
         },
@@ -179,164 +153,185 @@ export default {
 
 
 <style scoped>
-    .vue-dropdown {
+
+    .vue-dropdown
+    {
         position: relative;
+
         display: inline-block;
+
         margin: 0 15px;
     }
 
-    .vue-dropdown > button {
-        background:  white;
-        border: none;
-        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
+    .vue-dropdown > button
+    {
+        font-size: 16px;
+
         width: 268px;
         height: 44px;
-        text-align: left;
-        padding: 0 15px;
-        font-size: 16px;
-        color: #373737;
-        border-radius: 2px;
         margin-right: 15px;
         margin-left: -3px;
+        padding: 0 15px;
+
+        text-align: left;
+
+        color: #373737;
+        border: none;
+        border-radius: 2px;
+        background: white;
+        box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
     }
 
-    .vue-dropdown > button.open {
+    .vue-dropdown > button.open
+    {
         border-radius: 2px 2px 0 0;
     }
 
-    .vue-dropdown-menu {
-        background: #FFFFFF;
-        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
+    .vue-dropdown-menu
+    {
+        position: absolute;
+        z-index: 999999;
+
         display: none;
+
+        width: 268px;
         margin: 0;
         padding: 0;
-        position: absolute;
-        width: 268px;
-        z-index: 999999;
+
+        background: #fff;
+        box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
     }
 
-    .vue-dropdown-menu.open {
-        display: block;
+    .vue-dropdown-menu.open
+    {
         position: absolute;
         left: 0;
-        padding-bottom: 18px;
-        padding-top: 17px;
+
+        display: block;
+
         margin-left: -3px;
+        padding-top: 17px;
+        padding-bottom: 18px;
+
         border-top: 1px solid #ebebeb;
         border-radius: 0 0 2px 2px;
     }
-
-    .vue-dropdown-menu.open label {
-        font-weight: 400;
-        border-radius: 2px;
-        margin-bottom: 0px;
-    }
-
-    .vue-dropdown-menu .vue-dropdown-menu.open {
-        transform: translate(245px, -30px);
-        width: 270px;
-        
-        background: #ffffff;
-        border: 1px solid #eee;
-
-        max-height: 300px;
-        overflow-y: auto;
-    }
-
-    .vue-dropdown-menu .vue-dropdown-option, .vue-dropdown-menu .vue-dropdown-option > a {
+</style>
+<style>
+    .vue-dropdown-menu.open .option-label
+    {
         font-size: 16px;
+        font-weight: 400;
+
+        display: inline-block;
+        overflow: hidden;
+
+        max-width: 160px;
+        margin-top: 6px;
+
+        vertical-align: top;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        border-radius: 2px;
+    }
+
+    .vue-dropdown-menu .vue-dropdown-option,
+    .vue-dropdown-menu .vue-dropdown-option > a
+    {
+        font-size: 16px;
+
         cursor: default;
         user-select: none;
     }
 
-    .vue-dropdown-menu .vue-dropdown-option {
-        padding-bottom: 7px;
+    .vue-dropdown-menu .vue-dropdown-option
+    {
+        height: 34px;
         padding-right: 10px;
-        text-align: left;
-        padding-top: 6px;
+        padding-left: 30px;
+    }
+
+    .vue-dropdown-menu .vue-dropdown-option.--dropdown .vue-dropdown-menu
+    {
+        width: 268px;
+        max-height: 387px;
+
+        transform: translate(271px, -34px);
+
+        border-radius: 0 2px 2px 2px;
+    }
+
+    .vue-dropdown-menu .vue-dropdown-option.--dropdown .vue-dropdown-option
+    {
         padding-left: 26px;
     }
-    
 
-    .vue-dropdown-option.--search {
-        width: 90%;
-        margin: 0 auto 15px auto;
-        display: block;
-        padding-left: 0;
-        padding-right: 0;
-        border-bottom: 1px solid #ebebeb;
-    }
-
-    .vue-dropdown-option.--search:hover {
-        background: white;
-    }
-
-    .vue-dropdown-option.--checkbox::before {
-        content: " ";
-        display: block;
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        border: 2px solid black;
-        vertical-align: middle;
-        margin-left: -30px;
-    }
-
-    .vue-dropdown-option.--checkbox label::before {     
-        content: '';
-        top: 6px;
-        left: 6px;
-        margin: 0px;
-        background: #01a8fe;
-        width: 10px;
-        height: 10px;
-    }
-
-    .vue-dropdown-option.--checkbox {
-        padding-left: 56px;
-    }
-
-    .vue-dropdown-option.--checkbox.checked::before {
-        background: #000000;
-    }
-
-    .vue-dropdown-menu .vue-dropdown-option.separator {
-        padding: 0;
-        border-bottom: 1px solid #ebebeb;
+    .vue-dropdown-menu .vue-dropdown-option.separator
+    {
         width: 85%;
         margin: 5px auto;
+        padding: 0;
+
+        border-bottom: 1px solid #ebebeb;
     }
 
-    .vue-dropdown-option:not(.separator):hover {
+    .vue-dropdown-option:not(.separator):hover
+    {
         background-color: #f5f5f5;
     }
 
-    .checkinthebox > [type="checkbox"]:not(:checked) + label, .checkinthebox > [type="checkbox"]:checked + label {
-        font-weight: 300;
+    .vue-dropdown-option.--checkbox
+    {
+        font-size: 0;
+
+        position: relative;
     }
 
-    .checkinthebox > [type="checkbox"]:not(:checked) + label::before, .checkinthebox > [type="checkbox"]:checked + label::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        margin-top: 0;
+    .vue-dropdown-option.--checkbox > .option-label
+    {
+        margin-left: 18px;
+    }
+
+    .vue-dropdown-option.--checkbox > .checkbox-holder
+    {
+        position: relative;
+
+        display: inline-block;
+
         width: 22px;
         height: 22px;
+        margin-top: 6px;
     }
 
-    .checkinthebox > [type="checkbox"]:checked + label::after {
+    .vue-dropdown-option.--checkbox > .checkbox-holder::before
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 22px;
+        height: 22px;
+
         content: '';
+
+        border: 2px solid #373737;
+        border-radius: 0;
+        background: #fff;
+    }
+
+    .vue-dropdown-option.--checkbox.checked > .checkbox-holder::after
+    {
+        position: absolute;
         top: 6px;
         left: 6px;
-        margin: 0px;
-        background: #01a8fe;
+
         width: 10px;
         height: 10px;
+
+        content: '';
+
+        background: #01a8fe;
     }
 
-    .checkinthebox > [type="checkbox"]:checked + label::after {
-        transform: scale(1);
-    }
 </style>

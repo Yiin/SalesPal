@@ -104,10 +104,6 @@ textarea.form-control {
 }
 
 /*tables*/
-table.data-table td {
-    height: 33px !important;
-}
-
 table.dataTable {
     border-radius: 3px;
     border-collapse: collapse;
@@ -163,18 +159,15 @@ table.table thead .sorting_desc {
 }
 
 table.dataTable thead th, table.dataTable thead td, table.invoice-table thead th, table.invoice-table thead td {
-    padding-top: 15px;
-    padding-right: 3px;
-    padding-bottom: 15px;
-    padding-left: 20px;
-
+    height: 50px;
+    padding: 0 3px 0 20px;
 }
 
 table.dataTable tbody th, table.dataTable tbody td {
-    padding-top: 10px;
+    padding: 0;
     padding-right: 2px;
-    padding-bottom: 10px;
     padding-left: 20px;
+    height: 52px;
 }
 
 .datepicker {
@@ -1944,7 +1937,7 @@ th .custom-checkbox > [type="checkbox"]:checked + label::after {
     border-left: none;
 }
 
-tr.odd:nth-child(1) > td:nth-child {
+.table.dataTable tbody tr > td {
     border-top: none;
 }
 
@@ -2130,9 +2123,11 @@ span.caret-dev-top {
 
 /*In table*/
 tr .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custom-checkbox > [type="checkbox"]:checked + label::before {
+    top: -17px;
+}
+th .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custom-checkbox > [type="checkbox"]:checked + label::before {
     top: -16px;
 }
-
 tr .custom-checkbox > [type="checkbox"]:checked + label::after {
     top: -10px;
 }
@@ -2288,11 +2283,7 @@ div.dataTables_length select {
 .textanimation:visited {
     color: #fff;
     background-color: #01a8fe;
-}
-
-.vue-dropdown-option > label {
-    margin-bottom: 0px;
-}       
+}    
 
 
 .table-heading-controls > .create-btn-wrapper,

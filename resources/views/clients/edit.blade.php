@@ -10,7 +10,7 @@
         <div class="alert alert-danger">{{ trans($errors->first('contacts')) }}</div>
     @endif
 
-    <!-- ------------------------------------------------- -->
+    <!-- -->
 
     <div class="row">
         <div class="col-md-6">

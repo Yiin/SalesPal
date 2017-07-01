@@ -28,6 +28,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ClientWasRestored' => [
             'App\Listeners\ActivityListener@restoredClient',
         ],
+        'App\Events\ClientVatWasChecked' => [
+            'App\Listeners\ActivityListener@checkedClientVat',
+            'App\Listeners\ClientListener@checkedVat',
+        ],
 
         // Invoices
         'App\Events\InvoiceWasCreated' => [

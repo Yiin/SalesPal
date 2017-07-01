@@ -353,7 +353,7 @@ class Client extends EntityModel
 
     public function getVatState()
     {
-        $lastCheck = $this->vatChecks()->where(DB::raw("CONCAT(`vat_checks`.`country_code`, `vat_checks`.`vat_number`)", '=', $this->vat_number))->orderBy('id', 'desc')->first();
+        $lastCheck = $this->vatChecks()->where(DB::raw("CONCAT(`vat_checks`.`country_code`, `vat_checks`.`vat_number`)"), '=', $this->vat_number)->first();
 
         if ($lastCheck) {
             if ($lastCheck->is_valid) {

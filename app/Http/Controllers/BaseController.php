@@ -96,9 +96,13 @@ class BaseController extends Controller
 
     protected function getEntities($query, $datatable, $page, $entities_per_page, $orderBy, $orderDirection)
     {
-        return $query->orderBy($orderBy, $orderDirection)
-            ->skip($entities_per_page * $page)
-            ->limit($entities_per_page)
+        if ($entities_per_page) {
+            $query
+                ->skip($entities_per_page * $page)
+                ->limit($entities_per_page);
+        }
+        return $query
+            ->orderBy($orderBy, $orderDirection)
             ->get()
             ->map(function ($model) use ($datatable) {
                 return $this->getRowData($model, $datatable);

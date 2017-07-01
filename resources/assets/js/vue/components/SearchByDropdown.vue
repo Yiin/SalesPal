@@ -154,6 +154,10 @@ export default {
         border-radius: 0 0 2px 2px;
     }
 
+    .vue-dropdown-menu.open label {
+        margin-bottom: 0px;
+    }
+
     .vue-dropdown-menu .vue-dropdown-menu.open {
         transform: translate(245px, -30px);
         width: 270px;

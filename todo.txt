@@ -1,12 +1,18 @@
 
-multipage selected rows
+DONE vat checker
 
-context menu recurring invoice -> invoice
+DONE select to show checkboxes
 
-outside of table context menu
+DONE categories weight 700
+
+DONE select to show scrollbar style
+
+DONE navigation scrollbar
+
+DONE context menu recurring invoice -> invoice
+
+KINDA DONE multipage selected rows
 
 calendar style
 
-select to show checkboxes
-
-select to show scrollbar style
+outside of table context menu

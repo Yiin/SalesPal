@@ -9,6 +9,8 @@ use Send;
 
 use App\Http\Response;
 
+use App\Events\ClientVatWasChecked;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Input;
@@ -25,6 +27,7 @@ class VatHelperController extends Controller
     {
 
         $vat = $request->get('vat');
+        $register_check = !!$request->get('save');
 
         $vat_CC = mb_substr($vat, 0, 2);
 
@@ -55,7 +58,7 @@ class VatHelperController extends Controller
 
             //pass value to variable
             $cCode = $result->countryCode;
-            $vNum = $result->vatNumber;
+            $vNum =  $result->vatNumber;
             $rDate = $result->requestDate;
             $fName = $result->name;
             $fAdrr = $result->address;
@@ -63,19 +66,32 @@ class VatHelperController extends Controller
             //print value that has been passed to var
             //passed vars
         } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 500);
+            $data = [
+                'country_code' => '',
+                'vat_number' => $vat,
+                'message' => $e->getMessage(),
+            ];
+
+            if ($register_check) {
+                event(new ClientVatWasChecked(false, (object) $data));
+            }
+
+            return response()->json($data, 500);
         }
-        return response()->json([
-            'results' => [
-                'Country code' => $cCode,
-                'Vat Number' => $vNum,
-                'Search date' => $rDate,
-                'Name' => $fName,
-                'Address' => $fAdrr
-            ]
-        ]);
+
+        $data = [
+            'country_code' => $result->countryCode,
+            'vat_number' => $result->vatNumber,
+            'search_date' => $result->requestDate,
+            'name' => $result->name,
+            'address' => $result->address,
+        ];
+
+        if ($register_check) {
+            event(new ClientVatWasChecked(true, (object) $data));
+        }
+
+        return response()->json($data);
 
     }
 }

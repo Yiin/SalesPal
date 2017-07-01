@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { medium } from '../medium.patched.js';
     
 export default {
 
@@ -40,7 +39,7 @@ export default {
             mode: Medium.inlineMode
         });
 
-        this.$el.addEventListener('keyup', () => {
+        this.$refs.input.addEventListener('keyup', () => {
             if (this.option.value !== this.medium.value().trim()) {
                 this.option.value = this.medium.value().trim();
                 this.$forceUpdate();

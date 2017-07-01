@@ -88,7 +88,8 @@
     .sidebar-nav {
         width: 182px;
         list-style: none;
-        height: 100%;
+        height: calc(100vh - 260px);
+        overflow: auto;
     }
 
     #left-sidebar-wrapper .sidebar-nav li {
@@ -112,7 +113,6 @@
     }
 
     #left-sidebar-wrapper ul {
-        min-height: 730px;
         margin: 27px 25px;
     }
 
@@ -342,10 +342,31 @@
 
 #left-sidebar-wrapper .sidebar-nav .sidebar-category {
     padding: 0 5px 0;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
     font-style: normal;
     color: #01a8fe;
     text-transform: uppercase;
     margin-bottom: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track
+{
+    margin-top: 6px;
+
+    border-radius: 5px;
+    background-color: #f3f3f3;
+}
+
+.sidebar-nav::-webkit-scrollbar
+{
+    width: 6px;
+
+    background-color: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb
+{
+    border-radius: 5px;
+    background-color: #01a8fe;
 }

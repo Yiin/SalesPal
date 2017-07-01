@@ -62,7 +62,7 @@
                             </td>
                         </tr>
                         <tr v-for="row in table_rows" 
-                            @click="(row.__checkbox.show ? toggleSelect(row.__checkbox.data.id) : null)"
+                            @click="rowClickHandler($event, row)"
                             @contextmenu.prevent="showContextMenu($event, row)"
                             :class="{ hover: row === contextMenu.row }"
                         >
@@ -119,7 +119,12 @@
                         </div>
                         <span>
                             <template v-if="table_state.entities_count > 0">
-                                Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
+                                <template v-if="table_state.entities_per_page && table_state.entities_per_page < table_state.entities_count">
+                                    Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
+                                </template>
+                                <template v-else>
+                                    Showing all entries
+                                </template>
                             </template>
                             <template v-else>
                                 Showing 0 entries
@@ -213,9 +218,11 @@
                 entities_per_page: [
                     { label: '10', value: 10},
                     { label: '20', value: 20},
-                    { label: '35', value: 35},
                     { label: '50', value: 50},
                     { label: '100', value: 100},
+                    { label: '300', value: 300},
+                    { label: '500', value: 500},
+                    { label: 'All', value: 0},
                 ],
 
                 promise: {
@@ -249,8 +256,10 @@
             },
 
             showing_to() {
-                let max = this.table_state.page * this.table_state.entities_per_page;
                 let count = this.table_state.entities_count;
+                let max = this.table_state.entities_per_page > 0 
+                    ? this.table_state.page * this.table_state.entities_per_page 
+                    : count;
 
                 return max > count ? count : max;
             },
@@ -289,10 +298,18 @@
             },
 
             entity_singular() {
+                switch (this.entity) {
+                    case 'recurring_invoice':
+                        return 'Invoice';
+                }
                 return this.entity.split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
 
             entity_plural() {
+                switch (this.entity) {
+                    case 'recurring_invoice':
+                        return 'Invoices';
+                }
                 return (this.entities || this.entity + 's').replace('_', ' ');
             }
 
@@ -316,6 +333,8 @@
                 }
             },
             'table_state.entities_per_page': function (entities_per_page, previous) {
+                this.table_state.entities_per_page = entities_per_page = parseInt(entities_per_page);
+
                 if (entities_per_page * (this.table_state.page - 1) > this.table_state.entities_count) {
                     this.table_state.page = Math.ceil(this.table_state.entities_count / entities_per_page);
                 }
@@ -363,7 +382,7 @@
 
 
             updateEntitiesPerPage(option) {
-                this.table_state.entities_per_page = option.value;
+                this.$set(this.table_state, 'entities_per_page', parseInt(option.value));
             },
 
 
@@ -661,6 +680,17 @@
                     this.contextMenu.row = row;
 
                     Vue.nextTick(() => this.setMenuPosition(e.y, e.x));
+                }
+            },
+
+
+            rowClickHandler(e, row) {
+                // ignore clicks on links
+                if (['a'].indexOf(e.target.nodeName.toLowerCase()) !== -1) {
+                    return;
+                }
+                if (row.__checkbox.show) {
+                    this.toggleSelect(row.__id)
                 }
             },
 

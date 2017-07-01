@@ -6,6 +6,7 @@ use App\Events\ClientWasArchived;
 use App\Events\ClientWasCreated;
 use App\Events\ClientWasDeleted;
 use App\Events\ClientWasRestored;
+use App\Events\ClientVatWasChecked;
 use App\Events\CreditWasArchived;
 use App\Events\CreditWasCreated;
 use App\Events\CreditWasDeleted;
@@ -110,6 +111,21 @@ class ActivityListener
         $this->activityRepo->create(
             $event->client,
             ACTIVITY_TYPE_RESTORE_CLIENT
+        );
+    }
+
+    /**
+     * @param ClientWasRestored $event
+     */
+    public function checkedClientVat(ClientVatWasChecked $event)
+    {
+        if (! $event->client) {
+            return;
+        }
+        
+        $this->activityRepo->create(
+            $event->client,
+            ACTIVITY_TYPE_CHECK_CLIENT_VAT
         );
     }
 
