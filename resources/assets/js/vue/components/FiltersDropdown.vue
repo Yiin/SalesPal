@@ -77,37 +77,28 @@ export default {
         return {
             openedDropdown: null,
             is_open: false,
-            childDropdownTimeout: null
+            childDropdownTimeout: null,
+            selected_all: true
         }
-    },
-
-
-
-    computed: {
-        checkboxes() {
-            return _.flatten(...this.options.filter(option => option.type === 'dropdown').map(option => option.options))
-                .concat(this.options.filter(option => option.type === 'checkbox'));
-        },
-
-
-        selected_all() {
-            // nothing is selected, show all results
-            return ! this.checkboxes.filter(option => option.selected).length;
-        },
     },
 
 
 
     methods: {
 
-        toggleAll() {
-            if (this.selected_all) {
-                return;
-            }
+        checkboxes() {
+            return _.flatten(...this.options.filter(option => option.type === 'dropdown').map(option => option.options))
+                .concat(this.options.filter(option => option.type === 'checkbox'));
+        },
 
-            this.checkboxes.forEach(option => {
-                option.selected = false;
-            });
+        toggleAll() {
+            this.selected_all = !this.selected_all;
+
+            if (this.selected_all) {
+                this.checkboxes().forEach(option => {
+                    option.selected = false;
+                });
+            }
 
             this.$forceUpdate();
         },
@@ -116,6 +107,9 @@ export default {
 
         toggle(option) {
             this.$set(option, 'selected', !option.selected);
+
+            this.selected_all = this.checkboxes().filter(option => option.selected) === 0;
+
             this.$forceUpdate();
         },
 
