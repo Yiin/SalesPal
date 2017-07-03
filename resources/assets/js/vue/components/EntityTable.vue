@@ -4,7 +4,7 @@
             <li>
                 <a class="fa fa-home" href="/"></a>
             </li>
-            <li class="active">{{ entity_plural }}</li>
+            <li class="active">{{ entity_plural_full }}</li>
         </ol>
         <div class="row table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
@@ -310,6 +310,10 @@
                     case 'recurring_invoice':
                         return 'Invoices';
                 }
+                return (this.entities || this.entity + 's').replace('_', ' ');
+            },
+
+            entity_plural_full() {
                 return (this.entities || this.entity + 's').replace('_', ' ');
             }
 
