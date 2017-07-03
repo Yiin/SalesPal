@@ -7,8 +7,9 @@
 
         <div :class="{ open: is_open }" class="vue-dropdown-menu">
 
-            <div @click="toggleAll" class="vue-dropdown-option">
-                <div class="option-label">Toggle All</div>
+            <div @click="toggleAll" :class="{ checked: selected_all }" class="vue-dropdown-option --checkbox">
+                <div class="checkbox-holder"></div>
+                <div class="option-label">Show All</div>
             </div>
 
             <hr class="separator"/>
@@ -84,13 +85,14 @@ export default {
 
     computed: {
         checkboxes() {
-            return this.options.filter(option => option.type === 'checkbox');
+            return _.flatten(...this.options.filter(option => option.type === 'dropdown').map(option => option.options))
+                .concat(this.options.filter(option => option.type === 'checkbox'));
         },
 
 
-        option_all() {
-            let selected = this.checkboxes.filter(option => option.selected).length;
-            return selected === this.checkboxes.length;
+        selected_all() {
+            // nothing is selected, show all results
+            return ! this.checkboxes.filter(option => option.selected).length;
         },
     },
 
@@ -99,10 +101,14 @@ export default {
     methods: {
 
         toggleAll() {
-            let selected = !!this.checkboxes.filter(option => !option.selected).length;
+            if (this.selected_all) {
+                return;
+            }
+
             this.checkboxes.forEach(option => {
-                option.selected = selected;
+                option.selected = false;
             });
+
             this.$forceUpdate();
         },
 

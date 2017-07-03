@@ -66,6 +66,9 @@ class PaymentDatatable extends EntityDatatable
                 'value' => 'refunded',
                 'label' => trans('texts.status_refunded'),
             ],
+            [
+                'type' => 'separator',
+            ]
         ];
 
         $methodDropdown = [
