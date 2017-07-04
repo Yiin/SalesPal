@@ -856,16 +856,12 @@
 
     .calculator > .block {
         display: inline-block;
-<<<<<<< HEAD
-        margin-left: 4px;
-=======
         margin-right: 7px;
         margin-left: 4px;
     }
 
     .calculator .block:first-child {
         margin-right: 9px;
->>>>>>> 6b7d33714f7fed69c403bb015277fd27a8fa39c9
     }
 
     .calculator .result {
