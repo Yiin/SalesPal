@@ -1,0 +1,267 @@
+    /** Buttons **/
+
+
+    /** Panel **/
+.panel {
+    box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0px 3px 5px rgba(0, 0, 0, 0.05);
+    display: inline-block;
+}
+
+.expenses-panel{
+    margin-bottom: 27px;
+    margin-top: 38px;
+    height: 115px;
+    margin-right: 23px;
+}
+
+.panel-revenue {
+    padding-right: 14px;
+}
+
+.texttotal {
+    font-size: 16px;
+    margin-top: 14px;
+    margin-left: 14px;
+
+}
+
+.textnumber {
+    font-weight: bold;
+    font-size: 38px;
+    margin-top: 8px;
+    margin-left: 13px;
+    line-height: 55px;
+}
+
+.textsum {
+    font-weight: bold;
+    font-size: 27px;
+    color: #01a8fe;
+    float: right;
+    display: inline-block;
+    margin-top: -43px;
+    margin-left: 314px;
+    line-height: 0px;
+
+}
+
+.textlast {
+    font-size: 16px;
+    float: right;
+    display: inline-block;
+    margin-top: -23px;
+
+}
+
+.textlast > span {
+    font-weight: bold;
+}
+
+.graphpanel {
+    margin-bottom: 27px;
+}
+    /** Navbar **/
+
+.navbarpanel {
+    width: 1636px;
+    height: 761px;
+    margin-left: 15px;
+}
+
+.dashboard-heading {
+    padding-left: 31px;
+    margin-top: -1px;
+    padding-right: 19px;
+}
+.newtodaystyle {
+    padding-left: 20px;
+    border-left: 1px solid #e1e1e1;
+    margin-top: 10px;
+
+}
+
+.newtodaystyle > div {
+    border: 1px solid #01a8fe;
+    background-color: #01a8fe;
+    color: #fff;
+    display: inline-block;
+    border-radius: 2px;
+    width: 35px;
+    height: 20px;
+    text-align: center;
+    margin-right: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-right: 1px;
+}
+
+.dashboard-nav .active > a{
+    color: #fff;
+    background-color: #01a8fe;
+    font-weight: 500;
+}
+
+.dashboard-nav li > a {
+    padding-left: 23px;
+    padding-bottom: 17px;
+    padding-right: 23px;
+    padding-top: 15px;
+    color: #333;
+    font-size: 16px;  
+}
+
+.dashboard-nav li > a:hover {
+    color: #fff;
+    background-color: #333;
+}
+
+
+.textpanel > div {
+    border-radius: 2px;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding-top: 10px;
+    margin-top: -6px;
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.colorfirst {
+    background-color: #23B820;
+}
+
+.colorsecond {
+    background-color: #FE6C01;
+}
+
+.colorthird {
+    background-color: #9E33D6;
+}
+
+.colorfourth {
+    background-color: #01A8FE;
+}
+
+#morris-one-line-chart {
+    margin-top: 4px;
+    margin-left: -7px;
+}
+.graphpanel-colors {
+    display: inline-flex;
+}
+
+.graphpanel-colors div {
+    font-size: 12px;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    margin-right: 14px;
+    margin-left: 13px;
+    margin-top: 2px;
+
+}
+.graphpanel-colors span {
+    padding-right: 5px;
+}
+
+.graphpanel-lightblue {
+    border: 1px solid #01a8fe;
+    background-color: #01a8fe;
+}
+
+.graphpanel-lighterblue {
+    border: 1px solid #01a8fe;
+    background-color: #01a8fe;
+}
+
+.color-text-style {
+    margin-left: 80px;
+    margin-top: -11px;
+}
+
+.color-text-style > div{
+    color: #333;
+    display: flex;
+
+}
+
+
+.events {
+    margin-top: 5px !important;
+    font-weight: bold;
+}
+
+.event > a {
+    color: #01A8FE;
+    text-decoration: none;
+}
+.day {
+    display: flex;
+    align-items: stretch;
+    margin-top: -5px;
+}
+.day-number {
+    line-height: 40px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    vertical-align: top;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px;
+    margin-left: 6px;
+}
+
+.border {
+    margin-left: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.events
+{
+    margin: 20px;
+}
+
+.event
+{
+    padding: 10px 0;
+}
+
+.border-first {
+    border-left: 3px solid #23B820;
+}
+
+.border-second {
+    border-left: 3px solid #FE6C01;
+}
+
+.border-third {
+    border-left: 3px solid #9E33D6;
+}
+
+.border-fourth {
+    border-left: 3px solid #01A8FE;
+    height: 40px;
+
+}
+.events > hr {
+    margin-top: 4px;
+    margin-bottom: 5px;
+    width: 1475px;
+}
+
+.event > span {
+    padding-right: 10px;
+    margin-left: -1px;
+}
+
+.coll-row {
+    margin-right: -40px;
+}
+

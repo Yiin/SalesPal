@@ -436,6 +436,8 @@ label.control-label {
     font-weight: 600;
     font-size: 25px;
     margin-top: 7px;
+    width: 523px;
+    height: 115px;
 }
 
 div.panel {
@@ -654,12 +656,12 @@ canvas {
 ************************************************/
 
 .in-bold {
-    font-size: 26px;
+    font-size: 38px;
     font-weight: bold;;
 }
 
 .in-thin {
-    font-size: 26px;
+    font-size: 16px;
     font-weight: 100;
 }
 
@@ -725,6 +727,10 @@ canvas {
 
 .invoice-table tfoot input {
     text-align: right;
+}
+
+.someclass {
+    font-weight: bold;
 }
 
 /***********************************************

@@ -13,582 +13,164 @@
 
 @section('content')
 
-<script type="text/javascript">
 
-    @if (Auth::user()->hasPermission('view_all'))
-        function loadChart(data) {
-            var ctx = document.getElementById('chart-canvas').getContext('2d');
-            if (window.myChart) {
-                window.myChart.config.data = data;
-                window.myChart.config.options.scales.xAxes[0].time.unit = chartGroupBy.toLowerCase();
-                window.myChart.config.options.scales.xAxes[0].time.round = chartGroupBy.toLowerCase();
-                window.myChart.update();
-            } else {
-                $('#progress-div').hide();
-                $('#chart-canvas').fadeIn();
-                window.myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: data,
-                    options: {
-                        tooltips: {
-                            mode: 'x-axis',
-                            titleFontSize: 15,
-                            titleMarginBottom: 12,
-                            bodyFontSize: 15,
-                            bodySpacing: 10,
-                            callbacks: {
-                                title: function(item) {
-                                    return moment(item[0].xLabel).format("{{ $account->getMomentDateFormat() }}");
-                                },
-                                label: function(item, data) {
-                                    if (item.datasetIndex == 0) {
-                                        var label = " {{ trans('texts.invoices') }}: ";
-                                    } else if (item.datasetIndex == 1) {
-                                        var label = " {{ trans('texts.payments') }}: ";
-                                    } else if (item.datasetIndex == 2) {
-                                        var label = " {{ trans('texts.expenses') }}: ";
-                                    }
-
-                                    return label + formatMoney(item.yLabel, chartCurrencyId, account.country_id);
-                                }
-                            }
-                        },
-                        title: {
-                            display: false,
-                            fontSize: 18,
-                            text: '{{ trans('texts.total_revenue') }}'
-                        },
-                        scales: {
-                            xAxes: [{
-                                type: 'time',
-                                time: {
-                                    unit: chartGroupBy,
-                                    round: chartGroupBy,
-                                },
-                                gridLines: {
-                                    display: false,
-                                },
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    callback: function(label, index, labels) {
-                                        return formatMoney(label, chartCurrencyId, account.country_id);
-                                    }
-                                },
-                            }]
-                        }
-                    }
-                });
-            }
-        }
-
-        var account = {!! $account !!};
-        var chartGroupBy = 'day';
-        var chartCurrencyId = {{ $account->getCurrencyId() }};
-		var dateRanges = {!! $account->present()->dateRangeOptions !!};
-		var chartStartDate;
-        var chartEndDate;
-
-        $(function() {
-
-            // Initialize date range selector
-			chartStartDate = moment().subtract(29, 'days');
-	        chartEndDate = moment();
-
-			if (isStorageSupported()) {
-				var lastRange = localStorage.getItem('last:dashboard_range');
-				lastRange = dateRanges[lastRange];
-				if (lastRange) {
-					chartStartDate = lastRange[0];
-					chartEndDate = lastRange[1];
-				}
-
-				@if (count($currencies) > 1)
-					var currencyId = localStorage.getItem('last:dashboard_currency_id');
-					if (currencyId) {
-						chartCurrencyId = currencyId;
-						$("#currency-btn-group [data-button=\"" + chartCurrencyId + "\"]").addClass("active").siblings().removeClass("active");
-					}
-				@endif
-
-				var groupBy = localStorage.getItem('last:dashboard_group_by');
-				if (groupBy) {
-					chartGroupBy = groupBy;
-					$("#group-btn-group [data-button=\"" + groupBy + "\"]").addClass("active").siblings().removeClass("active");
-				}
-			}
-
-            function cb(start, end, label) {
-                $('#reportrange span').html(start.format('{{ $account->getMomentDateFormat() }}') + ' - ' + end.format('{{ $account->getMomentDateFormat() }}'));
-                chartStartDate = start;
-                chartEndDate = end;
-				$('.range-label-div').text(label);
-                loadData();
-
-				if (isStorageSupported() && label && label != "{{ trans('texts.custom_range') }}") {
-					localStorage.setItem('last:dashboard_range', label);
-				}
-            }
-
-            $('#reportrange').daterangepicker({
-                locale: {
-                    format: "{{ $account->getMomentDateFormat() }}",
-					customRangeLabel: "{{ trans('texts.custom_range') }}",
-                },
-				startDate: chartStartDate,
-                endDate: chartEndDate,
-                linkedCalendars: false,
-                ranges: dateRanges,
-            }, cb);
-
-            cb(chartStartDate, chartEndDate);
-
-            $("#currency-btn-group > .btn").click(function(){
-                $(this).addClass("active").siblings().removeClass("active");
-                chartCurrencyId = currencyMap[$(this).text()].id;
-                loadData();
-				if (isStorageSupported()) {
-					localStorage.setItem('last:dashboard_currency_id', $(this).attr('data-button'));
-				}
-            });
-
-            $("#group-btn-group > .btn").click(function(){
-                $(this).addClass("active").siblings().removeClass("active");
-                chartGroupBy = $(this).attr('data-button');
-                loadData();
-				if (isStorageSupported()) {
-					localStorage.setItem('last:dashboard_group_by', chartGroupBy);
-				}
-            });
-
-            function loadData() {
-                var includeExpenses = "{{ count($expenses) ? 'true' : 'false' }}";
-                var url = "{!! url('/dashboard_chart_data') !!}/" + chartGroupBy + '/' + chartStartDate.format('YYYY-MM-DD') + '/' + chartEndDate.format('YYYY-MM-DD') + '/' + chartCurrencyId + '/' + includeExpenses;
-                $.get(url, function(response) {
-                    response = JSON.parse(response);
-                    loadChart(response.data);
-
-                    var totals = response.totals;
-                    $('.revenue-div').text(formatMoney(totals.revenue, chartCurrencyId, account.country_id));
-                    $('.outstanding-div').text(formatMoney(totals.balance, chartCurrencyId, account.country_id));
-                    $('.expenses-div').text(formatMoney(totals.expenses, chartCurrencyId, account.country_id));
-                    $('.average-div').text(formatMoney(totals.average, chartCurrencyId, account.country_id));
-
-                    $('.currency').hide();
-                    $('.currency_' + chartCurrencyId).show();
-
-					// add blank values to fix layout
-					var divs = ['revenue', 'expenses', 'outstanding']
-					for (var i=0; i<divs.length; i++) {
-						var type = divs[i];
-						if (!$('.' + type + '-panel .currency_' + chartCurrencyId).length) {
-							$('.' + type + '-panel .currency_blank').text(formatMoney(0, chartCurrencyId)).show();
-						}
-					}
-                })
-            }
-
-        });
-    @else
-        $(function() {
-            $('.currency').show();
-        })
-    @endif
-
-</script>
-
+            <!-- 
+                Nav Bar?
+             -->
 <div class="row">
-    <div class="col-md-2">
-        <ol class="breadcrumb"><li class='active'>{{ trans('texts.dashboard') }}</li></ol>
-    </div>
-    @if (count($tasks))
-        <div class="col-md-2" style="padding-top:6px">
-            @foreach ($tasks as $task)
-                {!! Button::primary($task->present()->titledName)->small()->asLinkTo($task->present()->url) !!}
-            @endforeach
-        </div>
-        <div class="col-md-8">
-    @else
-        <div class="col-md-10">
-    @endif
-        @if (Auth::user()->hasPermission('view_all'))
-        <div class="pull-right">
-            @if (count($currencies) > 1)
-            <div id="currency-btn-group" class="btn-group" role="group" style="border: 1px solid #ccc;">
-              @foreach ($currencies as $key => $val)
-                <button type="button" class="btn btn-normal {{ array_values($currencies)[0] == $val ? 'active' : '' }}"
-                    data-button="{{ $key }}" style="font-weight:normal !important;background-color:white">{{ $val }}</button>
-              @endforeach
-            </div>
-            @endif
-            <div id="group-btn-group" class="btn-group" role="group" style="border: 1px solid #ccc; margin-left:18px">
-              <button type="button" class="btn btn-normal active" data-button="day" style="font-weight:normal !important;background-color:white">{{ trans('texts.day') }}</button>
-              <button type="button" class="btn btn-normal" data-button="week" style="font-weight:normal !important;background-color:white">{{ trans('texts.week') }}</button>
-              <button type="button" class="btn btn-normal" data-button="month" style="font-weight:normal !important;background-color:white">{{ trans('texts.month') }}</button>
-            </div>
-            <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 9px 14px; border: 1px solid #ccc; margin-top: 0px; margin-left:18px">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                <span></span> <b class="caret"></b>
-            </div>
-        </div>
-        @endif
-    </div>
+<div class="vue-app valutebutton dashboardbuttons" id="vueapp_{{ str_random() }}"">
+  <dropdown class="calculator-show" default="2" options="[
+    { label: 'Eur', value: '1' }, 
+    { label: 'Usd', value: '2' }, 
+    { label: '3', value: '3' }]
+" width="158px"></dropdown>
 </div>
 
-@if ($account->company->hasEarnedPromo())
-	@include('partials/discount_promo')
-@elseif ($showBlueVinePromo)
-    @include('partials/bluevine_promo')
-@endif
+<div class="vue-app datebutton dashboardbuttons" id="vueapp_{{ str_random() }}"">
+  <dropdown class="calculator-show" default="2" options="[
+    { label: 'Month', value: '1' },     
+    { label: '2', value: '2' }, 
+    { label: '3', value: '3' }]
+" width="158px"></dropdown>
+</div>
 
-@if ($showWhiteLabelExpired)
-	@include('partials/white_label_expired')
-@endif
+<div class="vue-app menubutton dashboardbuttons" id="vueapp_{{ str_random() }}"">
+  <dropdown class="calculator-show" default="2" options="[
+    { label: '', value: '1' }, 
+    { label: '2', value: '2' }, 
+    { label: '3', value: '3' }]
+" width="308px"></dropdown>
+</div>
+</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body revenue-panel">
-                <div style="overflow:hidden">
-                    <div class="in-thin">
-                        {{ trans('texts.total_revenue') }}
-                    </div>
-                    <div class="revenue-div in-bold pull-right" style="color:#337ab7">
-                    </div>
-                    <div class="in-bold">
-                        @if (count($paidToDate))
-                            @foreach ($paidToDate as $item)
-                                <div class="currency currency_{{ $item->currency_id ?: $account->getCurrencyId() }}" style="display:none">
-                                    {{ Utils::formatMoney($item->value, $item->currency_id) }}
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="currency currency_{{ $account->getCurrencyId() }}" style="display:none">
-                                {{ Utils::formatMoney(0) }}
-                            </div>
-                        @endif
-						<div class="currency currency_blank" style="display:none">
-							&nbsp;
-						</div>
-                    </div>
-					<div class="range-label-div in-thin pull-right" style="color:#337ab7;font-size:16px;">
-						{{ trans('texts.last_30_days') }}
-					</div>
-                </div>
-            </div>
+             <!-- 
+                three coll
+             -->
+<div class="coll-row">
+        <div class="panel panel-default expenses-panel">
+            <div class="panel-revenue">
+                <div class="texttotal">Toral Revenue</div>
+                <div class="textnumber">6,6666666666.0</div>
+                <div class="textsum">0.00</div>
+                <div class="textlast">Last <span>30</span> days</div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body expenses-panel">
-                <div style="overflow:hidden">
-                    @if (count($expenses))
-                        <div class="in-thin">
-                            {{ trans('texts.total_expenses') }}
-                        </div>
-                        <div class="expenses-div in-bold pull-right" style="color:#337ab7">
-                        </div>
-                        <div class="in-bold">
-                            @foreach ($expenses as $item)
-                                <div class="currency currency_{{ $item->currency_id ?: $account->getCurrencyId() }}" style="display:none">
-                                    {{ Utils::formatMoney($item->value, $item->currency_id) }}<br/>
-                                </div>
-                            @endforeach
-							<div class="currency currency_blank" style="display:none">
-								&nbsp;
-							</div>
-                        </div>
-                    @else
-                        <div class="in-thin">
-                            {{ trans('texts.average_invoice') }}
-                        </div>
-                        <div class="average-div in-bold pull-right" style="color:#337ab7">
-                        </div>
-                        <div class="in-bold">
-                            @if (count($averageInvoice))
-                                @foreach ($averageInvoice as $item)
-                                    <div class="currency currency_{{ $item->currency_id ?: $account->getCurrencyId() }}" style="display:none">
-                                        {{ Utils::formatMoney($item->invoice_avg, $item->currency_id) }}<br/>
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="currency currency_{{ $account->getCurrencyId() }}" style="display:none">
-                                    {{ Utils::formatMoney(0) }}
-                                </div>
-                            @endif
-							<div class="currency currency_blank" style="display:none">
-								&nbsp;
-							</div>
-                        </div>
-                    @endif
-					<div class="range-label-div in-thin pull-right" style="color:#337ab7;font-size:16px;">
-						{{ trans('texts.last_30_days') }}
-					</div>
-                </div>
+
+        <div class="panel panel-default expensesmargin expenses-panel">
+            <div class="panel-revenue">
+                <div class="texttotal">Toral Expences</div>
+                <div class="textnumber">6,666.0</div>
+                <div class="textsum">0.00</div>
+                <div class="textlast">Last <span>30</span> days</div>
             </div>
-        </div>
     </div>
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body outstanding-panel">
-                <div style="overflow:hidden">
-                    <div class="in-thin">
-                        {{ trans('texts.outstanding') }}
-                    </div>
-                    <div class="outstanding-div in-bold pull-right" style="color:#337ab7">
-                    </div>
-                    <div class="in-bold">
-                        @if (count($balances))
-                            @foreach ($balances as $item)
-                                <div class="currency currency_{{ $item->currency_id ?: $account->getCurrencyId() }}" style="display:none">
-                                    {{ Utils::formatMoney($item->value, $item->currency_id) }}<br/>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="currency currency_{{ $account->getCurrencyId() }}" style="display:none">
-                                {{ Utils::formatMoney(0) }}
-                            </div>
-                        @endif
-						<div class="currency currency_blank" style="display:none">
-							&nbsp;
-						</div>
-                    </div>
-					<div class="range-label-div in-thin pull-right" style="color:#337ab7;font-size:16px;">
-						{{ trans('texts.last_30_days') }}
-					</div>
-                </div>
-            </div>
+        <div class="panel panel-default outstandingmargin expenses-panel">
+            <div class="panel-revenue">
+                <div class="texttotal">Toral Outstanding</div>
+                <div class="textnumber">6,666.0</div>
+                <div class="textsum">0.00</div>
+                <div class="textlast">Last <span>30</span> days</div>
         </div>
     </div>
 </div>
 
-@if (Auth::user()->hasPermission('view_all'))
-<div class="row">
-    <div class="col-md-12">
-        <div id="progress-div" class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-        </div>
-        <canvas id="chart-canvas" height="70px" style="background-color:white;padding:20px;display:none"></canvas>
-    </div>
+             <!-- 
+                Graph
+             -->
+
+<div class="panel panel-body graphpanel">
+<div class="graphpanel-colors">
+<div class="graphpanel-lightblue"></div><span>Invoices</span>
+<div class="graphpanel-lighterblue"></div><span>Expences</span>
 </div>
-<p>&nbsp;</p>
-@endif
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default dashboard" style="height:320px">
-            <div class="panel-heading" style="background-color:#286090 !important">
-                <h3 class="panel-title in-bold-white">
-                    <i class="glyphicon glyphicon-exclamation-sign"></i> {{ trans('texts.activity') }}
-                    @if ($invoicesSent)
-                        <div class="pull-right" style="font-size:14px;padding-top:4px">
-							@if ($invoicesSent == 1)
-								{{ trans('texts.invoice_sent', ['count' => $invoicesSent]) }}
-							@else
-								{{ trans('texts.invoices_sent', ['count' => $invoicesSent]) }}
-							@endif
-                        </div>
-                    @endif
-                </h3>
-            </div>
-            <ul class="panel-body list-group" style="height:276px;overflow-y:auto;">
-                @foreach ($activities as $activity)
-                <li class="list-group-item">
-                    <span style="color:#888;font-style:italic">{{ Utils::timestampToDateString(strtotime($activity->created_at)) }}:</span>
-                    {!! $activity->getMessage() !!}
-                </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="panel panel-default dashboard" style="height:320px;">
-            <div class="panel-heading" style="margin:0; background-color: #f5f5f5 !important;">
-                <h3 class="panel-title" style="color: black !important">
-                    @if (count($expenses) && count($averageInvoice))
-                        <div class="pull-right" style="font-size:14px;padding-top:4px;font-weight:bold">
-                            @foreach ($averageInvoice as $item)
-                                <span class="currency currency_{{ $item->currency_id ?: $account->getCurrencyId() }}" style="display:none">
-                                    {{ trans('texts.average_invoice') }}
-                                    {{ Utils::formatMoney($item->invoice_avg, $item->currency_id) }} |
-                                </span>
-                            @endforeach
-                            <span class="average-div" style="color:#337ab7"/>
-                        </div>
-                    @endif
-                    <i class="glyphicon glyphicon-ok-sign"></i> {{ trans('texts.recent_payments') }}
-                </h3>
-            </div>
-            <div class="panel-body" style="height:274px;overflow-y:auto;">
-                <table class="table table-striped">
-                    <thead>
-                        <th>{{ trans('texts.invoice_number_short') }}</th>
-                        <th>{{ trans('texts.client') }}</th>
-                        <th>{{ trans('texts.payment_date') }}</th>
-                        <th>{{ trans('texts.amount') }}</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($payments as $payment)
-                        <tr>
-                            <td>{!! \App\Models\Invoice::calcLink($payment) !!}</td>
-                            @can('viewByOwner', [ENTITY_CLIENT, $payment->client_user_id])
-                                <td>{!! link_to('/clients/'.$payment->client_public_id, trim($payment->client_name) ?: (trim($payment->first_name . ' ' . $payment->last_name) ?: $payment->email)) !!}</td>
-                            @else
-                                <td>{{ trim($payment->client_name) ?: (trim($payment->first_name . ' ' . $payment->last_name) ?: $payment->email) }}</td>
-                            @endcan
-                            <td>{{ Utils::fromSqlDate($payment->payment_date) }}</td>
-                            <td>{{ Utils::formatMoney($payment->amount, $payment->currency_id ?: ($account->currency_id ?: DEFAULT_CURRENCY)) }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <div id="morris-one-line-chart" style="position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg height="349" version="1.1" width="1628" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; left: -0.999996px; top: -0.499996px;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.0</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><text x="36.671875" y="316.25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">0</tspan></text><path fill="none" stroke="#aaaaaa" d="M49.171875,316.25H2055" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="36.671875" y="243.4375" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">7.5</tspan></text><path fill="none" stroke="#aaaaaa" d="M49.171875,243.4375H2055" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="36.671875" y="170.625" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">15</tspan></text><path fill="none" stroke="#aaaaaa" d="M49.171875,170.625H2055" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="36.671875" y="97.8125" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">22.5</tspan></text><path fill="none" stroke="#aaaaaa" d="M49.171875,97.8125H2055" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="36.671875" y="25" text-anchor="end" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">30</tspan></text><path fill="none" stroke="#aaaaaa" d="M49.171875,25H2055" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="2055" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2015</tspan></text><text x="1768.6772523953853" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2014</tspan></text><text x="1482.3545047907705" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2013</tspan></text><text x="1195.2473113023075" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2012</tspan></text><text x="908.9245636976926" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2011</tspan></text><text x="622.6018160930779" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2010</tspan></text><text x="336.27906848846305" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2009</tspan></text><text x="49.171875" y="328.75" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#949ba2" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4.375">2008</tspan></text><path fill="none" stroke="#01a8fe" d="M49.171875,267.7083333333333C120.94867337211576,255.57291666666666,264.5022701163473,222.81227200182397,336.27906848846305,219.16666666666666C407.8597553896168,215.53102200182397,551.0211291919242,253.14583333333331,622.6018160930779,238.58333333333331C694.1825029942315,224.02083333333331,837.343876796539,102.66666666666666,908.9245636976926,102.66666666666666C980.5052505988464,102.66666666666666,1123.6666244011537,228.8838579683698,1195.2473113023075,238.58333333333331C1338.604796575577,258.0088579683698,1625.3197671221158,214.31028550790754,1768.6772523953853,219.16666666666666C1840.257939296539,221.59153550790754,1983.4193130988463,255.57291666666666,2055,267.7083333333333" stroke-width="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><circle cx="49.171875" cy="267.7083333333333" r="5" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="336.27906848846305" cy="219.16666666666666" r="5" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="622.6018160930779" cy="238.58333333333331" r="8" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="908.9245636976926" cy="102.66666666666666" r="5" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="1195.2473113023075" cy="238.58333333333331" r="5" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="1768.6772523953853" cy="219.16666666666666" r="5" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="2055" cy="267.7083333333333" r="5" fill="#01a8fe" stroke="#ffffff" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle></svg>
 </div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default dashboard" style="height:320px;">
-            <div class="panel-heading" style="margin:0; background-color: #f5f5f5 !important;">
-                <h3 class="panel-title" style="color: black !important">
-                    <i class="glyphicon glyphicon-time"></i> {{ trans('texts.upcoming_invoices') }}
-                </h3>
-            </div>
-            <div class="panel-body" style="height:274px;overflow-y:auto;">
-                <table class="table table-striped">
-                    <thead>
-                        <th>{{ trans('texts.invoice_number_short') }}</th>
-                        <th>{{ trans('texts.client') }}</th>
-                        <th>{{ trans('texts.due_date') }}</th>
-                        <th>{{ trans('texts.balance_due') }}</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($upcoming as $invoice)
-                            @if ($invoice->invoice_type_id == INVOICE_TYPE_STANDARD)
-                                <tr>
-                                    <td>{!! \App\Models\Invoice::calcLink($invoice) !!}</td>
-                                    @can('viewByOwner', [ENTITY_CLIENT, $invoice->client_user_id])
-                                        <td>{!! link_to('/clients/'.$invoice->client_public_id, trim($invoice->client_name) ?: (trim($invoice->first_name . ' ' . $invoice->last_name) ?: $invoice->email)) !!}</td>
-                                    @else
-                                        <td>{{ trim($invoice->client_name) ?: (trim($invoice->first_name . ' ' . $invoice->last_name) ?: $invoice->email) }}</td>
-                                    @endcan
-                                    <td>{{ Utils::fromSqlDate($invoice->due_date) }}</td>
-                                    <td>{{ Utils::formatMoney($invoice->balance, $invoice->currency_id ?: ($account->currency_id ?: DEFAULT_CURRENCY)) }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default dashboard" style="height:320px">
-            <div class="panel-heading" style="background-color:#777 !important">
-                <h3 class="panel-title in-bold-white">
-                    <i class="glyphicon glyphicon-time"></i> {{ trans('texts.invoices_past_due') }}
-                </h3>
-            </div>
-            <div class="panel-body" style="height:274px;overflow-y:auto;">
-                <table class="table table-striped">
-                    <thead>
-                        <th>{{ trans('texts.invoice_number_short') }}</th>
-                        <th>{{ trans('texts.client') }}</th>
-                        <th>{{ trans('texts.due_date') }}</th>
-                        <th>{{ trans('texts.balance_due') }}</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($pastDue as $invoice)
-                            @if ($invoice->invoice_type_id == INVOICE_TYPE_STANDARD)
-                                <tr>
-                                    <td>{!! \App\Models\Invoice::calcLink($invoice) !!}</td>
-                                    @can('viewByOwner', [ENTITY_CLIENT, $invoice->client_user_id])
-                                        <td>{!! link_to('/clients/'.$invoice->client_public_id, trim($invoice->client_name) ?: (trim($invoice->first_name . ' ' . $invoice->last_name) ?: $invoice->email)) !!}</td>
-                                    @else
-                                        <td>{{ trim($invoice->client_name) ?: (trim($invoice->first_name . ' ' . $invoice->last_name) ?: $invoice->email) }}</td>
-                                    @endcan
-                                    <td>{{ Utils::fromSqlDate($invoice->due_date) }}</td>
-                                    <td>{{ Utils::formatMoney($invoice->balance, $invoice->currency_id ?: ($account->currency_id ?: DEFAULT_CURRENCY)) }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 </div>
+   
 
-@if ($hasQuotes)
+             <!-- 
+                Graph
+             -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default dashboard" style="height:320px;">
-                <div class="panel-heading" style="margin:0; background-color: #f5f5f5 !important;">
-                    <h3 class="panel-title" style="color: black !important">
-                        <i class="glyphicon glyphicon-time"></i> {{ trans('texts.upcoming_quotes') }}
-                    </h3>
-                </div>
-                <div class="panel-body" style="height:274px;overflow-y:auto;">
-                    <table class="table table-striped">
-                        <thead>
-                            <th>{{ trans('texts.quote_number_short') }}</th>
-                            <th>{{ trans('texts.client') }}</th>
-                            <th>{{ trans('texts.valid_until') }}</th>
-                            <th>{{ trans('texts.amount') }}</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($upcoming as $invoice)
-                                @if ($invoice->invoice_type_id == INVOICE_TYPE_QUOTE)
-                                    <tr>
-                                        <td>{!! \App\Models\Invoice::calcLink($invoice) !!}</td>
-                                        <td>{!! link_to('/clients/'.$invoice->client_public_id, trim($invoice->client_name) ?: (trim($invoice->first_name . ' ' . $invoice->last_name) ?: $invoice->email)) !!}</td>
-                                        <td>{{ Utils::fromSqlDate($invoice->due_date) }}</td>
-                                        <td>{{ Utils::formatMoney($invoice->balance, $invoice->currency_id ?: ($account->currency_id ?: DEFAULT_CURRENCY)) }}</td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="panel panel-default navbarpanel">
+  <div class="nav dashboard-heading">      
+  <ul class="nav navbar-nav navbar-left dashboard-nav">
+        <li class="active"><a href="#">All Activity</a></li>
+        <li><a href="#">Payments</a></li>
+        <li><a href="#">Expenses</a></li>
+        <li><a href="#">Upcoming Invoices</a></li>
+        <li><a href="#">Invoices Past Due</a></li>
+        <li><a href="#">Tasks</a></li>
+        <li><a href="#">Projects</a></li>
+</ul>
+        <div class="pull-right newtodaystyle">
+        <div> 10 </div><span>New Today</span>
         </div>
-        <div class="col-md-6">
-            <div class="panel panel-default dashboard" style="height:320px">
-                <div class="panel-heading" style="background-color:#777 !important">
-                    <h3 class="panel-title in-bold-white">
-                        <i class="glyphicon glyphicon-time"></i> {{ trans('texts.expired_quotes') }}
-                    </h3>
-                </div>
-                <div class="panel-body" style="height:274px;overflow-y:auto;">
-                    <table class="table table-striped">
-                        <thead>
-                            <th>{{ trans('texts.quote_number_short') }}</th>
-                            <th>{{ trans('texts.client') }}</th>
-                            <th>{{ trans('texts.valid_until') }}</th>
-                            <th>{{ trans('texts.amount') }}</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($pastDue as $invoice)
-                                @if ($invoice->invoice_type_id == INVOICE_TYPE_QUOTE)
-                                    <tr>
-                                        <td>{!! \App\Models\Invoice::calcLink($invoice) !!}</td>
-                                        <td>{!! link_to('/clients/'.$invoice->client_public_id, trim($invoice->client_name) ?: (trim($invoice->first_name . ' ' . $invoice->last_name) ?: $invoice->email)) !!}</td>
-                                        <td>{{ Utils::fromSqlDate($invoice->due_date) }}</td>
-                                        <td>{{ Utils::formatMoney($invoice->balance, $invoice->currency_id ?: ($account->currency_id ?: DEFAULT_CURRENCY)) }}</td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+        </div>
+    <div class="panel-body">
+    <div class="day">
+  <div class="day-number colorfirst">
+    27th
+  </div>
+          <div class="border border-first"></div>
+            <div class="events">
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
             </div>
+    </div>
+
+        <div class="day">
+  <div class="day-number colorsecond">
+    27th
+  </div>
+          <div class="border border-second"></div>
+            <div class="events">
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+
+            
         </div>
     </div>
-@endif
+
+        <div class="day">
+  <div class="day-number colorthird">
+    27th
+  </div>
+          <div class="border border-third"></div>
+            <div class="events">
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+              <hr>
+              <div class="event"><span>12:50</span> <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a></div>
+            
+        </div>
+    </div>
+
+        <div class="day">
+  <div class="day-number colorfourth">
+  <i class="fa fa-angle-down" aria-hidden="true"></i>
+  </div>
+  <div class="border border-fourth"></div>
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+ 
 
 <script type="text/javascript">
     $(function() {

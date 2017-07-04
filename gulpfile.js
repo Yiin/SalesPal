@@ -56,6 +56,7 @@ elixir(function(mix) {
         'bootstrap-combobox.css',
         'typeahead.js-bootstrap.css',
         'style.css',
+        'dashboard.css',
         'sidebar.css',
         'colors.css',
         'fonts.css',

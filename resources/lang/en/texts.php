@@ -2297,6 +2297,7 @@ $LANG = array(
     'contact_us_response' => 'Thank you for your message! We\'ll try to respond as soon as possible.',
     'last_7_days' => 'Last 7 Days',
     'last_30_days' => 'Last 30 Days',
+    'last_N_days' => 'Last :n Days',
     'this_month' => 'This Month',
     'last_month' => 'Last Month',
     'last_year' => 'Last Year',
