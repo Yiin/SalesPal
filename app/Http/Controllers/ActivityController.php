@@ -20,7 +20,7 @@ class ActivityController extends BaseController
         $this->datatable = $datatable;
     }
 
-    public function filterEntity(&$query, $entityId = null)
+    public function filterEntity(&$query, $entityId)
     {
         // filter by client
         if ($entityId) {

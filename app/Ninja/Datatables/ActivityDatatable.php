@@ -17,26 +17,26 @@ class ActivityDatatable extends EntityDatatable
     {
         return [
             [
-                'activities.id',
-                function ($model) {
+                'field' => 'date',
+                'value' => function ($model) {
                     return Utils::timestampToDateTimeString(strtotime($model->created_at));
                 },
             ],
             [
-                'activity_type_id',
-                function ($model) {
+                'field' => 'activity_type_id',
+                'value' => function ($model) {
                     $data = [
                         'client' => link_to('/clients/' . $model->client->public_id, Utils::getClientDisplayName($model))->toHtml(),
-                        'user' => $model->is_system ? '<i>' . trans('texts.system') . '</i>' : Utils::getPersonDisplayName($model->user_first_name, $model->user_last_name, $model->user_email),
+                        'user' => $model->is_system ? '<> >' . trans('texts.system') . '</i>' : Utils::getPersonDisplayName($model->user->first_name, $model->user->last_name, $model->user->email),
                         'invoice' => $model->invoice ? link_to('/invoices/' . $model->invoice->public_id, $model->is_recurring ? trans('texts.recurring_invoice') : $model->invoice->invoice_number)->toHtml() : null,
                         'quote' => $model->invoice ? link_to('/quotes/' . $model->invoice->public_id, $model->invoice)->toHtml() : null,
-                        'contact' => $model->contact_id ? link_to('/clients/' . $model->client->public_id, Utils::getClientDisplayName($model))->toHtml() : Utils::getPersonDisplayName($model->user_first_name, $model->user_last_name, $model->user_email),
-                        'payment' => $model->payment ?: '',
+                        'contact' => $model->contact_id ? link_to('/clients/' . $model->client->public_id, Utils::getClientDisplayName($model))->toHtml() : Utils::getPersonDisplayName($model->user->first_name, $model->user->last_name, $model->user->email),
+                        'payment' => $model->payment ? $model->payment->public_id : '',
                         'credit' => $model->payment_amount ? Utils::formatMoney($model->credit, $model->currency_id, $model->country_id) : '',
                         'payment_amount' => $model->payment_amount ? Utils::formatMoney($model->payment_amount, $model->currency_id, $model->country_id) : null,
                         'adjustment' => $model->adjustment ? Utils::formatMoney($model->adjustment, $model->currency_id, $model->country_id) : null,
-                        'task' => $model->task ? link_to('/tasks/' . $model->task->public_id, substr($model->task_description, 0, 30).'...') : null,
-                        'expense' => $model->expense ? link_to('/expenses/' . $model->expense->public_id, substr($model->expense_public_notes, 0, 30).'...') : null,
+                        'task' => $model->task ? link_to('/tasks/' . $model->task->public_id, substr($model->task->description, 0, 30).'...') : null,
+                        'expense' => $model->expense ? link_to('/expenses/' . $model->expense->public_id, substr($model->expense->public_notes, 0, 30).'...') : null,
                     ];
 
                     $str = trans("texts.activity_{$model->activity_type_id}", $data);
@@ -49,14 +49,14 @@ class ActivityDatatable extends EntityDatatable
                 },
             ],
             [
-                'balance',
-                function ($model) {
+                'field' => 'balance',
+                'value' => function ($model) {
                     return Utils::formatMoney($model->balance, $model->currency_id, $model->country_id);
                 },
             ],
             [
-                'adjustment',
-                function ($model) {
+                'field' => 'adjustment',
+                'value' => function ($model) {
                     return $model->adjustment != 0 ? Utils::wrapAdjustment($model->adjustment, $model->currency_id, $model->country_id) : '';
                 },
             ],

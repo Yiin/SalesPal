@@ -103,37 +103,30 @@ class InvoiceDatatable extends EntityDatatable
                 $filters [] = $f;
             }
         }
-        // $filters [] = $this->currenciesDropdown();
 
-        return $filters;
-    }
+        $filters [] = ['type' => 'separator'];
 
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('invoices', function ($query) {
+        $filters [] = $this->clientsDropdown('invoices', function ($query) {
             if ($this->entityType === ENTITY_INVOICE) {
                 $query->invoices();
             }
             else {
                 $query->quotes();
             }
-        })->get();
+        });
 
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
+        $filters [] = $this->productsDropdown('invoice_items', function ($query) {
+            $query->whereHas('invoice', function ($query) {
+                if ($this->entityType === ENTITY_INVOICE) {
+                    $query->invoices();
+                }
+                else {
+                    $query->quotes();
+                }
+            });
+        });    
 
-        return $currenciesDropdown;
+        return $filters;
     }
 
     public function searchBy()

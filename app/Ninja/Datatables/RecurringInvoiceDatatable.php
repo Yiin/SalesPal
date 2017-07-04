@@ -65,31 +65,18 @@ class RecurringInvoiceDatatable extends EntityDatatable
                 'value' => 'overdue',
                 'label' => trans('texts.overdue'),
             ],
-            // $this->currenciesDropdown(),
+            [
+                'type' => 'separator',
+            ],
+            $this->clientsDropdown('invoices', function ($query) {
+                $query->recurring();
+            }),
+            $this->productsDropdown('invoice_items', function ($query) {
+                $query->whereHas('invoice', function ($query) {
+                    $query->recurring();
+                });
+            }),
         ];
-    }
-
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('invoices', function ($query) {
-            $query->recurring();
-        })->get();
-
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
-
-        return $currenciesDropdown;
     }
 
     public function searchBy()

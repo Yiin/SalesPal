@@ -195,6 +195,7 @@
 
                 orderBy: 'created_at',
                 orderDirection: 'DESC',
+                ignore_table_state_watcher: false,
                 table_state: {
                     page: 1,
                     page_count: 1,
@@ -329,6 +330,10 @@
                 deep: true
             },
             'table_state.page': function (current, previous) {
+                if (this.ignore_table_state_watcher) {
+                    this.ignore_table_state_watcher = false;
+                    return;
+                }
                 if (current && current !== previous) {
                     if(current > this.table_state.page_count) {
                         this.table_state.page = this.table_state.page_count;
@@ -337,6 +342,10 @@
                 }
             },
             'table_state.entities_per_page': function (entities_per_page, previous) {
+                if (this.ignore_table_state_watcher) {
+                    this.ignore_table_state_watcher = false;
+                    return;
+                }
                 this.table_state.entities_per_page = entities_per_page = parseInt(entities_per_page);
 
                 if (entities_per_page * (this.table_state.page - 1) > this.table_state.entities_count) {
@@ -510,11 +519,13 @@
             handleEntities(entities) {
                 this.bulkEdit = entities.bulkEdit;
                 this.table_rows = entities.rows;
+                this.ignore_table_state_watcher = true;
                 this.table_state = entities.table_state;
             },
 
 
             handleError(err) {
+                this.ignore_table_state_watcher = true;
                 this.table_state.loading = false;
                 this.entities_loaded = true;
                 // console.error(err);

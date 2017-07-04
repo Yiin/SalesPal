@@ -71,7 +71,7 @@ class ClientDatatable extends EntityDatatable
         ];
 
         $filters [] = $this->countriesDropdown();
-        $filters [] = $this->currenciesDropdown();
+        $filters [] = $this->currenciesDropdown('clients');
 
         return $filters;
     }
@@ -84,7 +84,9 @@ class ClientDatatable extends EntityDatatable
             'options' => [],
         ];
 
-        foreach (\App\Models\Country::all() as $country) {
+        $countries = \App\Models\Country::whereHas('clients', function(){})->get();
+
+        foreach ($countries as $country) {
             $countriesDropdown['options'][] = [
                 'type' => 'checkbox',
                 'value' => 'country_id:' . $country->id,
@@ -93,29 +95,6 @@ class ClientDatatable extends EntityDatatable
         }
 
         return $countriesDropdown;
-    }
-
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency_id'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('clients', function ($query) {
-
-        })->get();
-
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
-
-        return $currenciesDropdown;
     }
 
     public function searchBy()

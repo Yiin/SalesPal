@@ -51,33 +51,13 @@ class CreditDatatable extends EntityDatatable
                 'value' => 'deleted',
                 'label' => trans('texts.deleted'),
             ],
-            // $this->currenciesDropdown()
+            [
+                'type' => 'separator',
+            ],
+            $this->clientsDropdown('credits')
         ];
 
         return $filters;
-    }
-
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('credits', function ($query) {
-
-        })->get();
-
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
-
-        return $currenciesDropdown;
     }
 
     public function searchBy()

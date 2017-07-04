@@ -9,6 +9,10 @@
             data-placeholder="Type In or Select From List"
             class="vue-dropdown-option --search"
         ></div>
+        <div v-show="query && query.length" 
+             @click="clear"
+             class="clear-input"
+        ></div>
 
         <!-- 
             Dropdown Items
@@ -82,8 +86,15 @@
 
 
             toggle(option) {
-                this.$set(option, 'selected', !option.selected);
+                this.$emit('toggle', option);
             },
+
+
+
+            clear() {
+                this.medium.value('');
+                this.query = '';
+            }
 
         },
 
@@ -165,6 +176,7 @@
         width: 90%;
         margin: 0 0 17px 15px;
         padding: 0;
+        font-weight: 600;
 
         border-bottom: 1px solid #e1e1e1;
     }
@@ -174,6 +186,16 @@
         color: #333 !important;
         outline: none;
         background: #fff !important;
+        font-weight: normal;
+    }
+
+    .vue-dropdown-option.vue-dropdown-option.--dropdown .vue-dropdown-option.--search + .clear-input {
+        top: 22px;
+    }
+
+    .vue-dropdown-option.vue-dropdown-option.--dropdown .vue-dropdown-option.--search:focus + .clear-input {
+        background-image: url(/img/icons/cross.svg);
+        top: 22px;
     }
 
     .vue-dropdown-option.vue-dropdown-option.--dropdown .vue-dropdown-option.--search:hover

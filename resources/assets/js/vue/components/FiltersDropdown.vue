@@ -32,6 +32,7 @@
                             <child-dropdown-menu 
                                 :parent="option" 
                                 :class="{ open: openedDropdown === option }"
+                                @toggle="toggle"
                             ></child-dropdown-menu>
                         </div>
 
@@ -86,18 +87,38 @@ export default {
 
     methods: {
 
-        checkboxes() {
-            return _.flatten(...this.options.filter(option => option.type === 'dropdown').map(option => option.options))
-                .concat(this.options.filter(option => option.type === 'checkbox'));
+        checkboxes(state = undefined) {
+            let list = {};
+
+            list[Symbol.iterator] = function* () {
+                for (let i = 0; i < this.options.length; ++i) {
+                    if (this.options[i].type === 'checkbox') {
+                        if (state === undefined || !!this.options[i].selected === state) {
+                            yield this.options[i];
+                        }
+                    }
+                    else if (this.options[i].type === 'dropdown') {
+                        for (let j = 0; j < this.options[i].options.length; ++j) {
+                            if (this.options[i].options[j].type === 'checkbox') {
+                                if (state === undefined || !!this.options[i].options[j].selected === state) {
+                                    yield this.options[i].options[j];
+                                }
+                            }
+                        }
+                    }
+                }
+            }.bind(this);
+
+            return list;
         },
 
         toggleAll() {
             this.selected_all = !this.selected_all;
 
             if (this.selected_all) {
-                this.checkboxes().forEach(option => {
+                for (let option of this.checkboxes(true)) {
                     option.selected = false;
-                });
+                }
             }
 
             this.$forceUpdate();
@@ -106,11 +127,11 @@ export default {
 
 
         toggle(option) {
+            console.log('Option', option.label, 'was', option.selected ? 'unchecked' : 'checked');
+
             this.$set(option, 'selected', !option.selected);
 
-            this.selected_all = this.checkboxes().filter(option => option.selected) === 0;
-
-            this.$forceUpdate();
+            this.selected_all = [...this.checkboxes(true)].length === 0;
         },
 
 
@@ -257,9 +278,9 @@ export default {
         width: 268px;
         max-height: 387px;
 
+        position: relative;
         transform: translate(271px, -34px);
-
-        border-radius: 0 2px 2px 2px;
+        left: -32px;
     }
 
     .vue-dropdown-menu .vue-dropdown-option.--dropdown .vue-dropdown-option

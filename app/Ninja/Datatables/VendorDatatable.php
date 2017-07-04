@@ -47,9 +47,9 @@ class VendorDatatable extends EntityDatatable
                 'value' => 'deleted',
                 'label' => trans('texts.deleted'),
             ],
-            // [
-            //     'type' => 'separator'
-            // ],
+            [
+                'type' => 'separator'
+            ],
             // [
             //     'type' => 'checkbox',
             //     'value' => 'buying',

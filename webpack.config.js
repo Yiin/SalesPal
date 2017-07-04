@@ -1,20 +1,16 @@
-// const path = require('path');
-
-// const config = {
-//   module: {
-//     loaders: [{
-//         test: /\.vue$/,
-//         loader: 'vue'
-//     }, {
-//         test: /\.s[a|c]ss$/,
-//         loader: 'style!css!sass'
-//     }]
-//   },
-//   vue: {
-//     loaders: {
-//         scss: 'style!css!sass'
-//     }
-//   }
-// };
-
-// module.exports = config;
+module.exports = {
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            }
+        ]
+    },
+    vue: {
+        loaders: {
+            js: 'babel-loader'
+        }
+    }
+}
