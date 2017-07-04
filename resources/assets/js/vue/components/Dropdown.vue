@@ -1,7 +1,7 @@
 <template>
     
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
+        <button :class="{ open: is_open }" @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
             {{ selected.label }}
             <span :class="{ active: is_open }" class="caret"></span>
         </button>
@@ -77,77 +77,94 @@ export default {
 </script>
 
 <style scoped>
-    .caret {
-        float: right;
-        margin-top: 8px;
 
-    }
-
-    .vue-dropdown {
+    .vue-dropdown
+    {
         position: relative;
+
         display: inline-block;
+
         margin: 0 15px;
     }
 
-    .vue-dropdown > button {
-        background:  white;
-        border: none;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0px 3px 5px rgba(0, 0, 0, 0.05);
-        height: 44px;
-        text-align: left;
-        padding: 0 15px;
+    .vue-dropdown > button
+    {
         font-size: 16px;
-        color: #373737;
-        border-radius: 2px;
-        margin-top: -3px;
-        }
 
-    .vue-dropdown-menu {
-        background: #FFFFFF;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05),0 3px 1px -2px rgba(0,0,0,0.05),0 1px 5px 0 rgba(0,0,0,0.05);
-        display: none;
-        margin: 0;
-        padding: 0;
+        height: 44px;
+        margin-top: -3px;
+        padding: 11px 15px;
+
+        text-align: left;
+
+        color: #373737;
+        border: none;
+        border-radius: 2px;
+        background: white;
+        box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+    }
+
+    .vue-dropdown > button.open
+    {
+        border-radius: 2px 2px 0 0;
+    }
+
+    .vue-dropdown-menu
+    {
         position: absolute;
         z-index: 999999;
 
+        display: none;
+
+        margin: 0;
+        padding: 0;
+
+        background: #fff;
+        box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
     }
 
-    .vue-dropdown-menu.open {
-        display: block;
+    .vue-dropdown-menu.open
+    {
         position: absolute;
         left: 0;
-        padding-bottom: 17px;
+
+        display: block;
+
         padding-top: 17px;
+        padding-bottom: 17px;
+
+        border-top: 1px solid #ebebeb;
+        border-radius: 0 0 2px 2px;
     }
 
-    .vue-dropdown-menu.open label {
+    .vue-dropdown-menu.open label
+    {
         font-weight: 400;
     }
 
-    .vue-dropdown-menu .vue-dropdown-option, .vue-dropdown-menu .vue-dropdown-option > a {
+    .vue-dropdown-menu .vue-dropdown-option,
+    .vue-dropdown-menu .vue-dropdown-option > a
+    {
         font-size: 16px;
+
         cursor: default;
         user-select: none;
     }
 
-    .vue-dropdown-menu .vue-dropdown-option {
-        padding-bottom: 7px;
-        padding-right: 10px;
-        padding-left: 26px;
-        text-align: left;
+    .vue-dropdown-menu .vue-dropdown-option
+    {
+        margin-bottom: 0;
         padding-top: 6px;
-        margin-bottom: 0px;
+        padding-right: 10px;
+        padding-bottom: 7px;
+        padding-left: 26px;
+
+        text-align: left;
     }
 
-    .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover {
-        background-color: #eee;
+    .vue-dropdown-menu .vue-dropdown-option:not(.separator):hover
+    {
+        background-color: #f5f5f5;
     }
 
-    .caret.active {
-    border-bottom: 4px solid;
-    border-top: 4px solid transparent;
-    border-left: 4px solid transparent;
-    margin-top: 3px !important;
-    }
 </style>

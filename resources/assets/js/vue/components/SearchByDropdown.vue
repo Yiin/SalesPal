@@ -1,8 +1,7 @@
 <template>
     <div class="vue-dropdown" v-on-clickaway="clickAway">
-        <button @click="toggleDropdown" type="button">
+        <button :class="{ open: is_open }" @click="toggleDropdown" type="button">
             {{ title }}
-
             <span :class="{ active: is_open }" class="caret"></span>
         </button>
 
@@ -20,6 +19,7 @@
 
                 </template>
                 <template v-else>
+
                     <text-item :option="option" @changed="changed" class="vue-dropdown-option"></text-item>
 
                 </template>
@@ -109,16 +109,6 @@ export default {
 
 
 <style scoped>
-    .caret.active {
-        border-bottom: 4px solid;
-        border-top: 4px solid transparent;
-        border-left: 4px solid transparent;
-        margin-top: -4px;
-    }
-    .caret {
-        margin-left: 153px;
-    }
-
     .vue-dropdown {
         position: relative;
         display: inline-block;
@@ -128,7 +118,7 @@ export default {
     .vue-dropdown > button {
         background:  white;
         border: none;
-        box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0px 3px 5px rgba(0, 0, 0, 0.05);
+        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
         width: 268px;
         height: 44px;
         text-align: left;
@@ -138,9 +128,13 @@ export default {
         border-radius: 2px;
     }
 
+    .vue-dropdown > button.open {
+        border-radius: 2px 2px 0 0;
+    }
+
     .vue-dropdown-menu {
         background: #FFFFFF;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05),0 3px 1px -2px rgba(0,0,0,0.05),0 1px 5px 0 rgba(0,0,0,0.05);
+        box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
         display: none;
         margin: 0;
         padding: 0;
@@ -156,6 +150,12 @@ export default {
         display: block;
         position: absolute;
         left: 0;
+        border-top: 1px solid #ebebeb;
+        border-radius: 0 0 2px 2px;
+    }
+
+    .vue-dropdown-menu.open label {
+        margin-bottom: 0px;
     }
 
     .vue-dropdown-menu .vue-dropdown-menu.open {
@@ -189,7 +189,11 @@ export default {
         margin: 5px auto;
     }
 
-    .vue-dropdown-option::hover {
+    .vue-dropdown-option:hover {
+        background-color: #f5f5f5;
+    }
+
+    .vue-dropdown-option:hover [contenteditable=true]:empty::before {
         background-color: #f5f5f5;
     }
 

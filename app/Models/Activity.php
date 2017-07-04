@@ -9,7 +9,7 @@ use Laracasts\Presenter\PresentableTrait;
 /**
  * Class Activity.
  */
-class Activity extends Eloquent
+class Activity extends EntityModel
 {
     use PresentableTrait;
 
@@ -28,9 +28,9 @@ class Activity extends Eloquent
      *
      * @return mixed
      */
-    public function scopeScope($query)
+    public function scopeScope($query, $publicId = false, $accountId = false)
     {
-        return $query->whereAccountId(Auth::user()->account_id);
+        return $query->whereAccountId($accountId ? $accountId : Auth::user()->account_id);
     }
 
     /**

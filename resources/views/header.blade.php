@@ -231,66 +231,29 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="height:50px;">
 
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="#" id="left-menu-toggle" class="menu-toggle" title="{{ trans('texts.toggle_navigation') }}">
-          <div class="navbar-brand">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">
+            <a href="#" id="left-menu-toggle" class="menu-toggle" title="{{ trans('texts.toggle_navigation') }}">
                 <i class="fa fa-bars hide-phone" style="width:32px;float:left"></i>
+            </a>
+            <a href="/">
                 <img src="{{ asset('images/salespal-logo.svg') }}" width="163" height="auto" style="float:left"/>
-          </div>
-      </a>
+            </a>
+        </div>
     </div>
 
     <ul class="nav navbar-nav navbar-right navbar-top-drops">
-                      <li class="dropdown"><a href="javascript:;" class="dropdown-toggle button-wave" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge badge-xs badge-warning">6</span></a>
-
-                    <ul class="dropdown-menu dropdown-lg">
-                        <li class="notify-title">
-                            3 New messages
-                        </li>
-                        <li class="clearfix">
-                            <a href="javascript:;">
-                                        <span class="pull-left">
-                                            <i class="fa fa-envelope"></i>
-                                        </span>
-
-                                        <span class="media-body">
-                                            15 New Messages
-                                            <em>20 Minutes ago</em>
-                                        </span>
-                            </a>
-                        </li>
-                        <li class="clearfix">
-                            <a href="javascript:;">
-                                        <span class="pull-left">
-                                            <i class="fa fa-twitter"></i>
-                                        </span>
-
-                                        <span class="media-body">
-                                            13 New Followers
-                                            <em>2 hours ago</em>
-                                        </span>
-                            </a>
-                        </li>
-                        <li class="clearfix">
-                            <a href="javascript:;">
-                                        <span class="pull-left">
-                                            <i class="fa fa-download"></i>
-                                        </span>
-
-                                        <span class="media-body">
-                                            Download complete
-                                            <em>2 hours ago</em>
-                                        </span>
-                            </a>
-                        </li>
-                        <li class="read-more"><a href="javascript:;">View All Alerts <i class="fa fa-angle-right"></i></a></li>
-                    </ul>
-                </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle button-wave">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-xs badge-warning">6</span>
+            </a>
+        </li>
     </ul>
 
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -349,35 +312,38 @@
     <nav class="">
       <div class="">
         <div id="left-sidebar-wrapper" class="hide-phone">
-              <div class="btn-group user-dropdown">
-                </div>
-              </button>
-              <div class="profile-photo-container">
-              <li class="nav-header">
-                        <div class="dropdown side-profile text-left">
-                                    <span style="display: block;">
-                                        <img alt="image" class="img-circle" src="{{ asset('images/placeholder.png') }}" width="40">
-                                    </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                        <span class="clear" style="display: block;"> <span class="block m-t-xs">                     @if (session(SESSION_USER_ACCOUNTS) && count(session(SESSION_USER_ACCOUNTS)))
-                        {{ Auth::user()->account->getDisplayName() }}
-                    @else
-                        {{ Auth::user()->getDisplayName() }}
-                    @endif  <b class="caret"></b>
-                                            </span></span> </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs devel-dropdown-sidebar">
-                                <li><a href="javascript:;"><i class="fa fa-user"></i>My Profile</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-calendar"></i>My Calendar</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-envelope"></i>My Inbox</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-barcode"></i>My Task</a></li>
-                                <li class="divider"></li>
-                                <li><a href="javascript:;"><i class="fa fa-lock"></i>Screen lock</a></li>
-                                <li><a href="javascript:;"><i class="fa fa-key"></i>Logout</a></li>
-                            </ul>
-                        </div>
+            <div class="btn-group user-dropdown"></div>
+
+            <div class="profile-photo-container">
+                <li class="nav-header">
+                    <div class="dropdown side-profile text-left">
+                        <img alt="image" class="img-circle" src="{{ asset('images/placeholder.png') }}" width="40">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear" style="display: block;">
+                                <span class="block m-t-xs">
+                                    @if (session(SESSION_USER_ACCOUNTS) && count(session(SESSION_USER_ACCOUNTS)))
+                                        {{ Auth::user()->account->getDisplayName() }}
+                                    @else
+                                        {{ Auth::user()->getDisplayName() }}
+                                    @endif
+                                    <b class="caret"></b>
+                                </span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs devel-dropdown-sidebar">
+                            <li><a href="javascript:;"><i class="fa fa-user"></i> My Profile</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-calendar"></i> My Calendar</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-envelope"></i> My Inbox</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-barcode"></i> My Task</a></li>
+                            <li class="divider"></li>
+                            <li><a href="javascript:;"><i class="fa fa-lock"></i> Screen lock</a></li>
+                            <li><a href="{{ route('logout') }}"><i class="fa fa-key"></i> Logout</a></li>
+                        </ul>
+                    </div>
                 </li>
-              </div>
-              <ul class="dropdown-menu user-accounts" style="display: none">
+            </div>
+            
+            <ul class="dropdown-menu user-accounts" style="display: none">
                 @if (session(SESSION_USER_ACCOUNTS))
                     @foreach (session(SESSION_USER_ACCOUNTS) as $item)
                         @if ($item->user_id == Auth::user()->id)
@@ -512,10 +478,6 @@
 
           @if (Session::has('error'))
               <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-          @endif
-
-          @if (!isset($showBreadcrumbs) || $showBreadcrumbs)
-            {!! Form::breadcrumbs((isset($entity) && $entity->exists) ? $entity->present()->statusLabel : false) !!}
           @endif
 
           @yield('content')

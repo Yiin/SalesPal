@@ -9,9 +9,9 @@
 
 .expenses-panel{
     margin-bottom: 27px;
-    margin-top: 38px;
+    margin-top: 33px;
     height: 115px;
-    margin-right: 23px;
+    margin-right: 29px;
 }
 
 .panel-revenue {
@@ -29,7 +29,7 @@
     font-weight: bold;
     font-size: 38px;
     margin-top: 8px;
-    margin-left: 13px;
+    margin-left: 14px;
     line-height: 55px;
 }
 
@@ -40,16 +40,15 @@
     float: right;
     display: inline-block;
     margin-top: -43px;
-    margin-left: 314px;
+    margin-left: 362px;
     line-height: 0px;
-
 }
 
 .textlast {
     font-size: 16px;
     float: right;
     display: inline-block;
-    margin-top: -23px;
+    margin-top: -22px;
 
 }
 
@@ -59,17 +58,19 @@
 
 .graphpanel {
     margin-bottom: 27px;
+    padding-bottom: 0px;
+    padding-bottom: 0px;
 }
     /** Navbar **/
 
 .navbarpanel {
     width: 1636px;
-    height: 761px;
     margin-left: 15px;
+    height: 800px;
 }
 
 .dashboard-heading {
-    padding-left: 31px;
+    padding-left: 19px;
     margin-top: -1px;
     padding-right: 19px;
 }
@@ -86,13 +87,15 @@
     color: #fff;
     display: inline-block;
     border-radius: 2px;
-    width: 35px;
+    width: 36px;
     height: 20px;
     text-align: center;
     margin-right: 8px;
     margin-top: 6px;
     margin-bottom: 6px;
-    padding-right: 1px;
+    padding-right: 2px;
+    font-weight: bold;
+    line-height: 17px;
 }
 
 .dashboard-nav .active > a{
@@ -102,12 +105,12 @@
 }
 
 .dashboard-nav li > a {
-    padding-left: 23px;
-    padding-bottom: 17px;
-    padding-right: 23px;
-    padding-top: 15px;
+    padding-left: 20px;
+    padding-bottom: 16px;
+    padding-right: 20px;
+    padding-top: 16px;
     color: #333;
-    font-size: 16px;  
+    font-size: 16px; 
 }
 
 .dashboard-nav li > a:hover {
@@ -146,11 +149,14 @@
 }
 
 #morris-one-line-chart {
-    margin-top: 4px;
-    margin-left: -7px;
+    margin-top: 3px;
+    margin-left: -9px;
+    width: 1643px;
+    height: 352px;
 }
 .graphpanel-colors {
     display: inline-flex;
+    margin-top: 6px;
 }
 
 .graphpanel-colors div {
@@ -159,8 +165,8 @@
     height: 14px;
     border-radius: 2px;
     margin-right: 14px;
-    margin-left: 13px;
-    margin-top: 2px;
+    margin-left: 14px;
+    margin-top: 3px;
 
 }
 .graphpanel-colors span {
@@ -173,8 +179,8 @@
 }
 
 .graphpanel-lighterblue {
-    border: 1px solid #01a8fe;
-    background-color: #01a8fe;
+    border: 1px solid #74C2E9;
+    background-color: #74C2E9;
 }
 
 .color-text-style {
@@ -201,7 +207,7 @@
 .day {
     display: flex;
     align-items: stretch;
-    margin-top: -5px;
+    margin-top: 5px;
 }
 .day-number {
     line-height: 40px;
@@ -214,18 +220,19 @@
     font-size: 12px;
     font-weight: bold;
     border-radius: 2px;
-    margin-left: 6px;
+    margin-left: -6px;
 }
 
 .border {
     margin-left: 20px;
     border-radius: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .events
 {
-    margin: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 .event
@@ -251,9 +258,9 @@
 
 }
 .events > hr {
-    margin-top: 4px;
+    margin-top: 5px;
     margin-bottom: 5px;
-    width: 1475px;
+    width: 1517px;
 }
 
 .event > span {
@@ -262,6 +269,26 @@
 }
 
 .coll-row {
-    margin-right: -40px;
+    margin-right: -60px;
 }
 
+.outstandin-gmargin {
+    margin-left: 1px;
+}
+
+.green-margin {
+    margin-top: -5px;
+}
+
+.nav-bar-panel {
+    padding-right: 0px;
+}
+
+.breadcrumb > li.active  {
+    display: inline;
+}
+
+.dashboard-breadcrumb {
+    margin-bottom: -1px;
+    margin-top: 7px;
+}

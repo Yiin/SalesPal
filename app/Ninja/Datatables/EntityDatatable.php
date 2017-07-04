@@ -83,6 +83,87 @@ class EntityDatatable
         return $data;
     }
 
+    public function clientsDropdown($relation = null, $queryCallback = null)
+    {
+        if (! $relation) return null;
+
+        if (! $queryCallback) {
+            $queryCallback = function () {};
+        }
+
+        $clientsDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.clients'),
+            'options' => [],
+        ];
+
+        $clients = \App\Models\Client::withTrashed()->whereHas($relation, $queryCallback)->get();
+
+        foreach ($clients as $client) {
+            $clientsDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'client_id:' . $client->id,
+                'label' => $client->name,
+            ];
+        }
+
+        return $clientsDropdown;
+    }
+
+    public function productsDropdown($relation = null, $queryCallback = null)
+    {
+        if (! $relation) return null;
+
+        if (! $queryCallback) {
+            $queryCallback = function () {};
+        }
+
+        $productsDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.products'),
+            'options' => [],
+        ];
+
+        $products = \App\Models\Product::withTrashed()->whereHas($relation, $queryCallback)->get();
+
+        foreach ($products as $product) {
+            $productsDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'product_id:' . $product->id,
+                'label' => $product->product_key,
+            ];
+        }
+
+        return $productsDropdown;
+    }
+
+    public function currenciesDropdown($relation = null, $queryCallback = null)
+    {
+        if (! $relation) return null;
+
+        if (! $queryCallback) {
+            $queryCallback = function () {};
+        }
+
+        $currenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.currency_id'),
+            'options' => [],
+        ];
+
+        $currencies = \App\Models\Currency::whereHas($relation, $queryCallback)->get();
+
+        foreach ($currencies as $currency) {
+            $currenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'currency_id:' . $currency->id,
+                'label' => $currency->name,
+            ];
+        }
+
+        return $currenciesDropdown;
+    }
+
     public function rightAlignIndices()
     {
         return $this->alignIndices([/*'amount', 'balance', 'cost'*/]);

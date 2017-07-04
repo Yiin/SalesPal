@@ -66,6 +66,9 @@ class PaymentDatatable extends EntityDatatable
                 'value' => 'refunded',
                 'label' => trans('texts.status_refunded'),
             ],
+            [
+                'type' => 'separator',
+            ]
         ];
 
         $methodDropdown = [
@@ -83,32 +86,17 @@ class PaymentDatatable extends EntityDatatable
         }
 
         $filters [] = $methodDropdown;
-        // $filters [] = $this->currenciesDropdown();
+
+        $filters [] = ['type' => 'separator'];
+
+        $filters [] = $this->clientsDropdown('payments');
+        $filters [] = $this->productsDropdown('invoice_items', function ($query) {
+            $query->whereHas('invoice', function ($query) {
+                $query->whereHas('payments', function (){});
+            });
+        });
 
         return $filters;
-    }
-
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('payments', function ($query) {
-            
-        })->get();
-
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
-
-        return $currenciesDropdown;
     }
 
     public function searchBy()

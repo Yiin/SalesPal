@@ -70,29 +70,6 @@ class ProductDatatable extends EntityDatatable
         ];
     }
 
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('products', function ($query) {
-            
-        })->get();
-
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
-
-        return $currenciesDropdown;
-    }
-
     public function searchBy()
     {
         return [
@@ -152,12 +129,18 @@ class ProductDatatable extends EntityDatatable
                 'field' => 'cost',
                 'width' => '16%',
                 'value' => function ($model) {
+                    $currency = Utils::formatMoney($model->cost);
+                    $parts = explode(' ', $currency);
+
                     return [
                         'data' => [
                             'symbol' => Utils::currencySymbol(),
                             'value' => $model->cost
                         ],
-                        'display' => Utils::formatMoney($model->cost)
+                        'display' => "
+                            <span class='currency_symbol'>{$parts[0]}</span>
+                            <span class='currency_value'>{$parts[1]}</span>
+                        "
                     ];
                 },
             ],
@@ -166,13 +149,13 @@ class ProductDatatable extends EntityDatatable
                 'width' => '14%',
                 'value' => function ($model) {
                     if($model->qty === null) {
-                        $text = trans('texts.service');
+                        $text = '<span class="stock-label --service">' . trans('texts.service') . '</span>';
                     }
                     else if($model->qty > 0) {
-                        $text = number_format($model->qty);
+                        $text = '<span class="stock-label">' . number_format($model->qty) . '</span>';
                     }
                     else {
-                        $text = trans('texts.out_of_stock');
+                        $text = '<span class="stock-label --out-of-stock">' . trans('texts.out_of_stock') . '</span>';
                     }
                     return [
                         'data' => $model->qty,

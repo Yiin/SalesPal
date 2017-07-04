@@ -1,16 +1,4 @@
 
-DONE search by currency
-
-DONE search filter list
-
-DONE created -> date created
-
-calculator
-
-outside of table context menu
-
-DONE a/d single select
-
 calendar style
 
-DONE remove power by whitelabel
+outside of table context menu

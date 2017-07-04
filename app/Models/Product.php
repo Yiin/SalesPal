@@ -86,6 +86,11 @@ class Product extends EntityModel
         return $this->belongsTo('App\Models\User')->withTrashed();
     }
 
+    public function invoice_items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

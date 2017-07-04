@@ -103,37 +103,30 @@ class InvoiceDatatable extends EntityDatatable
                 $filters [] = $f;
             }
         }
-        // $filters [] = $this->currenciesDropdown();
 
-        return $filters;
-    }
+        $filters [] = ['type' => 'separator'];
 
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('invoices', function ($query) {
+        $filters [] = $this->clientsDropdown('invoices', function ($query) {
             if ($this->entityType === ENTITY_INVOICE) {
                 $query->invoices();
             }
             else {
                 $query->quotes();
             }
-        })->get();
+        });
 
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
+        $filters [] = $this->productsDropdown('invoice_items', function ($query) {
+            $query->whereHas('invoice', function ($query) {
+                if ($this->entityType === ENTITY_INVOICE) {
+                    $query->invoices();
+                }
+                else {
+                    $query->quotes();
+                }
+            });
+        });    
 
-        return $currenciesDropdown;
+        return $filters;
     }
 
     public function searchBy()
@@ -199,7 +192,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'client_name',
-                'width' => $entityType == ENTITY_INVOICE ? '20%' : '26%',
+                'width' => $entityType == ENTITY_INVOICE ? '19%' : '25%',
                 'value' => function ($model) {
                     if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                         return [
@@ -238,7 +231,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 'field' => 'amount',
-                'width' => '14%',
+                'width' => '15%',
                 'value' => function ($model) {
                     $currency = Utils::formatMoney($model->amount, $model->currency_id, $model->country_id);
                     $parts = explode(' ', $currency);

@@ -104,10 +104,6 @@ textarea.form-control {
 }
 
 /*tables*/
-table.data-table td {
-    height: 33px !important;
-}
-
 table.dataTable {
     border-radius: 3px;
     border-collapse: collapse;
@@ -163,18 +159,15 @@ table.table thead .sorting_desc {
 }
 
 table.dataTable thead th, table.dataTable thead td, table.invoice-table thead th, table.invoice-table thead td {
-    padding-top: 15px;
-    padding-right: 3px;
-    padding-bottom: 15px;
-    padding-left: 20px;
-
+    height: 50px;
+    padding: 0 3px 0 20px;
 }
 
 table.dataTable tbody th, table.dataTable tbody td {
-    padding-top: 10px;
+    padding: 0;
     padding-right: 2px;
-    padding-bottom: 10px;
     padding-left: 20px;
+    height: 52px;
 }
 
 .datepicker {
@@ -282,7 +275,6 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 .create-btn-wrapper > .btn {
-    padding: 11px 12px;
     width: 190px;
     display: inline-flex;
     font-size: 18px;
@@ -363,10 +355,6 @@ border-color: #0a456c;
     border: 1px solid #dfe0e1;
     border-radius: 3px;
     cursor: pointer;
-}
-
-.caret {
-    margin-left: 0px;
 }
 
 .btn i.glyphicon {
@@ -498,10 +486,6 @@ table.table thead .sorting {
 }
 
 /* navigation */
-.sidebar-nav {
-    padding: 9px 0;
-}
-
 .dropdown-menu .sub-menu {
     left: 100%;
     position: absolute;
@@ -570,8 +554,6 @@ table.table thead .sorting {
 .navbar,
 ul.dropdown-menu,
 .twitter-typeahead .tt-menu {
-    x-moz-box-shadow: 0 0 10px 2px rgba(0, 0, 0, .05);
-    x-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, .05);
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, .05);
 }
 
@@ -631,11 +613,12 @@ canvas {
     padding-top: 14px;
 }
 
-.navbar-brand > img {
+.navbar-brand img {
     display: block;
     height: 17px;
     padding-top: 2px;
     width: 236px;
+    margin-top: 1px;
 }
 
 .dropdown-menu {
@@ -1688,10 +1671,6 @@ div.panel-body div.panel-body {
     padding-top: 15px;
 }
 
-.nav-header {
-    background-color: white;
-}
-
 .devel-dropdown-toggle {
     display: none;
 }
@@ -1947,10 +1926,6 @@ th .custom-checkbox > [type="checkbox"]:checked + label::after {
     background-color: #373737;
 }
 
-table.table {
-    box-shadow: 0px 1px 5px 0px rgba(161, 161, 161, 0.2);
-}
-
 .odd {
     background-color: #fff;
 }
@@ -1968,7 +1943,7 @@ table.table {
     border-left: none;
 }
 
-tr.odd:nth-child(1) > td:nth-child {
+.table.dataTable tbody tr > td {
     border-top: none;
 }
 
@@ -2154,9 +2129,11 @@ span.caret-dev-top {
 
 /*In table*/
 tr .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custom-checkbox > [type="checkbox"]:checked + label::before {
+    top: -17px;
+}
+th .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custom-checkbox > [type="checkbox"]:checked + label::before {
     top: -16px;
 }
-
 tr .custom-checkbox > [type="checkbox"]:checked + label::after {
     top: -10px;
 }
@@ -2176,13 +2153,13 @@ tr .custom-checkbox > [type="checkbox"]:checked + label::after {
 /* //END 'Search by' */
 
 /* DataTables styles */
-td, td > a {
+td, td a {
     color: #373737;
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
 }
 
-td > a:hover {
+td a:hover {
     color: #ed492f;
     text-decoration: none;
 }
@@ -2299,6 +2276,7 @@ div.dataTables_length select {
 
 .context-menu li > i {
     margin-right: 18px;
+    top: 2px;
 }
 
 .vue-dropdown > button:focus {
@@ -2311,11 +2289,7 @@ div.dataTables_length select {
 .textanimation:visited {
     color: #fff;
     background-color: #01a8fe;
-}
-
-.vue-dropdown-option > label {
-    margin-bottom: 0px;
-}       
+}    
 
 
 .table-heading-controls > .create-btn-wrapper,
@@ -2328,11 +2302,14 @@ div.dataTables_length select {
 */
 
 .label {
-    padding-top: 6px;
-    padding-bottom: 5px;
     font-size: 14px;
     width: 102px;
-    display: inline-block;
+    height: 24px;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-transform: uppercase;
     background-color: #FF6CC3;
     border-radius: 2px;
@@ -2399,4 +2376,25 @@ div.dataTables_length select {
 .valuecolor {
     color: #01a8fe;
     font-weight: 600;
+}
+
+.caret {
+  color: #373737;
+
+  width: 0;
+  height: 0;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+
+  position: relative;
+  float: right;
+  top: 9px;
+}
+
+.caret.active {
+  border-bottom: 4px solid;
+  border-top: 4px solid transparent;
+  border-left: 4px solid transparent;
+  top: 5px;
 }
