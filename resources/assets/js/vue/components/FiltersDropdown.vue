@@ -177,7 +177,7 @@ export default {
 <style scoped>
 
     .caret.--right {
-        top: 15px;
+        top: 13px;
         right: 5px;
         border-style: solid;
         border-width: 4px 0 4px 4px;
