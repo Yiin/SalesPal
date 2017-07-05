@@ -280,16 +280,6 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                trans('texts.enter_credit'),
-                'icon-dropdown-credit',
-                function ($model) {
-                    return URL::to("credits/create/{$model->public_id}");
-                },
-                function ($model) {
-                    return Auth::user()->can('create', ENTITY_CREDIT);
-                },
-            ],
-            [
                 trans('texts.enter_expense'),
                 'icon-dropdown-expense',
                 function ($model) {
@@ -297,6 +287,16 @@ class ClientDatatable extends EntityDatatable
                 },
                 function ($model) {
                     return Auth::user()->can('create', ENTITY_EXPENSE);
+                },
+            ],
+            [
+                trans('texts.enter_credit'),
+                'icon-dropdown-credit',
+                function ($model) {
+                    return URL::to("credits/create/{$model->public_id}");
+                },
+                function ($model) {
+                    return Auth::user()->can('create', ENTITY_CREDIT);
                 },
             ],
         ];
