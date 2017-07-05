@@ -77,12 +77,12 @@ class CreditDatatable extends EntityDatatable
                 'type' => 'separator',
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'amount',
                 'label' => trans('texts.amount'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'balance',
                 'label' => trans('texts.balance'),
             ],
@@ -169,6 +169,7 @@ class CreditDatatable extends EntityDatatable
         return [
             [
                 trans('texts.edit_credit'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("credits/{$model->public_id}/edit");
                 },
@@ -178,6 +179,7 @@ class CreditDatatable extends EntityDatatable
             ],
             [
                 trans('texts.apply_credit'),
+                'icon-dropdown-credit',
                 function ($model) {
                     return URL::to("payments/create/{$model->client->public_id}") . '?paymentTypeId=1';
                 },

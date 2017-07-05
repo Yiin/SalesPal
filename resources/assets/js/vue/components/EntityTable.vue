@@ -52,12 +52,12 @@
                      -->
                     <tbody>
                         <tr v-if="!entities_loaded">
-                            <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
+                            <td valign="top" :colspan="colspan" class="dataTables_empty">
                                 Loading data...
                             </td>
                         </tr>
                         <tr v-if="table_state.is_empty">
-                            <td valign="top" :colspan="table_columns.length + (bulkEdit ? 1 : 0)" class="dataTables_empty">
+                            <td valign="top" :colspan="colspan" class="dataTables_empty">
                                 No data available in table
                             </td>
                         </tr>
@@ -220,9 +220,6 @@
                     { label: '10', value: 10},
                     { label: '20', value: 20},
                     { label: '50', value: 50},
-                    { label: '100', value: 100},
-                    { label: '300', value: 300},
-                    { label: '500', value: 500},
                     { label: 'All', value: 0},
                 ],
 
@@ -316,6 +313,10 @@
 
             entity_plural_full() {
                 return (this.entities || this.entity + 's').replace('_', ' ');
+            },
+
+            colspan() {
+                return Object.keys(this.table_columns).length + (this.bulkEdit ? 1 : 0);
             }
 
         },
@@ -656,12 +657,12 @@
                     this.contextMenu.elements.push({
                         title: 'Archive', 
                         action: `javascript:submitForm_${this.entity}('archive');`,
-                        icon: '<i class="glyphicon glyphicon-usd"></i>'
+                        icon: 'icon-dropdown-archive'
                     });
                     this.contextMenu.elements.push({
                         title: 'Delete', 
                         action: `javascript:submitForm_${this.entity}('delete');`,
-                        icon: '<i class="glyphicon glyphicon-usd"></i>'
+                        icon: 'icon-dropdown-delete'
                     });
                     this.contextMenu.elements.push('');
                 }
@@ -673,21 +674,31 @@
                 row.__actions.forEach(action => {
                     let element = action;
 
-                    if (element !== '') {
-                        element.icon =  '<i class="glyphicon glyphicon-usd"></i>';
-                    }
-
                     this.contextMenu.elements.push(element);
                 });
 
                 if (this.contextMenu.elements.length) {
                     this.contextMenu.elements.push('');
-                    this.contextMenu.elements.push({ title: `Archive ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('archive');`, before: this.unselectAllBut(id) });
-                    this.contextMenu.elements.push({ title: `Delete ${this.entity_singular}`, action: `javascript:submitForm_${this.entity}('delete');`, before: this.unselectAllBut(id) });
+                    this.contextMenu.elements.push({
+                        title: `Archive ${this.entity_singular}`,
+                        icon: 'icon-dropdown-archive',
+                        action: `javascript:submitForm_${this.entity}('archive');`,
+                        before: this.unselectAllBut(id)
+                    });
+                    this.contextMenu.elements.push({
+                        title: `Delete ${this.entity_singular}`,
+                        icon: 'icon-dropdown-delete',
+                        action: `javascript:submitForm_${this.entity}('delete');`,
+                        before: this.unselectAllBut(id)
+                    });
 
                     this.contextMenu.elements.forEach(element => {
-                        if (element !== '' && element.icon && element.title.indexOf(element.icon) !== 0) {
-                            element.title = element.icon + element.title;
+                        if (element !== '' && element.icon) {
+                            let icon = `<i class="${element.icon}"></i>`;
+
+                            if (element.title.indexOf(icon) !== 0) {
+                                element.title = icon + element.title;
+                            }
                         }
                     });
 

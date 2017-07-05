@@ -1,7 +1,13 @@
 <template>
     <div class="text-input">
-        <div ref="input" class="animation" :data-placeholder="option.label"></div>
-        <div v-show="option && option.value && option.value.length" 
+        <div ref="input" 
+             @focus="focus"
+             @blur="blur"
+             class="animation" 
+             :data-placeholder="option.label"
+        ></div>
+
+        <div v-show="option && option.value && option.value.length"
              @click="clear"
              class="clear-input"
         ></div>
@@ -22,11 +28,38 @@ export default {
         }
     },
 
+    computed: {
+        default() {
+            if (this.option) {
+                switch (this.option.type) {
+                    case 'number':
+                        return '=';
+                }
+            }
+            return '';
+        }
+    },
+
     methods: {
+        focus() {
+            if (this.option.value.length === 0 && this.default.length) {
+                this.medium.value(this.default);
+                this.option.value = this.default;
+            }
+        },
+
+        blur() {
+            if (this.option.value === this.default) {
+                this.medium.value('');
+                this.option.value = '';
+            }
+        },
+
         clear() {
             if (this.medium.value().trim().length) {
                 this.medium.value('');
                 this.option.value = '';
+
                 this.$forceUpdate();
                 this.$emit('changed');
             }
@@ -40,8 +73,11 @@ export default {
         });
 
         this.$refs.input.addEventListener('keyup', () => {
-            if (this.option.value !== this.medium.value().trim()) {
-                this.option.value = this.medium.value().trim();
+            let value = this.medium.value().trim();
+
+            if (this.option.value !== value) {
+                this.option.value = value;
+
                 this.$forceUpdate();
                 this.$emit('changed');
             }
@@ -67,10 +103,6 @@ export default {
     top: 11px;
     right: 15px;
     cursor: pointer;
-}
-
-.clear-input:hover {
-    opacity: 0.8;
 }
 
 [contenteditable="true"]:focus + .clear-input {
@@ -99,7 +131,7 @@ export default {
     background: #f5f5f5;
 }
 
-[contenteditable=true]:hover::before {
+.text-input:hover [contenteditable=true]::before {
     background: none;
 }
 

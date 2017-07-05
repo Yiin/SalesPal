@@ -18,7 +18,7 @@
     <a href="{{ url($option == 'recurring' ? 'recurring_invoice' : $option) }}"
         style="padding-top: 6px; padding-bottom: 7px;"
         class="nav-link {{ Request::is("{$option}*") ? 'active' : '' }}">
-        <i class="fa fa-{{ empty($icon) ? \App\Models\EntityModel::getIcon($option) : $icon }}" style=""></i>
+        <i class="{{ empty($icon) ? \App\Models\EntityModel::getIcon($option) : $icon }}" style=""></i>
         {{ ($option == 'recurring_invoices') ? trans('texts.recurring') : mtrans($option) }}
         {!! Utils::isTrial() && in_array($option, ['quotes', 'tasks', 'expenses', 'vendors', 'reports']) ? '&nbsp;<sup>' . trans('texts.pro') . '</sup>' : '' !!}
     </a>

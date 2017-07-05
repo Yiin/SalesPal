@@ -10,7 +10,12 @@
             client-id="{{ $clientId ?? $vendorId ?? '' }}"
 
             @if(Auth::user()->can('create', $entityType))
-                create="{!! Button::primary(Icon::create('user pull-left').(mtrans($entityType, "new_{$entityType}")))->asLinkTo(url(Utils::pluralizeEntityType($entityType) . '/create/' . ($clientId ?? ''))) !!}"
+                create="
+                    <a class='btn btn-primary' href='{{ url(Utils::pluralizeEntityType($entityType) . '/create/' . ($clientId ?? '')) }}'>
+                        <span class='{{ App\Models\EntityModel::getIcon('new-' . $entityType) }} icon-create-btn'></span>
+                        {{ mtrans($entityType, "new_{$entityType}") }}
+                    </a>
+                "
             @endif
         ></entity-table>
     </div>

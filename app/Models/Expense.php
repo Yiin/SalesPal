@@ -331,6 +331,33 @@ class Expense extends EntityModel
                     break;
             }
         }
+
+        $this->filterClients($query, $filter);
+        $this->filterCurrencies($query, $filter);
+    }
+
+    public function filterClients(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'client');
+
+        if (!empty($ids)) {
+            $query->whereHas('client', function ($query) use ($ids) {
+                $query->whereIn('id', $ids);
+            });
+        }
+    }
+
+    public function filterCurrencies(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'currency');
+
+        if (!empty($ids)) {
+            $query->whereIn('expense_currency_id', $ids);
+
+            if (in_array(DEFAULT_CURRENCY, $ids)) {
+                $query->orWhereNull('expense_currency_id');
+            }
+        }
     }
 
     public function scopeSearchBy($query, $searchBy)

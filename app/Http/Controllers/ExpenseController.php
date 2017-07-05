@@ -85,11 +85,6 @@ class ExpenseController extends BaseController
                 $query->where('id', $entityId);
             });
         }
-        else {
-            $query->whereHas('vendor', function ($query) {
-                $query->whereNull('deleted_at');
-            });
-        }
     }
 
     public function create(ExpenseRequest $request)

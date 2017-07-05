@@ -71,21 +71,7 @@ class PaymentDatatable extends EntityDatatable
             ]
         ];
 
-        $methodDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.method'),
-            'options' => []
-        ];
-
-        foreach (\App\Models\PaymentType::all() as $type) {
-            $methodDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'payment_type:' . $type->id,
-                'label' => $type->name
-            ];
-        }
-
-        $filters [] = $methodDropdown;
+        $filters [] = $this->paymentTypesDropdown('payments');
 
         $filters [] = ['type' => 'separator'];
 
@@ -113,7 +99,7 @@ class PaymentDatatable extends EntityDatatable
                 'label' => trans('texts.payment_date'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'payment_amount',
                 'label' => trans('texts.payment_amount'),
             ],
@@ -239,6 +225,7 @@ class PaymentDatatable extends EntityDatatable
         return [
             [
                 trans('texts.edit_payment'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("payments/{$model->public_id}/edit");
                 },
@@ -248,6 +235,7 @@ class PaymentDatatable extends EntityDatatable
             ],
             [
                 trans('texts.refund_payment'),
+                'icon-dropdown-refund',
                 function ($model) {
                     $max_refund = number_format($model->amount - $model->refunded, 2);
                     $formatted = Utils::formatMoney($max_refund, $model->currency_id, $model->country_id);

@@ -21,4 +21,9 @@ class PaymentType extends Eloquent
     {
         return $this->belongsTo('App\Models\GatewayType');
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

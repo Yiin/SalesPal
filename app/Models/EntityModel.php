@@ -325,20 +325,30 @@ class EntityModel extends Eloquent
     public static function getIcon($entityType)
     {
         $icons = [
-            'dashboard' => 'tachometer',
-            'clients' => 'users',
-            'products' => 'cube',
-            'invoices' => 'file-pdf-o',
-            'payments' => 'credit-card',
-            'recurring_invoices' => 'files-o',
-            'credits' => 'credit-card',
-            'quotes' => 'file-text-o',
-            'tasks' => 'clock-o',
-            'expenses' => 'file-image-o',
-            'vendors' => 'building',
-            'settings' => 'cog',
-            'self-update' => 'download',
-            'reports' => 'th-list',
+            'dashboard' => 'icon-sidebar-overview',
+            'clients' => 'icon-sidebar-clients',
+            'products' => 'icon-sidebar-products',
+            'invoices' => 'icon-sidebar-invoices',
+            'payments' => 'icon-sidebar-payments',
+            'recurring_invoices' => 'icon-sidebar-recurring',
+            'credits' => 'icon-sidebar-credits',
+            'quotes' => 'icon-sidebar-quotes',
+            'tasks' => 'icon-sidebar-tasks',
+            'expenses' => 'icon-sidebar-expenses',
+            'vendors' => 'icon-sidebar-vendors',
+            'settings' => 'icon-sidebar-settings',
+            'self-update' => 'fa fa-download',
+            'reports' => 'icon-sidebar-reports',
+
+            'new-client' => 'icon-new-client-btn-icon',
+            'new-credit' => 'icon-new-credit-btn-icon',
+            'new-expense' => 'icon-new-expense-btn-icon',
+            'new-invoice' => 'icon-new-invoice-btn-icon',
+            'new-payment' => 'icon-new-payment-btn-icon',
+            'new-product' => 'icon-new-product-btn-icon',
+            'new-quote' => 'icon-new-quote-btn-icon',
+            'new-recurring_invoice' => 'icon-new-recurring-btn-icon',
+            'new-vendor' => 'icon-new-vendor-btn-icon',
         ];
 
         return array_get($icons, $entityType);
@@ -403,5 +413,22 @@ class EntityModel extends Eloquent
     public function statusLabel()
     {
         return '';
+    }
+
+    public function getIdsFromFilter($filter, $field)
+    {
+        $arr = [];
+
+        if ($filter) foreach ($filter as $f) {
+            if (strpos($f, ':') === false) {
+                continue;
+            }
+            list($type, $id) = explode(':', $f);
+
+            if ($type === $field . '_id') {
+                $arr[] = $id;
+            }
+        }
+        return $arr;
     }
 }

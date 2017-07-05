@@ -41,7 +41,8 @@ elixir(function(mix) {
         bowerDir + '/datatables-bootstrap3/BS3/assets/css/datatables.css',
         'bootstrap-combobox.css',
         'public.style.css',
-        'fonts.css'
+        'fonts.css',
+        'icons.css'
     ], 'public/css/built.public.css');
 
     mix.styles([
@@ -60,6 +61,7 @@ elixir(function(mix) {
         'sidebar.css',
         'colors.css',
         'fonts.css',
+        'icons.css'
     ], 'public/css/built.css');
 
     mix.styles([

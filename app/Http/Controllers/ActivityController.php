@@ -28,10 +28,5 @@ class ActivityController extends BaseController
                 $query->where('id', $entityId);
             });
         }
-        else {
-            $query->whereHas('client', function ($query) {
-                $query->whereNull('deleted_at');
-            });
-        }
     }
 }

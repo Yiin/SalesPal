@@ -23,13 +23,23 @@ class Frequency extends Eloquent
         'name',
     ];
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function getTranslatedName()
+    {
+        $name = Str::snake(str_replace(' ', '_', $this->name));
+        return trans('texts.freq_' . $name);
+    }
+
     public static function selectOptions()
     {
         $data = [];
 
         foreach (Cache::get('frequencies') as $frequency) {
-            $name = Str::snake(str_replace(' ', '_', $frequency->name));
-            $data[$frequency->id] = trans('texts.freq_' . $name);
+            $data[$frequency->id] = getTranslatedName();
         }
 
         return $data;

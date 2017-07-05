@@ -64,10 +64,18 @@
 </template>
 
 <script>
+    let State = {
+        default: 0,
+        selectYear: 1,
+        selectMonth: 2,
+        selectDayFrom: 3,
+        selectDayTo: 4,
+    };
     export default {
         data () {
             let now = new Date()
             return {
+                currentState: State.selectYear,
                 showCancel: false,
                 panelState: false,
                 panelType: 'date',

@@ -14,7 +14,7 @@ class InvoiceDatatable extends EntityDatatable
 
     public function getEntityTitle($model)
     {
-        return $this->entityType === ENTITY_INVOICE ? $model->invoice_number : $model->quote_number;
+        return $this->entityType === ENTITY_INVOICE ? $model->invoice_number : $model->invoice_number;
     }
 
     public function calculator()
@@ -148,7 +148,7 @@ class InvoiceDatatable extends EntityDatatable
                 'label' => $this->entityType == ENTITY_INVOICE ? trans('texts.invoice_due_date') : trans('texts.valid_until_date'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'invoice_amount',
                 'label' => $this->entityType == ENTITY_INVOICE ? trans('texts.invoice_amount') : trans('texts.amount'),
             ],
@@ -293,6 +293,7 @@ class InvoiceDatatable extends EntityDatatable
         return [
             [
                 trans("texts.edit_{$entityType}"),
+                'icon-dropdown-edit',
                 function ($model) use ($entityType) {
                     return URL::to("{$entityType}s/{$model->public_id}/edit");
                 },
@@ -302,6 +303,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans("texts.clone_{$entityType}"),
+                'icon-dropdown-clone' . ($entityType === ENTITY_QUOTE ? '_quote' : ''),
                 function ($model) use ($entityType) {
                     return URL::to("{$entityType}s/{$model->public_id}/clone");
                 },
@@ -311,6 +313,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.view_history'),
+                'icon-dropdown-history',
                 function ($model) use ($entityType) {
                     return URL::to("{$entityType}s/{$entityType}_history/{$model->public_id}");
                 },
@@ -325,6 +328,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.mark_sent'),
+                'icon-dropdown-mark',
                 function ($model) use ($entityType) {
                     return "javascript:submitForm_{$entityType}('markSent', {$model->public_id})";
                 },
@@ -334,6 +338,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.mark_paid'),
+                'icon-dropdown-mark',
                 function ($model) use ($entityType) {
                     return "javascript:submitForm_{$entityType}('markPaid', {$model->public_id})";
                 },
@@ -343,6 +348,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.enter_payment'),
+                'icon-dropdown-payment',
                 function ($model) {
                     return URL::to("payments/create/{$model->client->public_id}/{$model->public_id}");
                 },
@@ -352,6 +358,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.view_quote'),
+                'icon-dropdown-quote',
                 function ($model) {
                     return URL::to("quotes/{$model->quote_id}/edit");
                 },
@@ -361,6 +368,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.view_invoice'),
+                'icon-dropdown-view_invoice',
                 function ($model) {
                     return URL::to("invoices/{$model->quote_invoice_id}/edit");
                 },
@@ -370,6 +378,7 @@ class InvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.convert_to_invoice'),
+                'icon-dropdown-convert',
                 function ($model) {
                     return "javascript:submitForm_quote('convert', {$model->public_id})";
                 },

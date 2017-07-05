@@ -585,43 +585,63 @@ class Client extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->withTrashed()->orWhere(function ($query) {
+                    $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'inactive':
-                    $query = $query->withTrashed()->orWhere(function ($query) {
+                    $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->withTrashed()->orWhere(function ($query) {
+                    $query->withTrashed()->orWhere(function ($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'vat_verified':
-                    // $query = $query->join('vat_checks', function ($join) {
+                    // $query->join('vat_checks', function ($join) {
                     //     $join->on('clients.vat_number', '=', DB::raw("CONCAT(`vat_checks`.`country_code`, `vat_checks`.`vat_number`) = `clients`.`vat_number`)"))
                     //          ->where('vat_checks.is_valid', '=', true)
                     //          ->where('vat_checks.id', '=', DB::raw("(SELECT MAX(id) FROM vat_checks)"));
                     // });
                     break;
                 case 'vat_pending':
-                    // $query = $query->where()
+                    // $query->where()
                 break;
                 case 'vat_invalid':
-                    // $query = $query->whereHas('vatChecks', function ($query) {
+                    // $query->whereHas('vatChecks', function ($query) {
                     //     $query->whereRaw("CONCAT(`vat_checks.country_code`, `vat_checks.vat_number`) = %?%", [$query->vat_number])
                     //         ->where('is_valid', false);
                     // });
                 break;
-                default:
-                    $query = $query->whereHas('country', function ($query) use ($f) {
-                        $query->where('id', $f);
-                    });
             }
         }
-        return $query;
+
+        $this->filterCountries($query, $filter);
+        $this->filterCurrencies($query, $filter);
+    }
+
+    public function filterCountries(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'country');
+
+        if (!empty($ids)) {
+            $query->whereIn('country_id', $ids);
+        }
+    }
+
+    public function filterCurrencies(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'currency');
+
+        if (!empty($ids)) {
+            $query->whereIn('currency_id', $ids);
+
+            if (in_array(DEFAULT_CURRENCY, $ids)) {
+                $query->orWhereNull('currency_id');
+            }
+        }
     }
 
     public function scopeSearchBy($query, $searchBy)
