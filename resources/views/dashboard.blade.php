@@ -12,6 +12,7 @@
 @stop
 
 @section('content')
+<div class="dashboardwrraper">
 
             <!-- 
                 Nav Bar?
@@ -57,8 +58,8 @@
                 <div class="textnumber">6,666.0</div>
                 <div class="textsum">0.00</div>
                 <div class="textlast">Last <span>30</span> days</div>
+            </div>
         </div>
-    </div>
 
         <div class="panel panel-default expensesmargin expenses-panel">
             <div class="panel-revenue">
@@ -67,15 +68,15 @@
                 <div class="textsum">0.00</div>
                 <div class="textlast">Last <span>30</span> days</div>
             </div>
-    </div>
+            </div>
         <div class="panel panel-default outstandin-gmargin expenses-panel">
             <div class="panel-revenue">
                 <div class="texttotal">Toral Outstanding</div>
                 <div class="textnumber">6,666.0</div>
                 <div class="textsum">0.00</div>
                 <div class="textlast">Last <span>30</span> days</div>
+            </div>
         </div>
-    </div>
 </div>
 
              <!-- 
@@ -183,5 +184,6 @@
         });
     });
 </script>
+</div>
 
 @stop
