@@ -348,42 +348,48 @@ class Vendor extends EntityModel
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->withTrashed()->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'archived':
-                    $query = $query->withTrashed()->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->withTrashed()->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;
 
                 case 'buying':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->whereHas('status', function ($query) {
                             $query->where('name', 'buying');
                         });
                     });
                     break;
                 case 'reselling':
-                    $query = $query->orWhere(function($query) {
+                    $query->orWhere(function($query) {
                         $query->whereHas('status', function ($query) {
                             $query->where('name', 'reselling');
                         });
                     });
                     break;
-                default:
-                    $query = $query->whereHas('country', function ($query) use ($f) {
-                        $query->where('id', $f);
-                    });
             }
         }
-        return $query;
+
+        $this->filterCountries($query, $filter);
+    }
+
+    public function filterCountries(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'country');
+
+        if (!empty($ids)) {
+            $query->whereIn('country_id', $ids);
+        }
     }
 
     public function scopeSearchBy($query, $searchBy)

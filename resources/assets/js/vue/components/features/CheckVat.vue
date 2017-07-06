@@ -100,17 +100,17 @@
 
         height: 24px;
 
-        background: url(/img/icons/clients/vat-verified.svg) center center no-repeat;
+        background: url(/img/icons/vat-verified.svg) center center no-repeat;
     }
 
     .status.unknown
     {
-        background: url(/img/icons/clients/vat-unknown.svg);
+        background: url(/img/icons/vat-unknown.svg);
     }
 
     .status.invalid
     {
-        background: url(/img/icons/clients/vat-invalid.svg);
+        background: url(/img/icons/vat-invalid.svg);
     }
 
 

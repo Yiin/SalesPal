@@ -39,7 +39,7 @@ class VendorDatatable extends EntityDatatable
             ],
             [
                 'type' => 'checkbox',
-                'value' => 'acrhived',
+                'value' => 'archived',
                 'label' => trans('texts.archived'),
             ],
             [
@@ -62,52 +62,10 @@ class VendorDatatable extends EntityDatatable
             // ],
         ];
 
-        $filters [] = $this->getCountriesDropdown();
+        $filters [] = $this->countriesDropdown('vendors');
         // $filters [] = $this->getCurrenciesDropdown();
 
         return $filters;
-    }
-
-    public function getCountriesDropdown()
-    {
-        $countriesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.country'),
-            'options' => [],
-        ];
-
-        foreach (\App\Models\Country::all() as $country) {
-            $countriesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => $country->id,
-                'label' => $country->name,
-            ];
-        }
-
-        return $countriesDropdown;
-    }
-
-    public function currenciesDropdown()
-    {
-        $currenciesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.currency'),
-            'options' => [],
-        ];
-
-        $currencies = \App\Models\Currency::whereHas('vendors', function ($query) {
-            // nothing
-        })->get();
-
-        foreach ($currencies as $currency) {
-            $currenciesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'currency_id:' . $currency->id,
-                'label' => $currency->name,
-            ];
-        }
-
-        return $currenciesDropdown;
     }
 
     public function searchBy()
@@ -134,7 +92,7 @@ class VendorDatatable extends EntityDatatable
                 'label' => trans('texts.date_created'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'expenses_amount',
                 'label' => trans('texts.expenses_amount'),
             ],
@@ -224,6 +182,7 @@ class VendorDatatable extends EntityDatatable
         return [
             [
                 trans('texts.edit_vendor'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("vendors/{$model->public_id}/edit");
                 },
@@ -242,6 +201,7 @@ class VendorDatatable extends EntityDatatable
             ],
             [
                 trans('texts.enter_expense'),
+                'icon-dropdown-expense',
                 function ($model) {
                     return URL::to("expenses/create/{$model->public_id}");
                 },

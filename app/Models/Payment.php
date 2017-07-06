@@ -408,15 +408,46 @@ class Payment extends EntityModel
                         });
                     });
                     break;
-                default:
-                    list($type, $id) = explode(':', $f);
-
-                    switch ($type) {
-                        case 'payment_type':
-                            $query = $query->orWhere('payment_type_id', $id);
-                            break;
-                    }
             }
+        }
+
+        $this->filterPaymentType($query, $filter);
+        $this->filterClients($query, $filter);
+        $this->filterProducts($query, $filter);
+    }
+
+    public function filterPaymentType(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'payment_type');
+
+        if (!empty($ids)) {
+            $query->whereIn('payment_type_id', $ids);
+        }
+    }
+
+    public function filterClients(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'client');
+
+        if (!empty($ids)) {
+            $query->whereHas('client', function ($query) use ($ids) {
+                $query->whereIn('id', $ids);
+            });
+        }
+    }
+
+    public function filterProducts(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'product');
+
+        if (!empty($ids)) {
+            $query->whereHas('invoice', function ($query) use ($ids) {
+                $query->whereHas('invoice_items', function ($query) use ($ids) {
+                    $query->whereHas('product', function ($query) use ($ids) {
+                        $query->whereIn('id', $ids);
+                    });
+                });
+            });
         }
     }
 

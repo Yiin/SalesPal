@@ -72,7 +72,7 @@ $LANG = array(
     'settings' => 'Settings',
     'enable_invoice_tax' => 'Enable specifying an <b>invoice tax</b>',
     'enable_line_item_tax' => 'Enable specifying <b>line item taxes</b>',
-    'dashboard' => 'Dashboard',
+    'dashboard' => 'Overview',
     'clients' => 'Clients',
     'invoices' => 'Invoices',
     'payments' => 'Payments',
@@ -1135,8 +1135,8 @@ $LANG = array(
 
     'enable_client_portal' => 'Client Portal',
     'enable_client_portal_help' => 'Show/hide the client portal.',
-    'enable_client_portal_dashboard' => 'Dashboard',
-    'enable_client_portal_dashboard_help' => 'Show/hide the dashboard page in the client portal.',
+    'enable_client_portal_dashboard' => 'Overview',
+    'enable_client_portal_dashboard_help' => 'Show/hide the overview page in the client portal.',
 
     // Plans
     'account_management' => 'Account Management',
@@ -1352,7 +1352,7 @@ $LANG = array(
     'export_help' => 'Use JSON if you plan to import the data into Invoice Ninja.<br/>The file includes clients, products, invoices, quotes and payments.',
     'JSON_file' => 'JSON File',
 
-    'view_dashboard' => 'View Dashboard',
+    'view_dashboard' => 'View Overview',
     'client_session_expired' => 'Session Expired',
     'client_session_expired_message' => 'Your session has expired. Please click the link in your email again.',
 

@@ -46,4 +46,9 @@ class Country extends Eloquent
     {
         return $this->hasMany(Client::class);
     }
+
+    public function vendors()
+    {
+        return $this->hasMany(Vendor::class);
+    }
 }

@@ -1,0 +1,251 @@
+.dashboard-dropdowns {
+  text-align: right;
+}
+
+.totals-wrapper {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+  margin: 27px 0;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.totals-wrapper > .total-panel ~ .total-panel {
+  margin-left: 34px;
+}
+
+.total-panel {
+  padding: 19px 15px 15px;
+  background: #fff;
+  box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0 3px 5px rgba(0, 0, 0, 0.05);
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.total-panel-header {
+  font-size: 16px;
+  line-height: 90%;
+}
+
+.total-panel-body {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.total-panel-body .total-value {
+  font-size: 38px;
+  font-weight: bold;
+  line-height: 26px;
+  margin-top: 20px;
+  margin-bottom: 9px;
+}
+
+.total-panel-body .total-meta {
+  margin-top: 5px;
+  margin-right: -1px;
+  text-align: right;
+}
+
+.total-panel-body .total-meta .total-sum {
+  font-size: 27px;
+  font-weight: bold;
+  color: #01a8fe;
+}
+
+.total-panel-body .total-meta .total-time-frame {
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.panel-dashboard {
+  border: none;
+  border-radius: 2px;
+}
+
+.graphpanel {
+  margin-bottom: 27px;
+  padding-bottom: 0;
+  padding-bottom: 0;
+}
+
+/** Navbar **/
+.navbarpanel {
+  width: 1636px;
+  height: 799px;
+  margin-left: 15px;
+}
+
+.dashboard-heading {
+  margin-top: -1px;
+  padding-right: 19px;
+  padding-left: 19px;
+}
+
+.new-activity {
+  font-size: 0;
+  float: right;
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 1px solid #e1e1e1;
+}
+
+.new-activity > span {
+  font-size: 14px;
+}
+
+.new-activity > .amount {
+  font-weight: bold;
+  line-height: 17px;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  margin-top: 6px;
+  margin-right: 8px;
+  margin-bottom: 6px;
+  padding-right: 2px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid #01a8fe;
+  border-radius: 2px;
+  background-color: #01a8fe;
+}
+
+.dashboard-nav .active > a {
+  font-weight: 500;
+  color: #fff;
+  background-color: #01a8fe;
+}
+
+.dashboard-nav li > a {
+  font-size: 16px;
+  padding-top: 16px;
+  padding-right: 20px;
+  padding-bottom: 16px;
+  padding-left: 20px;
+  color: #333;
+}
+
+.dashboard-nav li > a:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+.day {
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  margin-top: 5px;
+  -webkit-box-align: stretch;
+  align-items: stretch;
+}
+
+.day:first-child {
+  margin-top: -5px;
+}
+
+.day:nth-child(1) > .day-number {
+  background-color: #23b820;
+}
+
+.day:nth-child(1) > .border {
+  background-color: #23b820;
+}
+
+.day:nth-child(2) > .day-number {
+  background-color: #fe6c01;
+}
+
+.day:nth-child(2) > .border {
+  background-color: #fe6c01;
+}
+
+.day:nth-child(3) > .day-number {
+  background-color: #9e33d6;
+}
+
+.day:nth-child(3) > .border {
+  background-color: #9e33d6;
+}
+
+.day:nth-child(4) > .day-number {
+  background-color: #01a8fe;
+}
+
+.day:nth-child(4) > .border {
+  background-color: #01a8fe;
+}
+
+.day-number {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 40px;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin-left: -6px;
+  text-align: center;
+  color: #fff;
+  border-radius: 2px;
+}
+
+.border {
+  width: 3px;
+  min-height: 40px;
+  margin-bottom: 15px;
+  margin-left: 54px;
+}
+
+.events {
+  width: 100%;
+  margin: 0 20px 10px 20px;
+  padding-bottom: 5px;
+}
+
+.event {
+  line-height: .9;
+  padding: 19px 0;
+}
+
+.event:not(:last-child) {
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.event > a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #01a8fe;
+}
+
+.event > .time {
+  font-weight: bold;
+  margin-left: -1px;
+  padding-right: 10px;
+}
+
+.panel-days-holder {
+  padding-right: 0;
+}
+
+.breadcrumb > li.active {
+  display: inline;
+}
+
+.dashboard-breadcrumb {
+  margin-top: 7px;
+  margin-bottom: -1px;
+}
+
+/*# sourceMappingURL=dashboard.css.map */

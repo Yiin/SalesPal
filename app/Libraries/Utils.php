@@ -1254,11 +1254,15 @@ class Utils
 
     public static function querySearchValue(&$query, $name, $value, $ignoreNull = false)
     {
+        // remove default equal sign
+        if ($value[0] === '=') {
+            $value = substr($value, 1);
+        }
         // = (default) OR <= OR >=
         $sign = in_array($value[0], ['<', '>']) ? $value[0] . '=' : '=';
 
         // extract value
-        $value = (int)($sign === '=' ? $value : substr($value, 1));
+        $value = (float)($sign === '=' ? $value : substr($value, 1));
 
         $query->where(function ($query) use ($name, $sign, $value, $ignoreNull) {
             $query->where($name, $sign, $value);

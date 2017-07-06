@@ -146,12 +146,12 @@ class BaseController extends Controller
         $actions = [];
 
         foreach($datatable->actions() as $action) {
-            if(count($action) < 2) {
+            if(count($action) < 3) {
                 continue;
             }
 
-            list($title, $getUrl) = $action;
-            $visible = (count($action) > 2) ? $action[2] : true;
+            list($title, $icon, $getUrl) = $action;
+            $visible = (count($action) > 3) ? $action[3] : true;
 
             if(is_callable($visible)) {
                 $visible = $visible($model);
@@ -176,6 +176,7 @@ class BaseController extends Controller
 
                 $actions[] = [
                     'title' => $title,
+                    'icon' => $icon,
                     'action' => $jsAction
                 ];
             }

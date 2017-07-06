@@ -129,6 +129,19 @@ class Credit extends EntityModel
                     break;
             }
         }
+        
+        $this->filterClients($query, $filter);
+    }
+
+    public function filterClients(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'client');
+
+        if (!empty($ids)) {
+            $query->whereHas('client', function ($query) use ($ids) {
+                $query->whereIn('id', $ids);
+            });
+        }
     }
 
     public function scopeSearchBy($query, $searchBy)

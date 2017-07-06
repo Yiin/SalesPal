@@ -29,6 +29,7 @@
                          -->
                         <div @mouseover="openChildDropdown(option)" @mouseleave="closeChildDropdown" class="vue-dropdown-option --dropdown">
                             <div class="option-label">{{ option.label }}</div>
+                            <span class="caret --right"></span>
                             <child-dropdown-menu 
                                 :parent="option" 
                                 :class="{ open: openedDropdown === option }"
@@ -175,6 +176,14 @@ export default {
 
 <style scoped>
 
+    .caret.--right {
+        top: 13px;
+        right: 5px;
+        border-style: solid;
+        border-width: 4px 0 4px 4px;
+        border-color: transparent transparent transparent #373737;
+    }
+
     .vue-dropdown
     {
         position: relative;
@@ -270,7 +279,7 @@ export default {
     {
         height: 34px;
         padding-right: 10px;
-        padding-left: 30px;
+        padding-left: 26px;
     }
 
     .vue-dropdown-menu .vue-dropdown-option.--dropdown .vue-dropdown-menu
@@ -279,7 +288,7 @@ export default {
         max-height: 387px;
 
         position: relative;
-        transform: translate(271px, -34px);
+        transform: translate(277px, -40px);
         left: -32px;
     }
 

@@ -1540,65 +1540,65 @@ class Invoice extends EntityModel implements BalanceAffecting
         if ($filter) foreach ($filter as $f) {
             switch ($f) {
                 case 'active':
-                    $query = $query->withTrashed()->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNull('deleted_at');
                     });
                     break;
                 case 'inactive':
-                    $query = $query->withTrashed()->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', false)->whereNotNull('deleted_at');
                     });
                     break;
                 case 'deleted':
-                    $query = $query->withTrashed()->orWhere(function($query) {
+                    $query->withTrashed()->orWhere(function($query) {
                         $query->where('is_deleted', true)->whereNotNull('deleted_at');
                     });
                     break;
                     
                 case 'draft':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->whereHas('invoice_status', function ($query) {
                             $query->where('name', 'draft');
                         });
                     });
                     break;
                 case 'pending':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->whereHas('invoice_status', function ($query) {
                             $query->where('name', 'sent')->whereNull('last_sent_date');
                         });
                     });
                     break;
                 case 'sent':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->whereHas('invoice_status', function ($query) {
                             $query->where('name', 'sent');
                         });
                     });
                     break;
                 case 'viewed':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->whereHas('invoice_status', function ($query) {
                             $query->where('name', 'viewed');
                         });
                     });
                     break;
                 case 'partial':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->whereHas('invoice_status', function ($query) {
                             $query->where('name', 'partial');
                         });
                     });
                     break;
                 case 'paid':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->whereHas('invoice_status', function ($query) {
                             $query->where('name', 'paid');
                         });
                     });
                     break;
                 case 'overdue':
-                    $query = $query->orWhere(function ($query) {
+                    $query->orWhere(function ($query) {
                         $query->where(function ($query) {
                             $query->where('due_date', '!=', '0000-00-00')->whereNotNull('due_date');
                         })->where('balance', '>', 0)
@@ -1606,6 +1606,43 @@ class Invoice extends EntityModel implements BalanceAffecting
                     });
                     break;
             }
+        }
+
+        $this->filterFrequencies($query, $filter);
+        $this->filterClients($query, $filter);
+        $this->filterProducts($query, $filter);
+    }
+
+    public function filterFrequencies(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'frequency');
+
+        if (!empty($ids)) {
+            $query->whereIn('frequency_id', $ids);
+        }
+    }
+
+    public function filterClients(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'client');
+
+        if (!empty($ids)) {
+            $query->whereHas('client', function ($query) use ($ids) {
+                $query->whereIn('id', $ids);
+            });
+        }
+    }
+
+    public function filterProducts(&$query, $filter)
+    {
+        $ids = $this->getIdsFromFilter($filter, 'product');
+
+        if (!empty($ids)) {
+            $query->whereHas('invoice_items', function ($query) use ($ids) {
+                $query->whereHas('product', function ($query) use ($ids) {
+                    $query->whereIn('id', $ids);
+                });
+            });
         }
     }
 

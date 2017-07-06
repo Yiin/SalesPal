@@ -70,31 +70,10 @@ class ClientDatatable extends EntityDatatable
             ],
         ];
 
-        $filters [] = $this->countriesDropdown();
+        $filters [] = $this->countriesDropdown('clients');
         $filters [] = $this->currenciesDropdown('clients');
 
         return $filters;
-    }
-
-    public function countriesDropdown()
-    {
-        $countriesDropdown = [
-            'type' => 'dropdown',
-            'label' => trans('texts.country'),
-            'options' => [],
-        ];
-
-        $countries = \App\Models\Country::whereHas('clients', function(){})->get();
-
-        foreach ($countries as $country) {
-            $countriesDropdown['options'][] = [
-                'type' => 'checkbox',
-                'value' => 'country_id:' . $country->id,
-                'label' => $country->name,
-            ];
-        }
-
-        return $countriesDropdown;
     }
 
     public function searchBy()
@@ -221,7 +200,18 @@ class ClientDatatable extends EntityDatatable
     {
         return [
             [
+                trans('texts.preview'),
+                'icon-dropdown-preview',
+                function ($model) {
+                    return '#';
+                },
+                function ($model) {
+                    return true;
+                }
+            ],
+            [
                 trans('texts.edit_client'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("clients/{$model->public_id}/edit");
                 },
@@ -241,6 +231,7 @@ class ClientDatatable extends EntityDatatable
             ],
             [
                 trans('texts.new_task'),
+                'icon-dropdown-new_task',
                 function ($model) {
                     return URL::to("tasks/create/{$model->public_id}");
                 },
@@ -250,6 +241,7 @@ class ClientDatatable extends EntityDatatable
             ],
             [
                 trans('texts.new_invoice'),
+                'icon-dropdown-new_invoice',
                 function ($model) {
                     return URL::to("invoices/create/{$model->public_id}");
                 },
@@ -259,6 +251,7 @@ class ClientDatatable extends EntityDatatable
             ],
             [
                 trans('texts.new_quote'),
+                'icon-dropdown-quote',
                 function ($model) {
                     return URL::to("quotes/create/{$model->public_id}");
                 },
@@ -278,6 +271,7 @@ class ClientDatatable extends EntityDatatable
             ],
             [
                 trans('texts.enter_payment'),
+                'icon-dropdown-payment',
                 function ($model) {
                     return URL::to("payments/create/{$model->public_id}");
                 },
@@ -286,21 +280,23 @@ class ClientDatatable extends EntityDatatable
                 },
             ],
             [
-                trans('texts.enter_credit'),
-                function ($model) {
-                    return URL::to("credits/create/{$model->public_id}");
-                },
-                function ($model) {
-                    return Auth::user()->can('create', ENTITY_CREDIT);
-                },
-            ],
-            [
                 trans('texts.enter_expense'),
+                'icon-dropdown-expense',
                 function ($model) {
                     return URL::to("expenses/create/0/{$model->public_id}");
                 },
                 function ($model) {
                     return Auth::user()->can('create', ENTITY_EXPENSE);
+                },
+            ],
+            [
+                trans('texts.enter_credit'),
+                'icon-dropdown-credit',
+                function ($model) {
+                    return URL::to("credits/create/{$model->public_id}");
+                },
+                function ($model) {
+                    return Auth::user()->can('create', ENTITY_CREDIT);
                 },
             ],
         ];

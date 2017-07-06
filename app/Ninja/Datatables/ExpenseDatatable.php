@@ -99,7 +99,7 @@ class ExpenseDatatable extends EntityDatatable
                 'label' => trans('texts.expense_date'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'expense_amount',
                 'label' => trans('texts.expense_amount'),
             ],
@@ -217,6 +217,7 @@ class ExpenseDatatable extends EntityDatatable
         return [
             [
                 trans('texts.edit_expense'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("expenses/{$model->public_id}/edit");
                 },
@@ -226,6 +227,7 @@ class ExpenseDatatable extends EntityDatatable
             ],
             [
                 trans('texts.view_invoice'),
+                'icon-dropdown-view_invoice',
                 function ($model) {
                     return URL::to("/invoices/{$model->invoice->public_id}/edit");
                 },
@@ -235,6 +237,7 @@ class ExpenseDatatable extends EntityDatatable
             ],
             [
                 trans('texts.invoice_expense'),
+                'icon-dropdown-expense',
                 function ($model) {
                     return "javascript:submitForm_expense('invoice', {$model->public_id})";
                 },

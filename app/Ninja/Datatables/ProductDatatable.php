@@ -79,7 +79,7 @@ class ProductDatatable extends EntityDatatable
                 'label' => trans('texts.product_name'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'product_price',
                 'label' => trans('texts.product_price'),
             ],
@@ -95,7 +95,7 @@ class ProductDatatable extends EntityDatatable
                 'type' => 'separator'
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'qty',
                 'label' => trans('texts.stock_amount'),
             ],
@@ -171,6 +171,7 @@ class ProductDatatable extends EntityDatatable
         return [
             [
                 uctrans('texts.edit_product'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("products/{$model->public_id}/edit");
                 },

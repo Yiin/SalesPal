@@ -68,6 +68,12 @@ class RecurringInvoiceDatatable extends EntityDatatable
             [
                 'type' => 'separator',
             ],
+            $this->frequenciesDropdown('invoices', function ($query) {
+                $query->recurring();
+            }),
+            [
+                'type' => 'separator',
+            ],
             $this->clientsDropdown('invoices', function ($query) {
                 $query->recurring();
             }),
@@ -83,11 +89,6 @@ class RecurringInvoiceDatatable extends EntityDatatable
     {
         return [
             [
-                'type' => 'text',
-                'name' => 'frequency',
-                'label' => trans('texts.frequency'),
-            ],
-            [
                 'type' => 'date',
                 'name' => 'invoice_date',
                 'label' => trans('texts.invoice_date'),
@@ -98,7 +99,7 @@ class RecurringInvoiceDatatable extends EntityDatatable
                 'label' => trans('texts.invoice_due_date'),
             ],
             [
-                'type' => 'text',
+                'type' => 'number',
                 'name' => 'invoice_amount',
                 'label' => trans('texts.invoice_amount'),
             ],
@@ -206,6 +207,7 @@ class RecurringInvoiceDatatable extends EntityDatatable
         return [
             [
                 trans('texts.edit_invoice'),
+                'icon-dropdown-edit',
                 function ($model) {
                     return URL::to("invoices/{$model->public_id}/edit");
                 },
@@ -215,6 +217,7 @@ class RecurringInvoiceDatatable extends EntityDatatable
             ],
             [
                 trans('texts.clone_invoice'),
+                'icon-dropdown-clone',
                 function ($model) {
                     return URL::to("invoices/{$model->public_id}/clone");
                 },

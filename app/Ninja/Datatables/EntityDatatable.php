@@ -83,6 +83,33 @@ class EntityDatatable
         return $data;
     }
 
+    public function frequenciesDropdown($relation = null, $queryCallback = null)
+    {
+        if (! $relation) return null;
+
+        if (! $queryCallback) {
+            $queryCallback = function () {};
+        }
+
+        $frequenciesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.frequency'),
+            'options' => [],
+        ];
+
+        $frequencies = \App\Models\Frequency::whereHas($relation, $queryCallback)->get();
+
+        foreach ($frequencies as $frequency) {
+            $frequenciesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'frequency_id:' . $frequency->id,
+                'label' => $frequency->getTranslatedName(),
+            ];
+        }
+
+        return $frequenciesDropdown;
+    }
+
     public function clientsDropdown($relation = null, $queryCallback = null)
     {
         if (! $relation) return null;
@@ -135,6 +162,60 @@ class EntityDatatable
         }
 
         return $productsDropdown;
+    }
+
+    public function paymentTypesDropdown($relation = null, $queryCallback = null)
+    {
+        if (! $relation) return null;
+
+        if (! $queryCallback) {
+            $queryCallback = function () {};
+        }
+
+        $paymentTypesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.method'),
+            'options' => []
+        ];
+
+        $paymentTypes = \App\Models\PaymentType::whereHas($relation, $queryCallback)->get();
+
+        foreach ($paymentTypes as $type) {
+            $paymentTypesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'payment_type_id:' . $type->id,
+                'label' => $type->name
+            ];
+        }
+
+        return $paymentTypesDropdown;
+    }
+
+    public function countriesDropdown($relation = null, $queryCallback = null)
+    {
+        if (! $relation) return null;
+
+        if (! $queryCallback) {
+            $queryCallback = function () {};
+        }
+
+        $countriesDropdown = [
+            'type' => 'dropdown',
+            'label' => trans('texts.country'),
+            'options' => [],
+        ];
+
+        $countries = \App\Models\Country::whereHas($relation, $queryCallback)->get();
+
+        foreach ($countries as $country) {
+            $countriesDropdown['options'][] = [
+                'type' => 'checkbox',
+                'value' => 'country_id:' . $country->id,
+                'label' => $country->name,
+            ];
+        }
+
+        return $countriesDropdown;
     }
 
     public function currenciesDropdown($relation = null, $queryCallback = null)
