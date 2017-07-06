@@ -57,11 +57,19 @@ elixir(function(mix) {
         'bootstrap-combobox.css',
         'typeahead.js-bootstrap.css',
         'style.css',
-        'dashboard.css',
         'sidebar.css',
         'colors.css',
         'fonts.css',
         'icons.css'
+    ], 'public/css/built.tmp.css');
+
+    mix.sass([
+        'dashboard.scss'
+    ], 'public/css/dashboard.css');
+
+    mix.styles([
+        '../../../public/css/built.tmp.css',
+        '../../../public/css/dashboard.css'
     ], 'public/css/built.css');
 
     mix.styles([
