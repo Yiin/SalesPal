@@ -289,8 +289,7 @@
     {
         position: relative;
 
-        padding: 20px;
-        padding-bottom: 200px;
+        padding: 20px 21px 200px 20px;
     }
 
     #wrapper.toggled-left #page-content-wrapper

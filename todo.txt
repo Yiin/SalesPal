@@ -3,4 +3,11 @@ calendar style
 
 outside of table context menu
 
-too many attempts, try again in 10 minutes
+too many attempts, try again in 5 minutes
+
+dashboardas
+
+vat next to client
+
+vat queue
+
