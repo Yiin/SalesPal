@@ -2275,9 +2275,19 @@ div.dataTables_length select {
     margin-right: 10px;
 }
 
+.context-menu li {
+    position: relative;
+}
+
 .context-menu li > i {
     margin-right: 18px;
-    top: 2px;
+    display: inline-block;
+    width: 16px;
+}
+
+.context-menu li > i::before {
+    position: absolute;
+    top: 10px;
 }
 
 .vue-dropdown > button:focus {
