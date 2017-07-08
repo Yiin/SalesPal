@@ -2132,7 +2132,7 @@ tr .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custo
     top: -17px;
 }
 th .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custom-checkbox > [type="checkbox"]:checked + label::before {
-    top: -16px;
+    top: -17px;
 }
 tr .custom-checkbox > [type="checkbox"]:checked + label::after {
     top: -10px;
