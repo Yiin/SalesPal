@@ -367,7 +367,8 @@ border-color: #0a456c;
     xborder-color: #337ab7;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary:focus {
     color: #ffffff;
     background-color: #01a8fe;
     border-color: #01a8fe;
