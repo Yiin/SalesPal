@@ -1783,7 +1783,7 @@ span.caret-dev-top {
 }
 
 .btn-primary:hover,
-.btn-primary:active,
+/*.btn-primary:active,*/
 .btn-primary:focus,
 .open > .dropdown-toggle.btn-primary {
     color: rgba(0, 0, 0, 0.6);
