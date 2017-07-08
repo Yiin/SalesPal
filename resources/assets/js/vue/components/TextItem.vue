@@ -127,7 +127,7 @@ export default {
 }
 
 [contenteditable=true]:hover {
-    color: black;
+    color: #01a8fe;
     background: #f5f5f5;
 }
 
