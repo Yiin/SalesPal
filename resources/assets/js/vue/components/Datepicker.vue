@@ -1,65 +1,64 @@
 <template>
     <div class="date-picker">
         <div class="input-wrapper">
-            <div class="input" @click="togglePanel" v-text="text"></div>
+            <div class="input" @click="togglePanel" v-text="text" :title="text.length > 26 ? text : ''"></div>
         </div>
-        <transition name="toggle">
-            <div class="date-panel" v-show="panelState" :style="coordinates">
-                <div class="panel-header --status">
-                    Select: <span class="value">{{ status }}</span>
-                </div>
-                <div class="panel-header" v-show="panelType !== 'year'">
-                    <div class="arrow-left" @click="prevMonthPreview()">&lt;</div>
-                    <div class="year-month-box">
-                        <div class="year-box" @click="chType('year')" v-text="tmpYear"></div>
-                        <div class="month-box" @click="chType('month')">{{tmpMonth + 1 | month(language)}}</div>
-                    </div>
-                    <div class="arrow-right" @click="nextMonthPreview()">&gt;</div>
-                </div>
-                <div class="panel-header" v-show="panelType === 'year'">
-                    <div class="arrow-left" @click="chYearRange(0)">&lt;</div>
-                    <div class="year-range">
-                        <span v-text="yearList[0]"></span> - <span v-text="yearList[yearList.length - 1]"></span>
-                    </div>
-                    <div class="arrow-right" @click="chYearRange(1)">&gt;</div>
-                </div>
-                <div class="type-year" v-show="panelType === 'year'">
-                    <ul class="year-list">
-                        <li v-for="item in yearList"
-                            v-text="item"
-                            :class="{selected: isSelected('year', item), invalid: validateYear(item)}" 
-                            @click="selectYear(item)"
-                        >
-                        </li>
-                    </ul>
-                </div>
-                <div class="type-month" v-show="panelType === 'month'">
-                    <ul class="month-list">
-                        <li v-for="(item, index) in monthList"
-                            :class="{selected: isSelected('month', index), invalid: validateMonth(index)}" 
-                            @click="selectMonth(index)"
-                        >
-                            {{item | month(language)}}
-                        </li>
-                    </ul>
-                </div>
-                <div class="type-date" v-show="panelType === 'date'">
-                    <ul class="weeks">
-                        <li v-for="item in weekList">{{item | week(language)}}</li>
-                    </ul>
-                    <ul class="date-list">
-                        <li v-for="(item, index) in dateList"
-                            :class="{preMonth: item.previousMonth, nextMonth: item.nextMonth,
-                                invalid: validateDate(item), firstItem: (index % 7) === 0}"
-                            @click="selectDate(item)">
-                            <div class="message" :class="{selected: isSelected('date', item)}">
-                                <div class="bg"></div><span v-text="item.value"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+        <div class="date-panel" v-show="panelState">
+            <div class="panel-header --status">
+                Select: <span class="value">{{ status }}</span>
             </div>
-        </transition>
+            <div class="panel-header" v-show="panelType !== 'year'">
+                <div class="arrow-left" @click="prevMonthPreview()">&lt;</div>
+                <div class="year-range">
+                    <span @click="chType('year')" v-text="tmpYear"></span>
+                    <span class="range-separator">-</span>
+                    <span @click="chType('month')">{{ tmpMonth + 1 | month(language) }}</span>
+                </div>
+                <div class="arrow-right" @click="nextMonthPreview()">&gt;</div>
+            </div>
+            <div class="panel-header" v-show="panelType === 'year'">
+                <div class="arrow-left" @click="chYearRange(0)">&lt;</div>
+                <div class="year-range">
+                    <span v-text="yearList[0]"></span><span class="range-separator">-</span><span v-text="yearList[yearList.length - 1]"></span>
+                </div>
+                <div class="arrow-right" @click="chYearRange(1)">&gt;</div>
+            </div>
+            <div class="type-year" v-show="panelType === 'year'">
+                <ul class="year-list">
+                    <li v-for="item in yearList"
+                        v-text="item"
+                        :class="{selected: isSelected('year', item), invalid: validateYear(item)}" 
+                        @click="selectYear(item)"
+                    >
+                    </li>
+                </ul>
+            </div>
+            <div class="type-month" v-show="panelType === 'month'">
+                <ul class="month-list">
+                    <li v-for="(item, index) in monthList"
+                        :class="{selected: isSelected('month', index), invalid: validateMonth(index)}" 
+                        @click="selectMonth(index)"
+                    >
+                        {{item | month(language)}}
+                    </li>
+                </ul>
+            </div>
+            <div class="type-date" v-show="panelType === 'date'">
+                <ul class="weeks">
+                    <li v-for="item in weekList">{{item | week(language)}}</li>
+                </ul>
+                <ul class="date-list">
+                    <li v-for="(item, index) in dateList"
+                        :class="{preMonth: item.previousMonth, nextMonth: item.nextMonth,
+                            invalid: validateDate(item), firstItem: (index % 7) === 0}"
+                        @click="selectDate(item)">
+                        <div class="message" :class="{selected: isSelected('date', item)}">
+                            <div class="bg"></div><span v-text="item.value"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div v-show="this.value && this.value[0] && this.value[1]" @click="clear" class="clear-input"></div>
     </div>
 </template>
@@ -77,12 +76,12 @@
                 date: now.getDate(),
                 tmpYear: now.getFullYear(),
                 tmpMonth: now.getMonth(),
-                tmpStartYear: now.getFullYear(),
-                tmpStartMonth: now.getMonth(),
-                tmpStartDate: now.getDate(),
-                tmpEndYear: now.getFullYear(),
-                tmpEndMonth: now.getMonth(),
-                tmpEndDate: now.getDate(),
+                tmpStartYear: null, //now.getFullYear(),
+                tmpStartMonth: null, //now.getMonth(),
+                tmpStartDate: null, //now.getDate(),
+                tmpEndYear: null, //now.getFullYear(),
+                tmpEndMonth: null, //now.getMonth(),
+                tmpEndDate: null, //now.getDate(),
                 minYear: Number,
                 minMonth: Number,
                 minDate: Number,
@@ -277,6 +276,7 @@
                 }
             },
             clear() {
+                this.tmpStartYear = this.tmpStartMonth = this.tmpStartDate = this.tmpEndYear = this.tmpEndMonth = this.tmpEndDate = null;
                 this.$emit('input', this.range ? ['', ''] : '')
             }
         },
@@ -307,9 +307,9 @@
             status() {
                 switch (this.panelType) {
                     case 'year':
-                        return 'Year';
+                        return this.rangeStart ? 'Year To' : 'Year From';
                     case 'month':
-                        return 'Month';
+                        return this.rangeStart ? 'Month To' : 'Month From';
                     case 'date':
                         return this.rangeStart ? 'Day To' : 'Day From';
                     default:
@@ -426,17 +426,17 @@
 </script>
 
 <style scoped lang='less'>
-    ul{
+    ul {
         padding: 0;
         margin: 0;
         list-style: none;
     }
-    .date-picker{
+    .date-picker {
         position: relative;
         height: 22px;
         color: #373737;
     }
-    .input-wrapper{
+    .input-wrapper {
         border-radius: 2px;
         vertical-align: middle;
         display: flex;
@@ -446,74 +446,95 @@
         height: 22px;
         box-sizing: border-box;
     }
-    .input{
+    .input {
         height: 100%;
-        width: 100%;
+        width: 90%;
         font-size: inherit;
         box-sizing: border-box;
         outline: none;
         font-weight: 600;
         color: #01a8fe;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .clear-input {
         top: 5px;
         right: 0px;
     }
-    .date-panel{
+    .date-panel {
         position: absolute;
         z-index: 5000;
-        border: 1px solid #eee;
         box-sizing: border-box;
         width: 320px;
-        padding: 5px 10px 10px;
+        padding: 41px 10px 10px;
         box-sizing: border-box;
         background-color: #fff;
-        transform: translateY(4px);
+        transform: translate(243px, -35px);
+        box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05), 0px -2px 5px rgba(0, 0, 0, 0.05);
     }
-    .panel-header{
+    .panel-header {
         display: flex;
         flex-flow: row nowrap;
         width: 100%;
 
         &.--status {
             font-size: 16px;
-            line-height: 29px;
             color: #373737;
+            position: absolute;
+            top: 0;
+            left: 0;
+            line-height: 1;
+            padding: 9px 17px;
+            border-bottom: 1px solid #e2e2e2;
 
             .value {
                 font-weight: 600;
                 color: #01a7fd;
-                margin-left: 5px;
+                margin-left: 4px;
             }
         }
     }
-    .arrow-left, .arrow-right{
+    .arrow-left, .arrow-right {
         flex: 1;
         font-size: 20px;
         line-height: 2;
         background-color: #fff;
         text-align: center;
         cursor: pointer;
+        margin: 0 1px;
     }
-    .year-range{
+
+    .year-range {
         font-size: 20px;
+        font-weight: 600;
         line-height: 2;
         flex: 3;
         display: flex;
         justify-content: center;
+
+        span:not(.range-separator) {
+            cursor: pointer;;
+        }
     }
-    .year-month-box{
+
+    .range-separator {
+        margin: 0 5px;
+    }
+
+    .year-month-box {
         flex: 3;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-around;
     }
-    .type-year, .type-month, .date-list{
-        background-color: #fff;
+
+    .type-year, .type-month, .date-list {
+        background-color: #fffffff;
     }
 
-    .year-box, .month-box{
-        transition: all ease .1s;
+    .year-box, .month-box {
+        // transition: all ease .1s;
         font-family: 'Open Sans', sans-serif;
         flex: 1;
         text-align: center;
@@ -522,92 +543,98 @@
         cursor: pointer;
         background-color: #fff;
     }
-    .year-list, .month-list{
+    .type-date {
+        margin-top: -1px;
+    }
+    .year-list, .month-list {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
+        margin-top: 19px;
         li{
             font-family: 'Open Sans', sans-serif;
-            transition: all .45s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+            // transition: all .45s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
             cursor: pointer;
             text-align: center;
             font-size: 20px;
             font-weight: 600;
             width: 33%;
             padding: 10px 0;
+            border-radius: 2px;
             &:hover{
-                background-color: #6ac1c9;
+                background-color: #01a8fe;
                 color: #fff;
             }
-            &.selected{
+            &.selected {
                 background-color: #01a8fe;
                 color: #fff;
                 border-radius: 2px;
                 font-weight: bold;
             }
-            &.invalid{
+            &.invalid {
                 cursor: not-allowed;
                 color: #ccc;
             }
         }
     }
-    .date-list{
+    .date-list {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
-        .valid:hover{
+        .valid:hover {
             background-color: #eee;
         }
-        li{
-            transition: all ease .1s;
+        li {
+            // transition: all ease .1s;
             cursor: pointer;
             box-sizing: border-box;
             border-bottom: 1px solid #fff;
             position: relative;
             margin: 2px;
-            &:not(.firstItem){
+            &:not(.firstItem) {
                 margin-left: 10px;
             }
-            .message{
+            .message {
                 font-family: 'Open Sans', sans-serif;
                 font-size: 14px;
                 position: relative;
                 height: 30px;
-                &.selected{
-                    .bg{
-                        background-color: rgb(0, 151, 167);
+                &.selected {
+                    .bg {
+                        background-color: #01a8fe
                     }
-                    span{
+                    span {
                         color: #fff;
                     }
                 }
-                &:not(.selected){
-                    .bg{
+                &:not(.selected) {
+                    .bg {
                         transform: scale(0);
-                        opacity: 0;
+                        visibility: hidden;
                     }
-                    &:hover{
-                        .bg{
-                            background-color: rgb(0, 151, 167);
+                    &:hover {
+                        .bg {
+                            background-color: #01a8fe;
                             transform: scale(1);
-                            opacity: .6;
+                            visibility: visible;
                         }
-                        span{
+                        span {
                             color: #fff;
                         }
                     }
                 }
-                .bg{
+                .bg {
                     height: 30px;
                     width: 100%;
-                    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-                    border-radius: 50%;
+                    // transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+                    border-radius: 2px;
                     position: absolute;
                     z-index: 10;
                     top: 0;
                     left: 0;
                 }
-                span{
+                span {
+                    font-weight: 600;
                     position: absolute;
                     z-index: 20;
                     left: 50%;
@@ -615,47 +642,48 @@
                     transform: translate3d(-50%, -50%, 0);
                 }
             }
-            &.invalid{
+            &.invalid {
                 cursor: not-allowed;
                 color: #ccc;
             }
         }
         
     }
-    .weeks{
+    .weeks {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
         li{
-            font-weight: 600;
+            font-weight: bold;
         }
     }
-    .weeks, .date-list{
+    .weeks, .date-list {
         width: 100%;
         text-align: center;
-        .preMonth, .nextMonth{
+        .preMonth, .nextMonth {
             color: #ccc;
         }
-        li{
+        li {
             font-family: 'Open Sans';
+            font-weight: bold;
             width: 30px;
             height: 30px;
             text-align: center;
             line-height: 30px;
         }
     }
-    .toggle-enter, .toggle-leave-active{
+    .toggle-enter, .toggle-leave-active {
         opacity: 0;
         transform: translateY(-10px);
     }
-    .toggle-enter-active, .toggle-leave-active{
-        transition: all ease .2s;
+    .toggle-enter-active, .toggle-leave-active {
+        // transition: all ease .2s;
     }
-    .fade-enter, .fade-leave-active{
+    .fade-enter, .fade-leave-active {
         opacity: 0;
         transform: scale3d(0, 0, 0);
     }
-    .fade-enter-active, .fade-leave-active{
-        transition: all ease .1s;
+    .fade-enter-active, .fade-leave-active {
+        // transition: all ease .1s;
     }
 </style>

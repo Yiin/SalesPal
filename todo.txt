@@ -1,7 +1,7 @@
 
-calendar style
+DONE calendar style
 
-outside of table context menu
+DONE outside of table context menu
 
 too many attempts, try again in 5 minutes
 
@@ -11,3 +11,4 @@ vat next to client
 
 vat queue
 
+vat prefix

@@ -7,16 +7,16 @@
             <li class="active">{{ entity_plural_full }}</li>
         </ol>
         <div class="row table-heading-controls">
-            <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
+            <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
-            <filters-dropdown v-if="filters.length" :options="filters"></filters-dropdown>
-            <search-by-dropdown v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
+            <filters-dropdown class="nocontextmenu" v-if="filters.length" :options="filters"></filters-dropdown>
+            <search-by-dropdown class="nocontextmenu" v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
         </div>
 
 
 
         <div ref="table_wrapper" class="dataTables_wrapper form-inline no-footer">
-            <div class="table-wrapper">
+            <div class="table-wrapper nocontextmenu">
                 <table class="table table-striped data-table dataTable no-footer">
                     <!-- 
                         Table Columns
@@ -93,7 +93,7 @@
                 <div v-if="calculator.value" class="calculator">
                     <div class="block">
                         <span>Total</span>
-                        <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
+                        <dropdown class="calculator-show nocontextmenu" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
                         <span>for selected is</span>
                     </div>
                     <div class="block calculatormargin">
@@ -106,7 +106,7 @@
                 <div class="table-controls">
                     <div class="block">
                         <span>Page</span>
-                        <div class="pagination">
+                        <div class="pagination nocontextmenu">
                             <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
                                 <a>«</a>
                             </li>
@@ -130,7 +130,7 @@
                                 Showing 0 entries
                             </template>
                         </span>
-                        <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
+                        <dropdown class="entities-count-control nocontextmenu" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
                         <span>rows</span>
                     </div>
                 </div>
@@ -308,11 +308,11 @@
                     case 'recurring_invoice':
                         return 'Invoices';
                 }
-                return (this.entities || this.entity + 's').replace('_', ' ');
+                return (this.entities || this.entity + 's').split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
 
             entity_plural_full() {
-                return (this.entities || this.entity + 's').replace('_', ' ');
+                return (this.entities || this.entity + 's').split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
 
             colspan() {
@@ -369,9 +369,19 @@
 
 
             registerListeners() {
-                window.addEventListener('keydown', e => {
-                    console.log('keydown', e.keyCode);
+                window.addEventListener('contextmenu', e => {
+                    e.preventDefault();
 
+                    let show = Array.from(document.getElementsByClassName('nocontextmenu')).filter(el => {
+                        return el.contains(e.target);
+                    }).length === 0;
+                    
+                    if (show) {
+                        console.log(e);
+                        this.showContextMenu(e);
+                    }
+                });
+                window.addEventListener('keydown', e => {
                     switch(e.keyCode) {
                         /* esc */ case 27:
                             this.clickAway();
@@ -631,67 +641,83 @@
             },
 
 
-            showContextMenu(e, row) {
+            showContextMenu(e, row = null) {
                 let id = null;
-
-                if (row.__checkbox) {
-                    id = row.__checkbox.data.id;
-
-                    if (this.selected_entity_id && this.selected_entity_id !== id) {
-                        this.toggleSelectOff(this.selected_entity_id);
-                    }
-
-                    if (this.selected_entities.indexOf(id) === -1) {
-                        this.selected_entity_id = id;
-                        this.toggleSelectOn(id);
-                    }
-                }
-
                 this.contextMenu.elements = [];
 
-                if (this.selected_entities.length > 1) {
+                if (row) {
+                    if (row.__checkbox) {
+                        id = row.__checkbox.data.id;
+
+                        if (this.selected_entity_id && this.selected_entity_id !== id) {
+                            this.toggleSelectOff(this.selected_entity_id);
+                        }
+
+                        if (this.selected_entities.indexOf(id) === -1) {
+                            this.selected_entity_id = id;
+                            this.toggleSelectOn(id);
+                        }
+                    }
+
+                    if (this.selected_entities.length > 1) {
+                        this.contextMenu.elements.push({
+                            class: 'heading',
+                            title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
+                        });
+                        this.contextMenu.elements.push({
+                            title: 'Archive', 
+                            action: `javascript:submitForm_${this.entity}('archive');`,
+                            icon: 'icon-dropdown-archive'
+                        });
+                        this.contextMenu.elements.push({
+                            title: 'Delete', 
+                            action: `javascript:submitForm_${this.entity}('delete');`,
+                            icon: 'icon-dropdown-delete'
+                        });
+                        this.contextMenu.elements.push('');
+                    }
                     this.contextMenu.elements.push({
                         class: 'heading',
-                        title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
+                        title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>`
                     });
-                    this.contextMenu.elements.push({
-                        title: 'Archive', 
-                        action: `javascript:submitForm_${this.entity}('archive');`,
-                        icon: 'icon-dropdown-archive'
+
+                    row.__actions.forEach(action => {
+                        let element = action;
+
+                        this.contextMenu.elements.push(element);
                     });
-                    this.contextMenu.elements.push({
-                        title: 'Delete', 
-                        action: `javascript:submitForm_${this.entity}('delete');`,
-                        icon: 'icon-dropdown-delete'
-                    });
-                    this.contextMenu.elements.push('');
                 }
-                this.contextMenu.elements.push({
-                    class: 'heading',
-                    title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>`
-                });
-
-                row.__actions.forEach(action => {
-                    let element = action;
-
-                    this.contextMenu.elements.push(element);
-                });
+                else {
+                    this.contextMenu.elements.push({
+                        class: 'heading',
+                        title: `${this.entity_plural_full} Table`
+                    });
+                    this.contextMenu.elements.push({
+                        title: 'New ' + this.entity_singular, 
+                        action: `javascript:;`,
+                        icon: 'icon-new-client-btn-icon',
+                        before() {
+                            this.$refs.create_entity.click();
+                        }
+                    });
+                }
 
                 if (this.contextMenu.elements.length) {
-                    this.contextMenu.elements.push('');
-                    this.contextMenu.elements.push({
-                        title: `Archive ${this.entity_singular}`,
-                        icon: 'icon-dropdown-archive',
-                        action: `javascript:submitForm_${this.entity}('archive');`,
-                        before: this.unselectAllBut(id)
-                    });
-                    this.contextMenu.elements.push({
-                        title: `Delete ${this.entity_singular}`,
-                        icon: 'icon-dropdown-delete',
-                        action: `javascript:submitForm_${this.entity}('delete');`,
-                        before: this.unselectAllBut(id)
-                    });
-
+                    if (row) {
+                        this.contextMenu.elements.push('');
+                        this.contextMenu.elements.push({
+                            title: `Archive ${this.entity_singular}`,
+                            icon: 'icon-dropdown-archive',
+                            action: `javascript:submitForm_${this.entity}('archive');`,
+                            before: this.unselectAllBut(id)
+                        });
+                        this.contextMenu.elements.push({
+                            title: `Delete ${this.entity_singular}`,
+                            icon: 'icon-dropdown-delete',
+                            action: `javascript:submitForm_${this.entity}('delete');`,
+                            before: this.unselectAllBut(id)
+                        });
+                    }
                     this.contextMenu.elements.forEach(element => {
                         if (element !== '' && element.icon) {
                             let icon = `<i class="${element.icon}"></i>`;
@@ -797,6 +823,23 @@
     }
 </script>
 
+<style>
+    .context-menu li {
+        position: relative;
+    }
+
+    .context-menu li > i {
+        margin-right: 18px;
+        display: inline-block;
+        width: 16px;
+    }
+
+    .context-menu li > i::before {
+        position: absolute;
+        top: 10px;
+        color: initial;
+    }
+</style>
 <style scoped>
     td {
         position: relative;
@@ -926,7 +969,7 @@
     }
 
     .context-menu {
-        background: #FFFFFF;
+        background: #ffffff;
         box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px -2px 5px rgba(0, 0, 0, 0.05);
         display: block;
         list-style: none;
@@ -980,6 +1023,7 @@
         top: 6px;
         right: 6px;
         cursor: pointer;
+        z-index: 1;
     }
 
     .context-menu-close:hover {
