@@ -8,6 +8,9 @@
         </div>
         <transition name="toggle">
             <div class="date-panel" v-show="panelState" :style="coordinates">
+                <div class="panel-header --status">
+                    Select: <span class="value">{{ status }}</span>
+                </div>
                 <div class="panel-header" v-show="panelType !== 'year'">
                     <div class="arrow-left" @click="prevMonthPreview()">&lt;</div>
                     <div class="year-month-box">
@@ -64,21 +67,13 @@
 </template>
 
 <script>
-    let State = {
-        default: 0,
-        selectYear: 1,
-        selectMonth: 2,
-        selectDayFrom: 3,
-        selectDayTo: 4,
-    };
     export default {
         data () {
             let now = new Date()
             return {
-                currentState: State.selectYear,
                 showCancel: false,
                 panelState: false,
-                panelType: 'date',
+                panelType: 'year',
                 coordinates: {},
                 year: now.getFullYear(),
                 month: now.getMonth(),
@@ -97,7 +92,7 @@
                 maxYear: Number,
                 maxMonth: Number,
                 maxDate: Number,
-                yearList: Array.from({length: 12}, (value, index) => new Date().getFullYear() + index),
+                yearList: Array.from({length: 12}, (value, index) => new Date().getFullYear() - (11 - index)),
                 monthList: [1, 2, 3 ,4 ,5, 6, 7 ,8, 9, 10, 11, 12],
                 weekList: [0, 1, 2, 3, 4, 5, 6],
                 rangeStart: false
@@ -120,6 +115,9 @@
             togglePanel () {
                 this.panelState = !this.panelState
                 this.rangeStart = false
+                if (!this.value[0]) {
+                    this.panelType = 'year';
+                }
             },
             isSelected (type, item) {
                 switch (type){
@@ -295,6 +293,18 @@
             }
         },
         computed: {
+            status() {
+                switch (this.panelType) {
+                    case 'year':
+                        return 'Year';
+                    case 'month':
+                        return 'Month';
+                    case 'date':
+                        return this.rangeStart ? 'Day To' : 'Day From';
+                    default:
+                        return '????????';
+                }
+            },
             text () {
                 if (this.range) {
                     if (this.value[0] === this.value[1]) {
@@ -413,6 +423,7 @@
     .date-picker{
         position: relative;
         height: 22px;
+        color: #373737;
     }
     .input-wrapper{
         border-radius: 2px;
@@ -450,6 +461,18 @@
         display: flex;
         flex-flow: row nowrap;
         width: 100%;
+
+        &.--status {
+            font-size: 16px;
+            line-height: 29px;
+            color: #373737;
+
+            .value {
+                font-weight: 600;
+                color: #01a7fd;
+                margin-left: 5px;
+            }
+        }
     }
     .arrow-left, .arrow-right{
         flex: 1;
@@ -478,7 +501,7 @@
 
     .year-box, .month-box{
         transition: all ease .1s;
-        font-family: Roboto, sans-serif;
+        font-family: 'Open Sans', sans-serif;
         flex: 1;
         text-align: center;
         font-size: 20px;
@@ -491,11 +514,12 @@
         flex-flow: row wrap;
         justify-content: space-between;
         li{
-            font-family: Roboto, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             transition: all .45s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
             cursor: pointer;
             text-align: center;
             font-size: 20px;
+            font-weight: 600;
             width: 33%;
             padding: 10px 0;
             &:hover{
@@ -505,6 +529,8 @@
             &.selected{
                 background-color: #01a8fe;
                 color: #fff;
+                border-radius: 2px;
+                font-weight: bold;
             }
             &.invalid{
                 cursor: not-allowed;
@@ -530,7 +556,7 @@
                 margin-left: 10px;
             }
             .message{
-                font-family: Roboto, sans-serif;
+                font-family: 'Open Sans', sans-serif;
                 font-size: 14px;
                 position: relative;
                 height: 30px;
@@ -598,7 +624,7 @@
             color: #ccc;
         }
         li{
-            font-family: Roboto;
+            font-family: 'Open Sans';
             width: 30px;
             height: 30px;
             text-align: center;
