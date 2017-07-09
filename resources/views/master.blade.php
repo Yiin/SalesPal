@@ -47,7 +47,8 @@
 
     <script>
         window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token()
+            'csrfToken' => csrf_token(),
+            'dateFormat' => App\Libraries\Utils::convertPHPToMomentFormat(Session::get(SESSION_DATE_FORMAT, DEFAULT_DATE_FORMAT))
         ]) !!};
     </script>
 

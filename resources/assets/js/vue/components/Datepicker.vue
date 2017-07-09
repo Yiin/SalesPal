@@ -191,7 +191,12 @@
                         this.year = this.tmpYear
                         this.month = this.tmpMonth
                         this.date = date.value
-                        let value = `${this.tmpYear}-${('0' + (this.month + 1)).slice(-2)}-${('0' + this.date).slice(-2)}`
+                        let value = moment({
+                                'year': this.tmpYear,
+                                'month': this.tmpMonth,
+                                'day': this.tmpDate
+                            }).format(Laravel.dateFormat);
+                        
                         this.$emit('input', value)
                         this.panelState = false
 
@@ -225,8 +230,17 @@
                             this.tmpStartMonth = tmpM
                             this.tmpStartDate = tmpD
                         }
-                        let RangeStart = `${this.tmpStartYear}-${('0' + (this.tmpStartMonth + 1)).slice(-2)}-${('0' + this.tmpStartDate).slice(-2)}`
-                        let RangeEnd = `${this.tmpEndYear}-${('0' + (this.tmpEndMonth + 1)).slice(-2)}-${('0' + this.tmpEndDate).slice(-2)}`
+                        let RangeStart = moment({
+                                'year': this.tmpStartYear,
+                                'month': this.tmpStartMonth,
+                                'day': this.tmpStartDate
+                            }).format(Laravel.dateFormat);
+
+                        let RangeEnd = moment({
+                                'year': this.tmpEndYear,
+                                'month': this.tmpEndMonth,
+                                'day': this.tmpEndDate
+                            }).format(Laravel.dateFormat);
 
                         let value = [RangeStart, RangeEnd]
                         this.$emit('input', value)
