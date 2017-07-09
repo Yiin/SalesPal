@@ -92,6 +92,7 @@ export default {
     position: relative;
     padding: 0 !important;
     margin: 0 !important;
+    cursor: text;
 }
 
 .clear-input {
@@ -124,10 +125,11 @@ export default {
     font-weight: normal;
     color: #000000;
     background: white;
+    cursor: text;
 }
 
 [contenteditable=true]:hover {
-    color: black;
+    color: #01a8fe;
     background: #f5f5f5;
 }
 

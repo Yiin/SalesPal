@@ -1,5 +1,6 @@
 
-.dashboard-dropdowns {
+.dashboard-dropdowns
+{
     text-align: right;
 }
 
@@ -10,8 +11,7 @@
 
     margin: 27px 0;
 
-    flex-grow: 1;
-    flex-shrink: 1;
+    justify-content: space-between;
     > .total-panel ~ .total-panel
     {
         margin-left: 34px;
@@ -20,13 +20,11 @@
 
 .total-panel
 {
+    width: calc(100% / 3);
     padding: 19px 15px 15px;
 
     background: #fff;
     box-shadow: -1px 2px 5px rgba(0, 0, 0, .05), 1px 2px 5px rgba(0, 0, 0, .05), 0 3px 5px rgba(0, 0, 0, .05);
-
-    flex-grow: 1;
-    flex-shrink: 1;
     &-header
     {
         font-size: 16px;
@@ -288,6 +286,7 @@
 .event > .time
 {
     font-weight: bold;
+
     margin-left: -1px;
     padding-right: 10px;
 }

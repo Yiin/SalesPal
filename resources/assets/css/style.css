@@ -367,7 +367,8 @@ border-color: #0a456c;
     xborder-color: #337ab7;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary:focus {
     color: #ffffff;
     background-color: #01a8fe;
     border-color: #01a8fe;
@@ -1783,8 +1784,8 @@ span.caret-dev-top {
 }
 
 .btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus,
+/*.btn-primary:active,*/
+/*.btn-primary:focus,*/
 .open > .dropdown-toggle.btn-primary {
     color: rgba(0, 0, 0, 0.6);
     background-color: white;
@@ -2132,10 +2133,10 @@ tr .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custo
     top: -17px;
 }
 th .custom-checkbox > [type="checkbox"]:not(:checked) + label::before, tr .custom-checkbox > [type="checkbox"]:checked + label::before {
-    top: -16px;
+    top: -17px;
 }
 tr .custom-checkbox > [type="checkbox"]:checked + label::after {
-    top: -10px;
+    top: -11px;
 }
 
 /* //END Check box */
@@ -2274,9 +2275,19 @@ div.dataTables_length select {
     margin-right: 10px;
 }
 
+.context-menu li {
+    position: relative;
+}
+
 .context-menu li > i {
     margin-right: 18px;
-    top: 2px;
+    display: inline-block;
+    width: 16px;
+}
+
+.context-menu li > i::before {
+    position: absolute;
+    top: 10px;
 }
 
 .vue-dropdown > button:focus {

@@ -17,7 +17,7 @@
         <!-- 
             Dropdown Items
          -->
-        <div class="vue-dropdown-items">
+        <div :class="{ scroll: parent.options.length >= 10 }" class="vue-dropdown-items">
             <template v-for="option in parent.options">
                 <template v-if="option.type === 'separator'">
 
@@ -125,6 +125,9 @@
         overflow-y: auto;
 
         max-height: 300px;
+    }
+
+    .vue-dropdown-items.scroll {
         margin-right: 26px;
     }
 

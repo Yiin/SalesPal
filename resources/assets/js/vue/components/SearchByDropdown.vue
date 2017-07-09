@@ -20,7 +20,7 @@
                 </template>
                 <template v-else>
 
-                    <text-item :option="option" @changed="changed" class="vue-dropdown-option"></text-item>
+                    <text-item :option="option" @changed="changed" class="vue-dropdown-option --text"></text-item>
 
                 </template>
             </template>
@@ -180,6 +180,9 @@ export default {
         padding-bottom: 7px;
         padding-left: 26px;
         padding-right: 15px;
+    }
+    .vue-dropdown-menu .vue-dropdown-option.--text {
+        cursor: text;
     }
 
     .vue-dropdown-menu .vue-dropdown-option.separator {
