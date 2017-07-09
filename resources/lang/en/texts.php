@@ -713,6 +713,7 @@ $LANG = array(
     'expired_quotes' => 'Expired Quotes',
     'sign_up_using' => 'Sign up using',
     'invalid_credentials' => 'These credentials do not match our records',
+    'throttle' => 'Too many login attempts.',
     'show_all_options' => 'Show all options',
     'user_details' => 'User Details',
     'oneclick_login' => 'One-Click Login',

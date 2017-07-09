@@ -3,7 +3,7 @@ DONE calendar style
 
 DONE outside of table context menu
 
-too many attempts, try again in 5 minutes
+DONE too many attempts, try again in 5 minutes
 
 dashboardas
 

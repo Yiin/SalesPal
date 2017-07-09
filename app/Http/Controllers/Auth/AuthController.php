@@ -135,7 +135,7 @@ class AuthController extends Controller
         $user = User::where('email', '=', $request->input('email'))->first();
 
         if ($user && $user->failed_logins >= MAX_FAILED_LOGINS) {
-            Session::flash('error', trans('texts.invalid_credentials'));
+            Session::flash('error', trans('texts.too_many_login_attempts'));
 
             return redirect()->to('login');
         }

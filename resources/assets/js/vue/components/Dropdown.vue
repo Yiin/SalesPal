@@ -40,7 +40,7 @@ export default {
             selected: {
                 label: '',
                 value: null
-            },
+            }
         };
     },
 
