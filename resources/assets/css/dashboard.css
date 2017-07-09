@@ -1,0 +1,367 @@
+    /** Buttons **/
+
+
+/** Panel **/
+.panel
+{
+    display: inline-block;
+
+    box-shadow: -1px 2px 5px rgba(0, 0, 0, .05), 1px 2px 5px rgba(0, 0, 0, .05), 0 3px 5px rgba(0, 0, 0, .05);
+}
+
+.expenses-panel
+{
+    height: 115px;
+    margin-top: 33px;
+    margin-right: 29px;
+    margin-bottom: 27px;
+}
+
+.panel-revenue
+{
+    padding-right: 14px;
+}
+
+.texttotal
+{
+    font-size: 16px;
+
+    margin-top: 14px;
+    margin-left: 14px;
+}
+
+.textnumber
+{
+    font-size: 38px;
+    font-weight: bold;
+    line-height: 55px;
+
+    margin-top: 8px;
+    margin-left: 14px;
+}
+
+.textsum
+{
+    font-size: 27px;
+    font-weight: bold;
+    line-height: 0;
+
+    display: inline-block;
+    float: right;
+
+    margin-top: -43px;
+    margin-left: 362px;
+
+    color: #01a8fe;
+}
+
+.textlast
+{
+    font-size: 16px;
+
+    display: inline-block;
+    float: right;
+
+    margin-top: -22px;
+}
+
+.textlast > span
+{
+    font-weight: bold;
+}
+
+.graphpanel
+{
+    margin-bottom: 27px;
+    padding-bottom: 0;
+    padding-bottom: 0;
+}
+/** Navbar **/
+
+.navbarpanel
+{
+    width: 1636px;
+    height: 799px;
+    margin-left: 15px;
+}
+
+.dashboard-heading
+{
+    margin-top: -1px;
+    padding-right: 19px;
+    padding-left: 19px;
+}
+.newtodaystyle
+{
+    margin-top: 10px;
+    padding-left: 20px;
+
+    border-left: 1px solid #e1e1e1;
+}
+
+.newtodaystyle > div
+{
+    font-weight: bold;
+    line-height: 17px;
+
+    display: inline-block;
+
+    width: 36px;
+    height: 20px;
+    margin-top: 6px;
+    margin-right: 8px;
+    margin-bottom: 6px;
+    padding-right: 2px;
+
+    text-align: center;
+
+    color: #fff;
+    border: 1px solid #01a8fe;
+    border-radius: 2px;
+    background-color: #01a8fe;
+}
+
+.dashboard-nav .active > a
+{
+    font-weight: 500;
+
+    color: #fff;
+    background-color: #01a8fe;
+}
+
+.dashboard-nav li > a
+{
+    font-size: 16px;
+
+    padding-top: 16px;
+    padding-right: 20px;
+    padding-bottom: 16px;
+    padding-left: 20px;
+
+    color: #333;
+}
+
+.dashboard-nav li > a:hover
+{
+    color: #fff;
+    background-color: #333;
+}
+
+
+.textpanel > div
+{
+    font-size: 12px;
+    font-weight: bold;
+
+    width: 40px;
+    height: 40px;
+    margin-top: -6px;
+    margin-left: 5px;
+    padding-top: 10px;
+
+    text-align: center;
+
+    color: #fff;
+    border-radius: 2px;
+}
+
+.colorfirst
+{
+    background-color: #23b820;
+}
+
+.colorsecond
+{
+    background-color: #fe6c01;
+}
+
+.colorthird
+{
+    background-color: #9e33d6;
+}
+
+.colorfourth
+{
+    background-color: #01a8fe;
+}
+
+#morris-one-line-chart
+{
+    width: 1643px;
+    height: 354px;
+    margin-top: 3px;
+    margin-left: -9px;
+}
+.graphpanel-colors
+{
+    display: inline-flex;
+
+    margin-top: 6px;
+}
+
+.graphpanel-colors div
+{
+    font-size: 12px;
+
+    width: 14px;
+    height: 14px;
+    margin-top: 3px;
+    margin-right: 14px;
+    margin-left: 14px;
+
+    border-radius: 2px;
+}
+.graphpanel-colors span
+{
+    padding-right: 5px;
+}
+
+.graphpanel-lightblue
+{
+    border: 1px solid #01a8fe;
+    background-color: #01a8fe;
+}
+
+.graphpanel-lighterblue
+{
+    border: 1px solid #74c2e9;
+    background-color: #74c2e9;
+}
+
+.color-text-style
+{
+    margin-top: -11px;
+    margin-left: 80px;
+}
+
+.color-text-style > div
+{
+    display: flex;
+
+    color: #333;
+}
+
+
+.events
+{
+    font-weight: bold;
+
+    margin-top: 5px !important;
+}
+
+.event > a
+{
+    text-decoration: none;
+
+    color: #01a8fe;
+}
+.day
+{
+    display: flex;
+
+    margin-top: 5px;
+
+    align-items: stretch;
+}
+.day-number
+{
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 40px;
+
+    display: inline-block;
+
+    width: 40px;
+    height: 40px;
+    margin-left: -6px;
+
+    text-align: center;
+    vertical-align: top;
+
+    color: white;
+    border-radius: 2px;
+}
+
+.border
+{
+    margin-bottom: 15px;
+    margin-left: 20px;
+
+    border-radius: 20px;
+}
+
+.events
+{
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.event
+{
+    padding: 10px 0;
+}
+
+.border-first
+{
+    border-left: 3px solid #23b820;
+}
+
+.border-second
+{
+    border-left: 3px solid #fe6c01;
+}
+
+.border-third
+{
+    border-left: 3px solid #9e33d6;
+}
+
+.border-fourth
+{
+    height: 40px;
+
+    border-left: 3px solid #01a8fe;
+}
+.events > hr
+{
+    width: 1517px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.event > span
+{
+    margin-left: -1px;
+    padding-right: 10px;
+}
+
+.coll-row
+{
+    margin-right: -60px;
+}
+
+.outstandin-gmargin
+{
+    margin-left: 1px;
+}
+
+.green-margin
+{
+    margin-top: -5px;
+}
+
+.nav-bar-panel
+{
+    padding-right: 0;
+}
+
+.breadcrumb > li.active
+{
+    display: inline;
+}
+
+.dashboard-breadcrumb
+{
+    margin-top: 7px;
+    margin-bottom: -1px;
+}

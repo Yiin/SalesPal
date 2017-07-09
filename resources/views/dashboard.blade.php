@@ -26,7 +26,7 @@
         <dashboard-statistics></dashboard-statistics>
     </div>
 
-    <!-- 
+    <!--
         Activity
     -->
     <div class="panel panel-dashboard">
@@ -138,6 +138,5 @@
                 window.location = '{{ URL::to('invoices/create') }}';
             });
         });
-    </script>
 
 @stop
