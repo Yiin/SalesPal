@@ -17,7 +17,7 @@
         <!-- 
             Dropdown Items
          -->
-        <div :class="{ scroll: option.options >= 10 }" class="vue-dropdown-items">
+        <div :class="{ scroll: parent.options >= 10 }" class="vue-dropdown-items">
             <template v-for="option in parent.options">
                 <template v-if="option.type === 'separator'">
 
