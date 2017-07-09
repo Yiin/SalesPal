@@ -51,50 +51,6 @@
              <!-- 
                 three coll
              -->
-<div class="coll-row">
-        <div class="panel panel-default expenses-panel">
-            <div class="panel-revenue">
-                <div class="texttotal">Toral Revenue</div>
-                <div class="textnumber">6,666.0</div>
-                <div class="textsum">0.00</div>
-                <div class="textlast">Last <span>30</span> days</div>
-            </div>
-        </div>
-=======
-    <!-- 
-        Nav Bar?
-    -->
-    <div class="dashboard-breadcrumb">
-        <ol class="breadcrumb">
-            <li class="active">Dashboard</li>
-        </ol>
-    </div>
-    <div class="dashboard-dropdowns">
-        <div class="vue-app valutebutton dashboardbuttons" id="vueapp_{{ str_random() }}"">
-          <dropdown class="calculator-show" default="2" options="[
-          { label: 'Eur', value: '1' }, 
-          { label: 'Usd', value: '2' }, 
-          { label: '3', value: '3' }
-        ]" width="158px"></dropdown>
-      </div>
-
-      <div class="vue-app datebutton dashboardbuttons" id="vueapp_{{ str_random() }}"">
-          <dropdown class="calculator-show" default="2" options="[
-          { label: 'Month', value: '1' },     
-          { label: '2', value: '2' }, 
-          { label: '3', value: '3' }]
-          " width="158px"></dropdown>
-      </div>
-
-      <div class="vue-app menubutton dashboardbuttons" id="vueapp_{{ str_random() }}"">
-          <dropdown class="calculator-show" default="2" options="[
-          { label: '', value: '1' }, 
-          { label: '2', value: '2' }, 
-          { label: '3', value: '3' }]
-          " width="308px"></dropdown>
-      </div>
-    </div>
->>>>>>> 9661d75216830cb1edb25ebed8aaf6fa1c7e9a06
 
     <!-- 
         Totals
