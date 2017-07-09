@@ -1,10 +1,7 @@
 <template>
     <div class="date-picker">
-        <div class="input-wrapper" @mouseenter="showCancel = true" @mouseleave="showCancel = false">
+        <div class="input-wrapper">
             <div class="input" @click="togglePanel" v-text="text"></div>
-            <transition name="fade">
-                <img class="cancel-btn" src="./cancel.png" v-show="showCancel" @click="clear">
-            </transition>
         </div>
         <transition name="toggle">
             <div class="date-panel" v-show="panelState" :style="coordinates">
@@ -63,6 +60,7 @@
                 </div>
             </div>
         </transition>
+        <div v-show="this.value && this.value[0] && this.value[1]" @click="clear" class="clear-input"></div>
     </div>
 </template>
 
@@ -71,7 +69,6 @@
         data () {
             let now = new Date()
             return {
-                showCancel: false,
                 panelState: false,
                 panelType: 'year',
                 coordinates: {},
@@ -196,7 +193,7 @@
                                 'month': this.tmpMonth,
                                 'day': this.tmpDate
                             }).format(Laravel.dateFormat);
-                        
+
                         this.$emit('input', value)
                         this.panelState = false
 
@@ -455,10 +452,12 @@
         font-size: inherit;
         box-sizing: border-box;
         outline: none;
+        font-weight: 600;
+        color: #01a8fe;
     }
-    .cancel-btn{
-        height: 12px;
-        width: 12px;
+    .clear-input {
+        top: 5px;
+        right: 0px;
     }
     .date-panel{
         position: absolute;
