@@ -39,7 +39,7 @@ class Frequency extends Eloquent
         $data = [];
 
         foreach (Cache::get('frequencies') as $frequency) {
-            $data[$frequency->id] = getTranslatedName();
+            $data[$frequency->id] = $frequency->getTranslatedName();
         }
 
         return $data;
