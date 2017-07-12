@@ -5,6 +5,7 @@ namespace App\Ninja\Repositories;
 use App\Models\Activity;
 use App\Models\Invoice;
 use App\Models\Task;
+use App\Models\Currency;
 use DateInterval;
 use DatePeriod;
 use DB;
@@ -410,5 +411,19 @@ class DashboardRepository
             ->withArchived()
             ->whereIsRunning(true)
             ->get();
+    }
+
+    public function currencies($accountId, $userId, $viewAll)
+    {
+        return Currency::whereHas('clients', function () {})
+            ->orWhereHas('expenses', function () {})
+            ->get()
+            ->map(function ($currency) {
+                return [
+                    'label' => $currency->code,
+                    'symbol' => $currency->symbol ? $currency->symbol : $currency->code,
+                    'value' => $currency->id
+                ];
+            });
     }
 }

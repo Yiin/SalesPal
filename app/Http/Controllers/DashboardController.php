@@ -41,6 +41,7 @@ class DashboardController extends BaseController
         $payments = $dashboardRepo->payments($accountId, $userId, $viewAll);
         $expenses = $dashboardRepo->expenses($account, $userId, $viewAll);
         $tasks = $dashboardRepo->tasks($accountId, $userId, $viewAll);
+        $currencies = $dashboardRepo->currencies($accountId, $userId, $viewAll);
 
         $showBlueVinePromo = $user->is_admin
             && env('BLUEVINE_PARTNER_UNIQUE_ID')
@@ -79,6 +80,7 @@ class DashboardController extends BaseController
             'tasks' => $tasks,
             'showBlueVinePromo' => $showBlueVinePromo,
             'showWhiteLabelExpired' => $showWhiteLabelExpired,
+            'currencies' => $currencies
         ];
 
         if ($showBlueVinePromo) {

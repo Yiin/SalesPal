@@ -141,7 +141,18 @@ class ExpenseDatatable extends EntityDatatable
                         if (! Auth::user()->can('viewByOwner', [ENTITY_CLIENT, $model->client->user_id])) {
                             return Utils::getClientDisplayName($model);
                         }
-                        return link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml();
+                        if ($model->client && $model->client->vat_number) {
+                            $checkVatFeature = [
+                                'feature' => 'CHECK_VAT',
+                                'vat' => $model->client->vat_number,
+                                'state' => $model->client->getVatState(),
+                                'client_id' => $model->client->public_id
+                            ];
+                        }
+                        return [
+                            'data' => $checkVatFeature ?? null,
+                            'display' => link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml()
+                        ];
                     } else {
                         return '';
                     }

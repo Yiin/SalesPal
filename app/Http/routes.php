@@ -13,7 +13,7 @@
 //
 
 // Vatchecker get post
-Route::post('/vat', 'VatHelperController@VatRequest');
+Route::get('/vat', 'VatHelperController@VatRequest');
 
 // Application setup
 Route::get('/setup', 'AppController@showSetup');

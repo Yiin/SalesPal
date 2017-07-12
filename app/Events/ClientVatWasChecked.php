@@ -30,7 +30,7 @@ class ClientVatWasChecked extends Event
      */
     public function __construct($success, $data)
     {
-        $this->client = Client::where('vat_number', $data->country_code . $data->vat_number)->first();
+        $this->client = Client::withTrashed()->where('public_id', $data->client_id)->first();
         $this->success = $success;
         $this->data = $data; 
     }

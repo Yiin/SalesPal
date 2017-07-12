@@ -76,7 +76,7 @@
                                 <div v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></div>
                                 <template v-if="typeof row[column.field] === 'object' && row[column.field].data">
                                     <template v-if="row[column.field].data.feature === 'CHECK_VAT'">
-                                        <feature-check-vat :vat="row[column.field].data.vat" :state="row[column.field].data.state"></feature-check-vat>
+                                        <feature-check-vat :vat="row[column.field].data.vat" :client_id="row[column.field].data.client_id" :state="row[column.field].data.state"></feature-check-vat>
                                     </template>
                                 </template>
                             </td>
@@ -696,8 +696,8 @@
                         title: 'New ' + this.entity_singular, 
                         action: `javascript:;`,
                         icon: 'icon-new-client-btn-icon',
-                        before() {
-                            this.$refs.create_entity.click();
+                        before: () => {
+                            this.$refs.create_entity.getElementsByClassName('btn')[0].click();
                         }
                     });
                 }

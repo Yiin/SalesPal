@@ -23,7 +23,12 @@
     </div>
 
     <div class="vue-app" id="vueapp_{{ str_random() }}">
-        <dashboard-statistics></dashboard-statistics>
+        <dashboard-statistics
+            :currencies="{{ $currencies }}"
+            :revenue="{{ json_encode($paidToDate) }}"
+            :expenses="{{ json_encode($expenses) }}"
+            :balances="{{ json_encode($balances) }}"
+        ></dashboard-statistics>
     </div>
 
     <!--
@@ -138,5 +143,5 @@
                 window.location = '{{ URL::to('invoices/create') }}';
             });
         });
-
+    </script>
 @stop

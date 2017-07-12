@@ -53,6 +53,17 @@ export default {
         },
 
 
+        setValue(value) {
+
+            let option = this.options.filter(option => option.value === value);
+
+            if (option.length) {
+                this.selected = option[0];
+            }
+
+        },
+
+
         select (option) {
 
             this.selected = option;

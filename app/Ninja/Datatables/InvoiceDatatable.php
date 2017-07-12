@@ -201,8 +201,16 @@ class InvoiceDatatable extends EntityDatatable
                         ];
                     }
 
+                    if ($model->client->vat_number) {
+                        $checkVatFeature = [
+                            'feature' => 'CHECK_VAT',
+                            'vat' => $model->client->vat_number,
+                            'state' => $model->client->getVatState(),
+                            'client_id' => $model->client->public_id
+                        ];
+                    }
                     return [
-                        'data' => null,
+                        'data' => $checkVatFeature ?? null,
                         'display' => link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml()
                     ];
                 },

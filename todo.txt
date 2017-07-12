@@ -1,5 +1,5 @@
 
-DONE calendar style
+calendar style
 
 DONE outside of table context menu
 
@@ -7,7 +7,7 @@ DONE too many attempts, try again in 5 minutes
 
 dashboardas
 
-vat next to client
+DONE vat next to client
 
 vat queue
 

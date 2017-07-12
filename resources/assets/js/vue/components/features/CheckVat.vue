@@ -14,7 +14,7 @@
     
     export default {
 
-        props: ['vat', 'state'],
+        props: ['client_id', 'vat', 'state'],
 
         data() {
             return {
@@ -40,7 +40,7 @@
             check() {
                 this.current_state = 'loading';
 
-                this.$http.post('/vat', { vat: this.vat, save: true })
+                this.$http.post('/vat', { vat: this.vat, client_id: this.client_id })
                     .then(response => response.data)
                     .then(this.handleResponse)
                     .catch(this.handleError);
