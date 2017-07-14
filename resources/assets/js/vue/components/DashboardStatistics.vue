@@ -249,7 +249,7 @@
                     }).catch(() => {
                         let start = moment().subtract(29, 'days');
                         let end = moment();
-                        
+
                         init(start, end);
                     });
             },

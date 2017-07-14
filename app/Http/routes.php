@@ -13,7 +13,7 @@
 //
 
 // Vatchecker get post
-Route::get('/vat', 'VatHelperController@VatRequest');
+Route::post('/vat', 'VatHelperController@VatRequest');
 
 // Application setup
 Route::get('/setup', 'AppController@showSetup');
@@ -147,6 +147,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::get('api/activities-columns/{client_id?}', 'ActivityController@getDatatableColumns');
     Route::get('api/activities-filters/{client_id?}', 'ActivityController@getFilters');
     Route::get('api/activities-searchby/{client_id?}', 'ActivityController@getSearchBy');
+    Route::get('api/activities-list/{type}/{from}', 'ActivityController@getItems');
     Route::post('clients/bulk', 'ClientController@bulk');
     Route::get('clients/statement/{client_id}', 'ClientController@statement');
 

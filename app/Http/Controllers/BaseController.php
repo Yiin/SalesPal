@@ -49,7 +49,12 @@ class BaseController extends Controller
         $table_state = $request->get('state');
         $filter = $request->get('filter');
         $searchBy = $request->get('searchBy');
+        $resetPage = $request->get('resetPage', false);
         list($orderBy, $orderDirection) = $request->get('orderBy');
+
+        if ($resetPage) {
+            $table_state['page'] = 1;
+        }
 
         // extract data from table_state
         $page = $table_state['page'] - 1; // adjust page value, so first page is 0, not 1

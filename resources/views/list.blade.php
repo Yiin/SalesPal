@@ -4,8 +4,28 @@
     {!! Former::hidden('datatable')->value('true') !!}
 
     <div class="vue-app btn-client" id="vueapp_{{ str_random() }}">
+        <?php
+            /**
+             * Pass table state to table component
+             */
+            if (isset($_SERVER['QUERY_STRING'])) {
+                $queryString = $_SERVER['QUERY_STRING'];
+                $index = strpos($queryString, 'state=');
+
+                if ($index !== false) {
+                    $state = substr($queryString, $index + 6);
+                }
+                else {
+                    $state = '';
+                }
+            }
+            else {
+                $state = '';
+            }
+        ?>
         {{-- Entities Table --}}
         <entity-table 
+            urlstate="{{ $state }}"
             entity="{{ $entityType }}"
             client-id="{{ $clientId ?? $vendorId ?? '' }}"
 

@@ -20,6 +20,11 @@ class ActivityController extends BaseController
         $this->datatable = $datatable;
     }
 
+    public function getItems($type, $from)
+    {
+        return $this->activityService->getItems($type, $from);
+    }
+
     public function filterEntity(&$query, $entityId)
     {
         // filter by client

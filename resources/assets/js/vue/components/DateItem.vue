@@ -1,10 +1,10 @@
 <template>
     <div :data-placeholder="option.label" :class="{ placeholder: value_empty }">
         <datepicker 
-            @input="changed" 
-            v-model="value" 
+            @changed="changed" 
+            v-model="display" 
             :range="true" 
-            format="yyyy-MM-dd" 
+            :format="format" 
         ></datepicker>
     </div>
 </template>
@@ -24,7 +24,8 @@ export default {
 
     data() {
         return {
-            value: []
+            display: [],
+            format: Laravel.dateFormat
         };
     },
 
@@ -36,9 +37,8 @@ export default {
 
     methods: {
 
-        changed() {
-            this.option.value = this.value;
-
+        changed(value) {
+            this.option.value = value;
             this.$emit('changed');
         }
 

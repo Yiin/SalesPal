@@ -800,6 +800,7 @@ $LANG = array(
     'activity_45' => ':user deleted task :task',
     'activity_46' => ':user restored task :task',
     'activity_47' => ':user updated expense :expense',
+    'activity_48' => ':user checked vat :vat',
     'payment' => 'Payment',
     'system' => 'System',
     'signature' => 'Email Signature',

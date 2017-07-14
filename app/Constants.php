@@ -86,6 +86,7 @@ if (! defined('APP_NAME')) {
     define('ACTION_CONVERT', 'convert');
     define('ACTION_DELETE', 'delete');
 
+    define('ACTIVITY_TYPE_ALL', 0);
     define('ACTIVITY_TYPE_CREATE_CLIENT', 1);
     define('ACTIVITY_TYPE_ARCHIVE_CLIENT', 2);
     define('ACTIVITY_TYPE_DELETE_CLIENT', 3);
@@ -96,11 +97,11 @@ if (! defined('APP_NAME')) {
     define('ACTIVITY_TYPE_ARCHIVE_INVOICE', 8);
     define('ACTIVITY_TYPE_DELETE_INVOICE', 9);
     define('ACTIVITY_TYPE_CREATE_PAYMENT', 10);
-    //define('ACTIVITY_TYPE_UPDATE_PAYMENT', 11);
+    define('ACTIVITY_TYPE_UPDATE_PAYMENT', 11);
     define('ACTIVITY_TYPE_ARCHIVE_PAYMENT', 12);
     define('ACTIVITY_TYPE_DELETE_PAYMENT', 13);
     define('ACTIVITY_TYPE_CREATE_CREDIT', 14);
-    //define('ACTIVITY_TYPE_UPDATE_CREDIT', 15);
+    define('ACTIVITY_TYPE_UPDATE_CREDIT', 15);
     define('ACTIVITY_TYPE_ARCHIVE_CREDIT', 16);
     define('ACTIVITY_TYPE_DELETE_CREDIT', 17);
     define('ACTIVITY_TYPE_CREATE_QUOTE', 18);

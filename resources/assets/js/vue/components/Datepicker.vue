@@ -230,19 +230,25 @@
                                 'year': this.tmpStartYear,
                                 'month': this.tmpStartMonth,
                                 'day': this.tmpStartDate
-                            }).format(Laravel.dateFormat);
+                            });
 
                         let RangeEnd = moment({
                                 'year': this.tmpEndYear,
                                 'month': this.tmpEndMonth,
                                 'day': this.tmpEndDate
-                            }).format(Laravel.dateFormat);
+                            });
 
-                        let value = [RangeStart, RangeEnd]
-                        this.$emit('input', value)
+                        this.$emit('input', [
+                            RangeStart.format(this.format), 
+                            RangeEnd.format(this.format)
+                        ]);
+                        this.$emit('changed', [
+                            RangeStart.format('YYYY-MM-DD'), 
+                            RangeEnd.format('YYYY-MM-DD')
+                        ]);
 
-                        this.rangeStart = false
-                        this.panelState = false
+                        this.rangeStart = false;
+                        this.panelState = false;
                     }
                 }, 0)
             },

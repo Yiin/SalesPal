@@ -9,8 +9,8 @@
         <div class="row table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
-            <filters-dropdown class="nocontextmenu" v-if="filters.length" :options="filters"></filters-dropdown>
-            <search-by-dropdown class="nocontextmenu" v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
+            <filters-dropdown ref="filtersDropdown" class="nocontextmenu" v-if="filters.length" :options="filters"></filters-dropdown>
+            <search-by-dropdown ref="searchByDropdown" class="nocontextmenu" v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
         </div>
 
 
@@ -169,7 +169,11 @@
 
 
         props: [
-            'entity', 'entities', 'create', 'clientId'
+            'urlstate',
+            'entity',
+            'entities',
+            'create',
+            'clientId'
         ],
 
 
@@ -195,7 +199,7 @@
 
                 orderBy: 'created_at',
                 orderDirection: 'DESC',
-                ignore_table_state_watcher: false,
+                ignore_watchers: false,
                 table_state: {
                     page: 1,
                     page_count: 1,
@@ -226,7 +230,8 @@
                 promise: {
                     loadEntities: null,
                 },
-                searchByTimeout: null
+                searchByTimeout: null,
+                url_state: false
             }
         },
 
@@ -326,13 +331,19 @@
         watch: {
             filters: {
                 handler: function (current, previous) {
-                    this.loadEntities();
+                    if (this.ignore_watchers) {
+                        this.ignore_watchers = false;
+                        return;
+                    }
+                    this.loadEntities({
+                        resetPage: true
+                    });
                 },
                 deep: true
             },
             'table_state.page': function (current, previous) {
-                if (this.ignore_table_state_watcher) {
-                    this.ignore_table_state_watcher = false;
+                if (this.ignore_watchers) {
+                    this.ignore_watchers = false;
                     return;
                 }
                 if (current && current !== previous) {
@@ -343,8 +354,8 @@
                 }
             },
             'table_state.entities_per_page': function (entities_per_page, previous) {
-                if (this.ignore_table_state_watcher) {
-                    this.ignore_table_state_watcher = false;
+                if (this.ignore_watchers) {
+                    this.ignore_watchers = false;
                     return;
                 }
                 this.table_state.entities_per_page = entities_per_page = parseInt(entities_per_page);
@@ -361,10 +372,14 @@
         methods: {
 
             loadData() {
-                this.loadFilters();
-                this.loadSearchBy();
                 this.loadColumns();
-                this.loadEntities();
+
+                Promise.all([
+                    this.loadFilters({ ignoreWatchers: true }),
+                    this.loadSearchBy({ ignoreWatchers: true })
+                ]).then(() => {
+                    this.$nextTick(this.loadEntities);
+                });
             },
 
 
@@ -377,7 +392,6 @@
                     }).length === 0;
                     
                     if (show) {
-                        console.log(e);
                         this.showContextMenu(e);
                     }
                 });
@@ -410,7 +424,11 @@
             },
 
 
-            loadFilters() {
+            loadFilters(settings = {}) {
+                let {
+                    ignoreWatchers = false
+                } = settings;
+
                 this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
                     .then(response => response.data)
                     .then(this.handleFilters)
@@ -418,7 +436,11 @@
             },
 
 
-            loadSearchBy() {
+            loadSearchBy(settings = {}) {
+                let {
+                    ignoreWatchers = false
+                } = settings;
+
                 this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
                     .then(response => response.data)
                     .then(this.handleSearchBy)
@@ -435,51 +457,15 @@
             },
 
 
-            loadEntities() {
-                this.table_state.loading = true;
-
-                let query = [];
-
-                for (let key in this.table_state) {
-                    query.push(`state[${key}]=${this.table_state[key]}`);
+            loadEntities(options = {}) {
+                if (typeof this.$refs.filtersDropdown === 'undefined' ||
+                    typeof this.$refs.searchByDropdown === 'undefined') {
+                    return;
                 }
 
-                let filterIdx = 0;
-                this.filters.filter(filter => filter.selected || filter.type === 'dropdown').forEach(filter => {
-                    if (filter.type === 'dropdown') {
-                        filter.options.filter(_filter => _filter.selected).forEach(_filter => {
-                            query.push(`filter[${filterIdx}]=${_filter.value}`);
-                            filterIdx++;
-                        });
-                    }
-                    else {
-                        query.push(`filter[${filterIdx}]=${filter.value}`);
-                        filterIdx++;
-                    }
-                });
+                this.table_state.loading = true;
 
-                this.searchBy.filter(option => {
-                    if (typeof option.value === 'string') {
-                        return option.value.length > 0;
-                    }
-                    else if (typeof option.value === 'object') {
-                        // array of dates, [start, end]
-                        return option.value && option.value.length === 2 && option.value[0].length && option.value[1].length;
-                    }
-                    else {
-                        return false;
-                    }
-                }).forEach(option => {
-                    let value = _.unescape(option.value);
-                    query.push(`searchBy[${option.name}]=${value}`);
-                });
-
-                query.push(`orderBy[0]=${this.orderBy}`);
-                query.push(`orderBy[1]=${this.orderDirection}`);
-
-                let url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
-
-                this.$http.get(url, {
+                this.$http.get(this.table_data_url(options), {
 
                     before(request) {
 
@@ -497,6 +483,7 @@
                     .then(this.handleEntities)
                     .then(() => this.table_state.loading = false)
                     .then(() => this.entities_loaded = true)
+                    .then(() => this.url_state = false)
                     .catch(this.handleError);
             },
 
@@ -530,13 +517,13 @@
             handleEntities(entities) {
                 this.bulkEdit = entities.bulkEdit;
                 this.table_rows = entities.rows;
-                this.ignore_table_state_watcher = true;
+                this.ignore_watchers = true;
                 this.table_state = entities.table_state;
             },
 
 
             handleError(err) {
-                this.ignore_table_state_watcher = true;
+                this.ignore_watchers = true;
                 this.table_state.loading = false;
                 this.entities_loaded = true;
                 // console.error(err);
@@ -545,7 +532,13 @@
 
 
             searchByHandler() {
-                this._loadEntities();
+                if (this.ignore_watchers) {
+                    this.ignore_watchers = false;
+                    return;
+                }
+                this._loadEntities({
+                    resetPage: true
+                });
             },
 
 
@@ -808,6 +801,113 @@
                 let left = box.left + scrollLeft - clientLeft;
 
                 return { top: Math.round(top), left: Math.round(left) };
+            },
+
+            table_data_url(options = {}) {
+                if (this.url_state) {
+                    let query = this.url_state.split(':').join('&');
+
+                    let components = this.url_state.split(':');
+
+                    components.forEach(component => {
+                        let parts = component.split('=');
+                        let key = parts[0].split('[');
+                        let type = key[0];
+                        let typeKey = key[1].split(']')[0];
+                        // console.log(parts, key, type, typeKey);
+
+                        let value = decodeURIComponent(parts[1]);
+
+                        switch (type) {
+                            case 'state':
+                                this.table_state[typeKey] = value;
+                                break;
+                            case 'filter':
+                                this.filters.forEach(filter => {
+                                    if (filter.type === 'dropdown') {
+                                        filter.options.forEach(_filter => {
+                                            if (value === _filter.value) {
+                                                _filter.selected = true;
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        if (value === filter.value) {
+                                            filter.selected = true;
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'searchBy':
+                                this.$refs.searchByDropdown.setValue(typeKey, value);
+                                break;
+                        }
+                    });
+
+                    return `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query;
+                }
+                let {
+                    resetPage = false
+                } = options;
+
+                if (resetPage) {
+                    this.table_state.page = 1;
+                }
+
+                let query = [];
+
+                for (let key in this.table_state) {
+                    query.push(`state[${key}]=${this.table_state[key]}`);
+                }
+
+                let filterIdx = 0;
+                this.filters.filter(filter => filter.selected || filter.type === 'dropdown').forEach(filter => {
+                    if (filter.type === 'dropdown') {
+                        filter.options.filter(_filter => _filter.selected).forEach(_filter => {
+                            query.push(`filter[${filterIdx}]=${_filter.value}`);
+                            filterIdx++;
+                        });
+                    }
+                    else {
+                        query.push(`filter[${filterIdx}]=${filter.value}`);
+                        filterIdx++;
+                    }
+                });
+
+                this.searchBy.filter(option => {
+                    if (typeof option.value === 'string') {
+                        return option.value.length > 0;
+                    }
+                    else if (typeof option.value === 'object') {
+                        // array of dates, [start, end]
+                        return option.value && option.value.length === 2 && option.value[0].length && option.value[1].length;
+                    }
+                    else {
+                        return false;
+                    }
+                }).forEach(option => {
+                    let value = _.unescape(option.value);
+                    query.push(`searchBy[${option.name}]=${value}`);
+                });
+
+                query.push(`orderBy[0]=${this.orderBy}`);
+                query.push(`orderBy[1]=${this.orderDirection}`);
+
+                let visible_url = `?state=` + query.map(component => {
+                    let parts = component.split('=');
+                    let key = parts.shift();
+                    let value = parts.join('=');
+
+                    return key + '=' + encodeURIComponent(value).replace(/[=:!'()*]/g, function (c) {
+                        return '%' + c.charCodeAt(0).toString(16);
+                    });
+                }).join(':');
+
+                history.replaceState(visible_url, null, visible_url);
+
+                let request_url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
+
+                return request_url;
             }
 
         },
@@ -815,10 +915,11 @@
 
 
         mounted() {
-            this.loadData();
             this.registerListeners();
+            this.loadData();
 
             this._loadEntities = _.debounce(this.loadEntities, 500);
+            this.url_state = this.urlstate;
         }
     }
 </script>
