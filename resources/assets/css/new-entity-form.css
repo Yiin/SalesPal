@@ -159,7 +159,7 @@
     margin-top: 5px;
     margin-top: 5px;
     padding-left: 15px;
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
     width: 100%;
     padding-left: 13px;
@@ -279,7 +279,7 @@
     margin-top: 5px;
     padding-left: 15px;
 
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
 }
 
@@ -294,7 +294,7 @@
     margin-bottom: 10px;
     padding-left: 15px;
 
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
 
     -webkit-appearance: none;
@@ -316,7 +316,7 @@
 
     resize: none;
 
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
 }
 
