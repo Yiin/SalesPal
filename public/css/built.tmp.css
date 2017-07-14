@@ -12341,7 +12341,7 @@ div.panel {
 }
 
 .panel {
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 1px rgba(0, 0, 0, .2);
+    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
     border-color: #ffffff !important;
 }
 
@@ -14308,6 +14308,98 @@ div.dataTables_length select {
   border-left: 4px solid transparent;
   top: 5px;
 }
+
+
+.info-blade-col
+{
+    width: calc(100% * 339 / 1598 );
+    margin-right: 33px;
+    float: left;
+}
+
+.show-blade-col
+{
+    width: calc(100% * 1226 / 1598);
+    float: right;
+}
+
+.panel-wrapper
+{
+    margin-bottom: 20px;
+    padding-right: 2px;
+    padding-bottom: 35px;
+    padding-left: 20px;
+
+    background: #fff;
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+}
+
+.show-wrapper-header
+{
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 50px;
+
+    display: inline-block;
+
+    height: 52px;
+    margin-bottom: 36px;
+    padding-right: 18px;
+    padding-left: 18px;
+
+    text-align: center;
+
+    color: #fff !important;
+    border: 1px solid;
+}
+
+.purple-header {
+    border-color: #9e33d6;
+    background-color: #9e33d6;
+}
+
+.orange-header {
+    border-color: #fe6c01;
+    background-color: #fe6c01;
+}
+
+.green-color {
+    border-color: #23b820;
+    background-color: #23b820;
+}
+.show-wrapper-body {
+    margin-top: -1px;
+}
+
+.grid-col {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.grid-col > span {
+    font-weight: normal;
+    font-size: 16px;
+    display: grid;
+    margin-top: 5px;
+}
+
+.grid-col > span:nth-child(2) {
+    color: blue;
+}
+
+.grid-col > hr {
+    width: 30px;
+    margin-left: 0px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+.text-color > span {
+    font-weight: bold;
+    color: #01a8fe;
+    font-size: ;
+}
 .path {
     font-size: 18px;
 }
@@ -14324,7 +14416,7 @@ div.dataTables_length select {
     padding-left: 20px;
 
     background: #fff;
-    box-shadow: -1px 2px 5px rgba(0, 0, 0, .05), 1px 2px 5px rgba(0, 0, 0, .05), 0 3px 5px rgba(0, 0, 0, .05);
+    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
 }
 
 .new-clients-col
@@ -14432,7 +14524,7 @@ div.dataTables_length select {
     padding-left: 20px;
 
     background: #fff;
-    box-shadow: -1px 2px 5px rgba(0, 0, 0, .05), 1px 2px 5px rgba(0, 0, 0, .05), 0 3px 5px rgba(0, 0, 0, .05);
+    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
 }
 
 .vat-wrapper div > hr
@@ -14635,10 +14727,54 @@ div.dataTables_length select {
     flex-grow: 2.07;
 }
 
+.show-blade-task {
+    margin-top: 12px !important;
+    padding-left: 20px;
+    border-left: 1px solid #e1e1e1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 
+.show-blade-task span > a {
+    text-decoration: none;
+    color: #333;
+}
 
+.table-invoices span > a {
+    margin-right: 19px;
+}
+.table-heading {
+    border-bottom: 4px solid #e2e2e2;
+}
 
+.show-blade-navbar {
+    margin-left: 20px;
+}
 
+.show-blade-navbar li > a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #333;
+}
+
+.show-blade-navbar .active {
+    border-bottom: 4px;
+    color: #01a8fe;
+}
+
+.table-wrapper {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.table-body {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.show-wrapper-img-header {
+    margin-left: -20px;
+}
 /*!
  * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
  * Copyright 2013-2016 Start Bootstrap
