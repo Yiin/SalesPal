@@ -14712,7 +14712,7 @@ div.dataTables_length select {
 
     #wrapper.toggled-left
     {
-        padding-left: 220px;
+        padding-left: 211px;
     }
 
     #wrapper.toggled-right
@@ -14974,7 +14974,7 @@ div.dataTables_length select {
     {
         position: relative;
 
-        padding: 20px 28px 200px 21px;
+        padding: 20px 28px 200px 30px;
     }
 
     #wrapper.toggled-left #page-content-wrapper
