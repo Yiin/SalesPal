@@ -429,7 +429,7 @@
                     ignoreWatchers = false
                 } = settings;
 
-                this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
+                return this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
                     .then(response => response.data)
                     .then(this.handleFilters)
                     .catch(this.handleError);
@@ -441,7 +441,7 @@
                     ignoreWatchers = false
                 } = settings;
 
-                this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
+                return this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
                     .then(response => response.data)
                     .then(this.handleSearchBy)
                     .catch(this.handleError);
