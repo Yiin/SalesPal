@@ -99,13 +99,13 @@
 
         methods: {
             formattedDay(day) {
-                if ((day - 1) % 10 === 0) {
+                if (day !== 11 && (day - 1) % 10 === 0) {
                     return day + 'st';
                 }
-                if ((day - 2) % 10 === 0) {
+                if (day !== 12 && (day - 2) % 10 === 0) {
                     return day + 'nd';
                 }
-                if ((day - 3) % 10 === 0) {
+                if (day !== 13 && (day - 3) % 10 === 0) {
                     return day + 'rd';
                 }
                 return day + 'th';
