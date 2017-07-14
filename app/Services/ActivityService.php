@@ -84,7 +84,7 @@ class ActivityService extends BaseService
         }
 
         if ($type == ACTIVITY_TYPE_ALL) {
-            $query = Activity::whereNotIn('activity_type_id', '<>', [
+            $query = Activity::whereNotIn('activity_type_id', [
                 ACTIVITY_TYPE_CHECK_CLIENT_VAT
             ]);
         }
