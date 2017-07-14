@@ -14,7 +14,7 @@ html {
 
 /*a:hover { text-decoration: none; color: #0a3857;}*/
 .breadcrumb {
-    padding: 3px 0 !important;
+    padding: 12px 0 4px !important;
 }
 
 hr.separator {
