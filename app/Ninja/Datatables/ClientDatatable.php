@@ -131,7 +131,8 @@ class ClientDatatable extends EntityDatatable
                         $checkVatFeature = [
                             'feature' => 'CHECK_VAT',
                             'vat' => $model->vat_number,
-                            'state' => $model->getVatState()
+                            'state' => $model->getVatState(),
+                            'client_id' => $model->public_id
                         ];
                     }
                     return [

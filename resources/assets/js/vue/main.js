@@ -16,6 +16,8 @@ Vue.component('filters-dropdown', require('./components/FiltersDropdown.vue'));
 Vue.component('search-by-dropdown', require('./components/SearchByDropdown.vue'));
 
 // main components
+Vue.component('dashboard-statistics', require('./components/DashboardStatistics.vue'));
+Vue.component('dashboard-activities', require('./components/DashboardActivities.vue'));
 Vue.component('entity-table', require('./components/EntityTable.vue'));
 
 Array.prototype.filter.call(document.getElementsByClassName('vue-app'), el => el)

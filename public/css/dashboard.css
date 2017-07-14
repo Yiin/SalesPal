@@ -120,12 +120,7 @@
   background-color: #01a8fe;
 }
 
-.dashboard-nav .active > a {
-  font-weight: 500;
-  color: #fff;
-  background-color: #01a8fe;
-}
-
+.dashboard-nav li > a:focus,
 .dashboard-nav li > a {
   font-size: 16px;
   padding-top: 16px;
@@ -133,11 +128,19 @@
   padding-bottom: 16px;
   padding-left: 20px;
   color: #333;
+  background-color: #fff;
 }
 
 .dashboard-nav li > a:hover {
   color: #fff;
   background-color: #333;
+}
+
+.dashboard-nav li.active > a:focus,
+.dashboard-nav li.active > a {
+  font-weight: 500;
+  color: #fff;
+  background-color: #01a8fe;
 }
 
 .day {
@@ -153,35 +156,36 @@
   margin-top: -5px;
 }
 
-.day:nth-child(1) > .day-number {
-  background-color: #23b820;
-}
-
-.day:nth-child(1) > .border {
-  background-color: #23b820;
-}
-
 .day:nth-child(2) > .day-number {
-  background-color: #fe6c01;
+  background-color: #23b820;
 }
 
 .day:nth-child(2) > .border {
-  background-color: #fe6c01;
+  background-color: #23b820;
 }
 
 .day:nth-child(3) > .day-number {
-  background-color: #9e33d6;
+  background-color: #fe6c01;
 }
 
 .day:nth-child(3) > .border {
-  background-color: #9e33d6;
+  background-color: #fe6c01;
 }
 
 .day:nth-child(4) > .day-number {
-  background-color: #01a8fe;
+  background-color: #9e33d6;
 }
 
 .day:nth-child(4) > .border {
+  background-color: #9e33d6;
+}
+
+.day.static > .day-number {
+  cursor: pointer;
+  background-color: #01a8fe;
+}
+
+.day.static > .border {
   background-color: #01a8fe;
 }
 
@@ -220,9 +224,13 @@
   border-bottom: 1px solid #e2e2e2;
 }
 
-.event > a {
+.event a {
   font-weight: bold;
   text-decoration: none;
+  color: #373737;
+}
+
+.event a[href] {
   color: #01a8fe;
 }
 

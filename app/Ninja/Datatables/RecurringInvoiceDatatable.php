@@ -139,7 +139,18 @@ class RecurringInvoiceDatatable extends EntityDatatable
                 'field' => 'client_name',
                 'width' => '20%',
                 'value' => function ($model) {
-                    return link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml();
+                    if ($model->client->vat_number) {
+                        $checkVatFeature = [
+                            'feature' => 'CHECK_VAT',
+                            'vat' => $model->client->vat_number,
+                            'state' => $model->client->getVatState(),
+                            'client_id' => $model->client->public_id
+                        ];
+                    }
+                    return [
+                        'data' => $checkVatFeature ?? null,
+                        'display' => link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml()
+                    ];
                 },
                 'visible' => !$this->hideClient,
             ],

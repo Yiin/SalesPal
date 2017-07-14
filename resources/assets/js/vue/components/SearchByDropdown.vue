@@ -20,7 +20,7 @@
                 </template>
                 <template v-else>
 
-                    <text-item :option="option" @changed="changed" class="vue-dropdown-option --text"></text-item>
+                    <text-item ref="textItem" :option="option" @changed="changed" class="vue-dropdown-option --text"></text-item>
 
                 </template>
             </template>
@@ -61,6 +61,19 @@ export default {
     methods: {
         changed() {
             this.$emit('changed');
+        },
+
+
+
+        setValue(optionName, value) {
+            console.log('setValue', optionName, value, this.options);
+
+            this.$refs.textItem.forEach(ref => {
+                if (ref.option.name === optionName) {
+                    ref.setValue(value);
+                    console.log('value set', ref.option);
+                }
+            });
         },
 
 

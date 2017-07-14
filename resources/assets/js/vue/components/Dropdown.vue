@@ -40,7 +40,7 @@ export default {
             selected: {
                 label: '',
                 value: null
-            },
+            }
         };
     },
 
@@ -49,6 +49,17 @@ export default {
         toggleDropdown() {
 
             this.is_open = !this.is_open;
+
+        },
+
+
+        setValue(value) {
+
+            let option = this.options.filter(option => option.value === value);
+
+            if (option.length) {
+                this.selected = option[0];
+            }
 
         },
 

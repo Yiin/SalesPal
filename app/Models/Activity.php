@@ -99,6 +99,11 @@ class Activity extends EntityModel
         return $this->belongsTo('App\Models\Expense')->withTrashed();
     }
 
+    // public function vatCheck()
+    // {
+    //     return $this->belongsTo('App\Models\VatCheck')->withTrashed();
+    // }
+
     public function key()
     {
         return sprintf('%s-%s-%s', $this->activity_type_id, $this->client_id, $this->created_at->timestamp);
@@ -120,19 +125,21 @@ class Activity extends EntityModel
         $expense = $this->expense;
         $isSystem = $this->is_system;
         $task = $this->task;
+        // $vatCheck = $this->vatCheck;
 
         $data = [
             'client' => $client ? link_to($client->getRoute(), $client->getDisplayName()) : null,
-            'user' => $isSystem ? '<i>' . trans('texts.system') . '</i>' : $user->getDisplayName(),
+            'user' => $isSystem ? '<i>' . trans('texts.system') . '</i>' : '<a>' . $user->getDisplayName() . '</a>',
             'invoice' => $invoice ? link_to($invoice->getRoute(), $invoice->getDisplayName()) : null,
             'quote' => $invoice ? link_to($invoice->getRoute(), $invoice->getDisplayName()) : null,
             'contact' => $contactId ? $client->getDisplayName() : $user->getDisplayName(),
-            'payment' => $payment ? $payment->transaction_reference : null,
+            'payment' => $payment ? link_to($payment->getRoute(), $payment->transaction_reference) : null,
             'payment_amount' => $payment ? $account->formatMoney($payment->amount, $payment) : null,
             'adjustment' => $this->adjustment ? $account->formatMoney($this->adjustment, $this) : null,
             'credit' => $credit ? $account->formatMoney($credit->amount, $client) : null,
             'task' => $task ? link_to($task->getRoute(), substr($task->description, 0, 30).'...') : null,
             'expense' => $expense ? link_to($expense->getRoute(), substr($expense->public_notes, 0, 30).'...') : null,
+            // 'vat' => $vatCheck ? '<a>' . $vatCheck->country_code . $vatCheck->vat_number . '</a>' : null
         ];
 
         return trans("texts.activity_{$activityTypeId}", $data);

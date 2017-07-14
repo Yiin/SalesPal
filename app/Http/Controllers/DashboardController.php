@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Expense;
+use App\Models\Activity;
 use App\Ninja\Repositories\DashboardRepository;
+use App\Services\ActivityService;
 use Auth;
 use Utils;
 use View;
@@ -14,9 +16,10 @@ use View;
  */
 class DashboardController extends BaseController
 {
-    public function __construct(DashboardRepository $dashboardRepo)
+    public function __construct(DashboardRepository $dashboardRepo, ActivityService $activityService)
     {
         $this->dashboardRepo = $dashboardRepo;
+        $this->activityService = $activityService;
     }
 
     /**
@@ -41,6 +44,7 @@ class DashboardController extends BaseController
         $payments = $dashboardRepo->payments($accountId, $userId, $viewAll);
         $expenses = $dashboardRepo->expenses($account, $userId, $viewAll);
         $tasks = $dashboardRepo->tasks($accountId, $userId, $viewAll);
+        $currencies = $dashboardRepo->currencies($accountId, $userId, $viewAll);
 
         $showBlueVinePromo = $user->is_admin
             && env('BLUEVINE_PARTNER_UNIQUE_ID')
@@ -79,6 +83,7 @@ class DashboardController extends BaseController
             'tasks' => $tasks,
             'showBlueVinePromo' => $showBlueVinePromo,
             'showWhiteLabelExpired' => $showWhiteLabelExpired,
+            'currencies' => $currencies
         ];
 
         if ($showBlueVinePromo) {
@@ -100,6 +105,8 @@ class DashboardController extends BaseController
 
             $data['usdLast12Months'] = $usdLast12Months;
         }
+
+        $data['activitiesList'] = (object)$this->activityService->getItems(ACTIVITY_TYPE_ALL);
 
         return View::make('dashboard', $data);
     }

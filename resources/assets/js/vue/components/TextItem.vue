@@ -63,6 +63,12 @@ export default {
                 this.$forceUpdate();
                 this.$emit('changed');
             }
+        },
+
+        setValue(value) {
+            this.option.value = value;
+            this.medium.value(value);
+            console.log('updating', this.option.name, 'value to', value);
         }
     },
 

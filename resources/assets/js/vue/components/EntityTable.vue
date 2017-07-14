@@ -7,16 +7,16 @@
             <li class="active">{{ entity_plural_full }}</li>
         </ol>
         <div class="row table-heading-controls">
-            <div v-if="create" v-html="create" class="create-btn-wrapper"></div>
+            <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
-            <filters-dropdown v-if="filters.length" :options="filters"></filters-dropdown>
-            <search-by-dropdown v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
+            <filters-dropdown ref="filtersDropdown" class="nocontextmenu" v-if="filters.length" :options="filters"></filters-dropdown>
+            <search-by-dropdown ref="searchByDropdown" class="nocontextmenu" v-if="searchBy.length" :options="searchBy" @changed="searchByHandler"></search-by-dropdown>
         </div>
 
 
 
         <div ref="table_wrapper" class="dataTables_wrapper form-inline no-footer">
-            <div class="table-wrapper">
+            <div class="table-wrapper nocontextmenu">
                 <table class="table table-striped data-table dataTable no-footer">
                     <!-- 
                         Table Columns
@@ -76,7 +76,7 @@
                                 <div v-html="typeof row[column.field] === 'string' ? row[column.field] : row[column.field].display"></div>
                                 <template v-if="typeof row[column.field] === 'object' && row[column.field].data">
                                     <template v-if="row[column.field].data.feature === 'CHECK_VAT'">
-                                        <feature-check-vat :vat="row[column.field].data.vat" :state="row[column.field].data.state"></feature-check-vat>
+                                        <feature-check-vat :vat="row[column.field].data.vat" :client_id="row[column.field].data.client_id" :state="row[column.field].data.state"></feature-check-vat>
                                     </template>
                                 </template>
                             </td>
@@ -93,7 +93,7 @@
                 <div v-if="calculator.value" class="calculator">
                     <div class="block">
                         <span>Total</span>
-                        <dropdown class="calculator-show" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
+                        <dropdown class="calculator-show nocontextmenu" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
                         <span>for selected is</span>
                     </div>
                     <div class="block calculatormargin">
@@ -106,7 +106,7 @@
                 <div class="table-controls">
                     <div class="block">
                         <span>Page</span>
-                        <div class="pagination">
+                        <div class="pagination nocontextmenu">
                             <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
                                 <a>«</a>
                             </li>
@@ -130,7 +130,7 @@
                                 Showing 0 entries
                             </template>
                         </span>
-                        <dropdown class="entities-count-control" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
+                        <dropdown class="entities-count-control nocontextmenu" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
                         <span>rows</span>
                     </div>
                 </div>
@@ -169,7 +169,11 @@
 
 
         props: [
-            'entity', 'entities', 'create', 'clientId'
+            'urlstate',
+            'entity',
+            'entities',
+            'create',
+            'clientId'
         ],
 
 
@@ -195,7 +199,7 @@
 
                 orderBy: 'created_at',
                 orderDirection: 'DESC',
-                ignore_table_state_watcher: false,
+                ignore_watchers: false,
                 table_state: {
                     page: 1,
                     page_count: 1,
@@ -226,7 +230,8 @@
                 promise: {
                     loadEntities: null,
                 },
-                searchByTimeout: null
+                searchByTimeout: null,
+                url_state: false
             }
         },
 
@@ -308,11 +313,11 @@
                     case 'recurring_invoice':
                         return 'Invoices';
                 }
-                return (this.entities || this.entity + 's').replace('_', ' ');
+                return (this.entities || this.entity + 's').split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
 
             entity_plural_full() {
-                return (this.entities || this.entity + 's').replace('_', ' ');
+                return (this.entities || this.entity + 's').split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
 
             colspan() {
@@ -326,13 +331,19 @@
         watch: {
             filters: {
                 handler: function (current, previous) {
-                    this.loadEntities();
+                    if (this.ignore_watchers) {
+                        this.ignore_watchers = false;
+                        return;
+                    }
+                    this.loadEntities({
+                        resetPage: true
+                    });
                 },
                 deep: true
             },
             'table_state.page': function (current, previous) {
-                if (this.ignore_table_state_watcher) {
-                    this.ignore_table_state_watcher = false;
+                if (this.ignore_watchers) {
+                    this.ignore_watchers = false;
                     return;
                 }
                 if (current && current !== previous) {
@@ -343,8 +354,8 @@
                 }
             },
             'table_state.entities_per_page': function (entities_per_page, previous) {
-                if (this.ignore_table_state_watcher) {
-                    this.ignore_table_state_watcher = false;
+                if (this.ignore_watchers) {
+                    this.ignore_watchers = false;
                     return;
                 }
                 this.table_state.entities_per_page = entities_per_page = parseInt(entities_per_page);
@@ -361,17 +372,30 @@
         methods: {
 
             loadData() {
-                this.loadFilters();
-                this.loadSearchBy();
                 this.loadColumns();
-                this.loadEntities();
+
+                Promise.all([
+                    this.loadFilters({ ignoreWatchers: true }),
+                    this.loadSearchBy({ ignoreWatchers: true })
+                ]).then(() => {
+                    this.$nextTick(this.loadEntities);
+                });
             },
 
 
             registerListeners() {
-                window.addEventListener('keydown', e => {
-                    console.log('keydown', e.keyCode);
+                window.addEventListener('contextmenu', e => {
+                    e.preventDefault();
 
+                    let show = Array.from(document.getElementsByClassName('nocontextmenu')).filter(el => {
+                        return el.contains(e.target);
+                    }).length === 0;
+                    
+                    if (show) {
+                        this.showContextMenu(e);
+                    }
+                });
+                window.addEventListener('keydown', e => {
                     switch(e.keyCode) {
                         /* esc */ case 27:
                             this.clickAway();
@@ -400,16 +424,24 @@
             },
 
 
-            loadFilters() {
-                this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
+            loadFilters(settings = {}) {
+                let {
+                    ignoreWatchers = false
+                } = settings;
+
+                return this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
                     .then(response => response.data)
                     .then(this.handleFilters)
                     .catch(this.handleError);
             },
 
 
-            loadSearchBy() {
-                this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
+            loadSearchBy(settings = {}) {
+                let {
+                    ignoreWatchers = false
+                } = settings;
+
+                return this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
                     .then(response => response.data)
                     .then(this.handleSearchBy)
                     .catch(this.handleError);
@@ -425,51 +457,15 @@
             },
 
 
-            loadEntities() {
-                this.table_state.loading = true;
-
-                let query = [];
-
-                for (let key in this.table_state) {
-                    query.push(`state[${key}]=${this.table_state[key]}`);
+            loadEntities(options = {}) {
+                if (typeof this.$refs.filtersDropdown === 'undefined' ||
+                    typeof this.$refs.searchByDropdown === 'undefined') {
+                    return;
                 }
 
-                let filterIdx = 0;
-                this.filters.filter(filter => filter.selected || filter.type === 'dropdown').forEach(filter => {
-                    if (filter.type === 'dropdown') {
-                        filter.options.filter(_filter => _filter.selected).forEach(_filter => {
-                            query.push(`filter[${filterIdx}]=${_filter.value}`);
-                            filterIdx++;
-                        });
-                    }
-                    else {
-                        query.push(`filter[${filterIdx}]=${filter.value}`);
-                        filterIdx++;
-                    }
-                });
+                this.table_state.loading = true;
 
-                this.searchBy.filter(option => {
-                    if (typeof option.value === 'string') {
-                        return option.value.length > 0;
-                    }
-                    else if (typeof option.value === 'object') {
-                        // array of dates, [start, end]
-                        return option.value && option.value.length === 2 && option.value[0].length && option.value[1].length;
-                    }
-                    else {
-                        return false;
-                    }
-                }).forEach(option => {
-                    let value = _.unescape(option.value);
-                    query.push(`searchBy[${option.name}]=${value}`);
-                });
-
-                query.push(`orderBy[0]=${this.orderBy}`);
-                query.push(`orderBy[1]=${this.orderDirection}`);
-
-                let url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
-
-                this.$http.get(url, {
+                this.$http.get(this.table_data_url(options), {
 
                     before(request) {
 
@@ -487,6 +483,7 @@
                     .then(this.handleEntities)
                     .then(() => this.table_state.loading = false)
                     .then(() => this.entities_loaded = true)
+                    .then(() => this.url_state = false)
                     .catch(this.handleError);
             },
 
@@ -520,13 +517,13 @@
             handleEntities(entities) {
                 this.bulkEdit = entities.bulkEdit;
                 this.table_rows = entities.rows;
-                this.ignore_table_state_watcher = true;
+                this.ignore_watchers = true;
                 this.table_state = entities.table_state;
             },
 
 
             handleError(err) {
-                this.ignore_table_state_watcher = true;
+                this.ignore_watchers = true;
                 this.table_state.loading = false;
                 this.entities_loaded = true;
                 // console.error(err);
@@ -535,7 +532,13 @@
 
 
             searchByHandler() {
-                this._loadEntities();
+                if (this.ignore_watchers) {
+                    this.ignore_watchers = false;
+                    return;
+                }
+                this._loadEntities({
+                    resetPage: true
+                });
             },
 
 
@@ -631,67 +634,83 @@
             },
 
 
-            showContextMenu(e, row) {
+            showContextMenu(e, row = null) {
                 let id = null;
-
-                if (row.__checkbox) {
-                    id = row.__checkbox.data.id;
-
-                    if (this.selected_entity_id && this.selected_entity_id !== id) {
-                        this.toggleSelectOff(this.selected_entity_id);
-                    }
-
-                    if (this.selected_entities.indexOf(id) === -1) {
-                        this.selected_entity_id = id;
-                        this.toggleSelectOn(id);
-                    }
-                }
-
                 this.contextMenu.elements = [];
 
-                if (this.selected_entities.length > 1) {
+                if (row) {
+                    if (row.__checkbox) {
+                        id = row.__checkbox.data.id;
+
+                        if (this.selected_entity_id && this.selected_entity_id !== id) {
+                            this.toggleSelectOff(this.selected_entity_id);
+                        }
+
+                        if (this.selected_entities.indexOf(id) === -1) {
+                            this.selected_entity_id = id;
+                            this.toggleSelectOn(id);
+                        }
+                    }
+
+                    if (this.selected_entities.length > 1) {
+                        this.contextMenu.elements.push({
+                            class: 'heading',
+                            title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
+                        });
+                        this.contextMenu.elements.push({
+                            title: 'Archive', 
+                            action: `javascript:submitForm_${this.entity}('archive');`,
+                            icon: 'icon-dropdown-archive'
+                        });
+                        this.contextMenu.elements.push({
+                            title: 'Delete', 
+                            action: `javascript:submitForm_${this.entity}('delete');`,
+                            icon: 'icon-dropdown-delete'
+                        });
+                        this.contextMenu.elements.push('');
+                    }
                     this.contextMenu.elements.push({
                         class: 'heading',
-                        title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
+                        title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>`
                     });
-                    this.contextMenu.elements.push({
-                        title: 'Archive', 
-                        action: `javascript:submitForm_${this.entity}('archive');`,
-                        icon: 'icon-dropdown-archive'
+
+                    row.__actions.forEach(action => {
+                        let element = action;
+
+                        this.contextMenu.elements.push(element);
                     });
-                    this.contextMenu.elements.push({
-                        title: 'Delete', 
-                        action: `javascript:submitForm_${this.entity}('delete');`,
-                        icon: 'icon-dropdown-delete'
-                    });
-                    this.contextMenu.elements.push('');
                 }
-                this.contextMenu.elements.push({
-                    class: 'heading',
-                    title: `${this.entity_singular}: <span class="valuecolor">${row.__title}</span>`
-                });
-
-                row.__actions.forEach(action => {
-                    let element = action;
-
-                    this.contextMenu.elements.push(element);
-                });
+                else {
+                    this.contextMenu.elements.push({
+                        class: 'heading',
+                        title: `${this.entity_plural_full} Table`
+                    });
+                    this.contextMenu.elements.push({
+                        title: 'New ' + this.entity_singular, 
+                        action: `javascript:;`,
+                        icon: 'icon-new-client-btn-icon',
+                        before: () => {
+                            this.$refs.create_entity.getElementsByClassName('btn')[0].click();
+                        }
+                    });
+                }
 
                 if (this.contextMenu.elements.length) {
-                    this.contextMenu.elements.push('');
-                    this.contextMenu.elements.push({
-                        title: `Archive ${this.entity_singular}`,
-                        icon: 'icon-dropdown-archive',
-                        action: `javascript:submitForm_${this.entity}('archive');`,
-                        before: this.unselectAllBut(id)
-                    });
-                    this.contextMenu.elements.push({
-                        title: `Delete ${this.entity_singular}`,
-                        icon: 'icon-dropdown-delete',
-                        action: `javascript:submitForm_${this.entity}('delete');`,
-                        before: this.unselectAllBut(id)
-                    });
-
+                    if (row) {
+                        this.contextMenu.elements.push('');
+                        this.contextMenu.elements.push({
+                            title: `Archive ${this.entity_singular}`,
+                            icon: 'icon-dropdown-archive',
+                            action: `javascript:submitForm_${this.entity}('archive');`,
+                            before: this.unselectAllBut(id)
+                        });
+                        this.contextMenu.elements.push({
+                            title: `Delete ${this.entity_singular}`,
+                            icon: 'icon-dropdown-delete',
+                            action: `javascript:submitForm_${this.entity}('delete');`,
+                            before: this.unselectAllBut(id)
+                        });
+                    }
                     this.contextMenu.elements.forEach(element => {
                         if (element !== '' && element.icon) {
                             let icon = `<i class="${element.icon}"></i>`;
@@ -782,6 +801,113 @@
                 let left = box.left + scrollLeft - clientLeft;
 
                 return { top: Math.round(top), left: Math.round(left) };
+            },
+
+            table_data_url(options = {}) {
+                if (this.url_state) {
+                    let query = this.url_state.split(':').join('&');
+
+                    let components = this.url_state.split(':');
+
+                    components.forEach(component => {
+                        let parts = component.split('=');
+                        let key = parts[0].split('[');
+                        let type = key[0];
+                        let typeKey = key[1].split(']')[0];
+                        // console.log(parts, key, type, typeKey);
+
+                        let value = decodeURIComponent(parts[1]);
+
+                        switch (type) {
+                            case 'state':
+                                this.table_state[typeKey] = value;
+                                break;
+                            case 'filter':
+                                this.filters.forEach(filter => {
+                                    if (filter.type === 'dropdown') {
+                                        filter.options.forEach(_filter => {
+                                            if (value === _filter.value) {
+                                                _filter.selected = true;
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        if (value === filter.value) {
+                                            filter.selected = true;
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'searchBy':
+                                this.$refs.searchByDropdown.setValue(typeKey, value);
+                                break;
+                        }
+                    });
+
+                    return `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query;
+                }
+                let {
+                    resetPage = false
+                } = options;
+
+                if (resetPage) {
+                    this.table_state.page = 1;
+                }
+
+                let query = [];
+
+                for (let key in this.table_state) {
+                    query.push(`state[${key}]=${this.table_state[key]}`);
+                }
+
+                let filterIdx = 0;
+                this.filters.filter(filter => filter.selected || filter.type === 'dropdown').forEach(filter => {
+                    if (filter.type === 'dropdown') {
+                        filter.options.filter(_filter => _filter.selected).forEach(_filter => {
+                            query.push(`filter[${filterIdx}]=${_filter.value}`);
+                            filterIdx++;
+                        });
+                    }
+                    else {
+                        query.push(`filter[${filterIdx}]=${filter.value}`);
+                        filterIdx++;
+                    }
+                });
+
+                this.searchBy.filter(option => {
+                    if (typeof option.value === 'string') {
+                        return option.value.length > 0;
+                    }
+                    else if (typeof option.value === 'object') {
+                        // array of dates, [start, end]
+                        return option.value && option.value.length === 2 && option.value[0].length && option.value[1].length;
+                    }
+                    else {
+                        return false;
+                    }
+                }).forEach(option => {
+                    let value = _.unescape(option.value);
+                    query.push(`searchBy[${option.name}]=${value}`);
+                });
+
+                query.push(`orderBy[0]=${this.orderBy}`);
+                query.push(`orderBy[1]=${this.orderDirection}`);
+
+                let visible_url = `?state=` + query.map(component => {
+                    let parts = component.split('=');
+                    let key = parts.shift();
+                    let value = parts.join('=');
+
+                    return key + '=' + encodeURIComponent(value).replace(/[=:!'()*]/g, function (c) {
+                        return '%' + c.charCodeAt(0).toString(16);
+                    });
+                }).join(':');
+
+                history.replaceState(visible_url, null, visible_url);
+
+                let request_url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
+
+                return request_url;
             }
 
         },
@@ -789,14 +915,32 @@
 
 
         mounted() {
-            this.loadData();
             this.registerListeners();
+            this.loadData();
 
             this._loadEntities = _.debounce(this.loadEntities, 500);
+            this.url_state = this.urlstate;
         }
     }
 </script>
 
+<style>
+    .context-menu li {
+        position: relative;
+    }
+
+    .context-menu li > i {
+        margin-right: 18px;
+        display: inline-block;
+        width: 16px;
+    }
+
+    .context-menu li > i::before {
+        position: absolute;
+        top: 10px;
+        color: initial;
+    }
+</style>
 <style scoped>
     td {
         position: relative;
@@ -926,7 +1070,7 @@
     }
 
     .context-menu {
-        background: #FFFFFF;
+        background: #ffffff;
         box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px -2px 5px rgba(0, 0, 0, 0.05);
         display: block;
         list-style: none;
@@ -980,6 +1124,7 @@
         top: 6px;
         right: 6px;
         cursor: pointer;
+        z-index: 1;
     }
 
     .context-menu-close:hover {

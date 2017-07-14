@@ -1,13 +1,16 @@
 
 calendar style
 
-outside of table context menu
+DONE outside of table context menu
 
-too many attempts, try again in 5 minutes
+DONE too many attempts, try again in 5 minutes
 
 dashboardas
 
-vat next to client
+DONE vat next to client
 
 vat queue
 
+vat prefix
+
+client edit

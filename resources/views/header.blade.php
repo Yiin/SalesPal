@@ -337,7 +337,7 @@
                             <li><a href="javascript:;"><i class="fa fa-barcode"></i> My Task</a></li>
                             <li class="divider"></li>
                             <li><a href="javascript:;"><i class="fa fa-lock"></i> Screen lock</a></li>
-                            <li><a href="{{ route('logout') }}"><i class="fa fa-key"></i> Logout</a></li>
+                            <li><a href="{{ url('/logout') }}"><i class="fa fa-key"></i> Logout</a></li>
                         </ul>
                     </div>
                 </li>

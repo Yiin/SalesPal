@@ -186,7 +186,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-    color: #333333;
+    color: #373737;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 13px;
     line-height: 20px;
@@ -2273,21 +2273,6 @@ div.dataTables_length select {
     font-size: 16px;
     padding: 7px 10px 7px;
     margin-right: 10px;
-}
-
-.context-menu li {
-    position: relative;
-}
-
-.context-menu li > i {
-    margin-right: 18px;
-    display: inline-block;
-    width: 16px;
-}
-
-.context-menu li > i::before {
-    position: absolute;
-    top: 10px;
 }
 
 .vue-dropdown > button:focus {

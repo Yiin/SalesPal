@@ -146,9 +146,16 @@ class PaymentDatatable extends EntityDatatable
                             'display' => $model->client ? Utils::getClientDisplayName($model->client) : ''
                         ];
                     }
-
+                    if ($model->client && $model->client->vat_number) {
+                        $checkVatFeature = [
+                            'feature' => 'CHECK_VAT',
+                            'vat' => $model->client->vat_number,
+                            'state' => $model->client->getVatState(),
+                            'client_id' => $model->client->public_id
+                        ];
+                    }
                     return [
-                        'data' => Utils::getClientDisplayName($model->client), 
+                        'data' => $checkVatFeature ?? null,
                         'display' => $model->client ? link_to("clients/{$model->client->public_id}", Utils::getClientDisplayName($model->client))->toHtml() : ''
                     ];
                 },

@@ -25,9 +25,8 @@ class VatHelperController extends Controller
 
     public function VatRequest(Request $request)
     {
-
         $vat = $request->get('vat');
-        $register_check = !!$request->get('save');
+        $client_id = $request->get('client_id');
 
         $vat_CC = mb_substr($vat, 0, 2);
 
@@ -72,7 +71,8 @@ class VatHelperController extends Controller
                 'message' => $e->getMessage(),
             ];
 
-            if ($register_check) {
+            if ($client_id) {
+                $data['client_id'] = $client_id;
                 event(new ClientVatWasChecked(false, (object) $data));
             }
 
@@ -87,7 +87,8 @@ class VatHelperController extends Controller
             'address' => $result->address,
         ];
 
-        if ($register_check) {
+        if ($client_id) {
+            $data['client_id'] = $client_id;
             event(new ClientVatWasChecked(true, (object) $data));
         }
 
