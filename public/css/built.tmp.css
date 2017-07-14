@@ -14795,7 +14795,7 @@ div.dataTables_length select {
     {
         overflow: auto;
 
-        width: 182px;
+        width: 183px;
         height: calc(100vh - 260px);
 
         list-style: none;
@@ -15091,6 +15091,7 @@ div.dataTables_length select {
 #left-sidebar-wrapper .sidebar-nav li a
 {
     position: relative;
+    margin-right: 11px;
 }
 #left-sidebar-wrapper .sidebar-nav li a i
 {
