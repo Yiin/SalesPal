@@ -18,7 +18,7 @@
         <div class="panel-body panel-days-holder">
             <div v-show="!first" class="day static">
                 <div @click="previous" class="day-number">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <i class="fa fa-angle-up" aria-hidden="true"></i>
                 </div>
                 <div class="border"></div>
             </div>
