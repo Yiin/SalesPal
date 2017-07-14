@@ -249,7 +249,7 @@
     #wrapper
     {
         padding-right: 0;
-        padding-left: 220px;
+        padding-left: 217px;
     }
 
     #wrapper.toggled-left
@@ -289,7 +289,7 @@
     {
         position: relative;
 
-        padding: 20px 28px 200px 18px;
+        padding: 20px 28px 200px 21px;
     }
 
     #wrapper.toggled-left #page-content-wrapper
