@@ -24,8 +24,8 @@ html {
 
 .breadcrumb {
     font-size: 18px;
-    margin-top: 9px;
-    margin-bottom: 21px;
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 .breadcrumb, .breadcrumb > .active {
