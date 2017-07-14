@@ -11930,8 +11930,8 @@ html {
 
 .breadcrumb {
     font-size: 18px;
-    margin-top: 9px;
-    margin-bottom: 21px;
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 .breadcrumb, .breadcrumb > .active {
@@ -15041,7 +15041,7 @@ div.dataTables_length select {
     #wrapper
     {
         padding-right: 0;
-        padding-left: 217px;
+        padding-left: 208px;
     }
 
     #wrapper.toggled-left
