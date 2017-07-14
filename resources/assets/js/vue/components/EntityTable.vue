@@ -938,7 +938,7 @@
     .context-menu li > i::before {
         position: absolute;
         top: 10px;
-        color: initial;
+        color: #878787;
     }
 </style>
 <style scoped>

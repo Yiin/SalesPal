@@ -8,6 +8,8 @@ use Request;
 use URL;
 use Utils;
 use Validator;
+use Former;
+use App\Libraries\Former\SalesPal;
 
 /**
  * Class AppServiceProvider.

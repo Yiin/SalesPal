@@ -12,6 +12,13 @@
         </li>
         <li class="active">Clients / New Client</li>
     </ol>
+    {!! Former::open($url)
+            ->autocomplete('off')
+            ->rules(
+                ['email' => 'email']
+            )->addClass('recieve-vat warn-on-exit')
+            ->method($method) !!}
+
     <div class="new-client-panels-wrapper">
         <div class="new-clients-col">
             <div class="new-clients-wrapper">
@@ -22,23 +29,23 @@
                     <div class="form-panel-body">
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Company Name <input name="Company" type="text" value=""><br></span>
+                                <span>Company Name <input name="name" type="text" value="{{ $client ? $client->name : old('name') }}"><br></span>
                             </div>
                         </div>
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Vat Number <input name="Vat" type="text" value=""><br></span>
+                                <span>Registration Number <input name="id_number" type="text" value="{{ $client ? $client->id_number : old('id_number') }}"><br></span>
                             </div>
                             <div class="col">
-                                <span>Phone <input name="Phone" type="text" value=""><br></span>
+                                <span>VAT Number <input name="vat_number" type="text" value="{{ $client ? $client->vat_number : old('vat_number') }}"><br></span>
                             </div>
                         </div>
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Vat Number <input name="Vat" type="text" value=""><br></span>
+                                <span>Website <input name="website" type="text" value="{{ $client ? $client->website : old('website') }}"><br></span>
                             </div>
                             <div class="col">
-                                <span>Phone <input name="Phone" type="text" value=""><br></span>
+                                <span>Phone <input name="work_phone" type="text" value="{{ $client ? $client->work_phone : old('work_phone') }}"><br></span>
                             </div>
                         </div>
                     </div>
@@ -52,33 +59,31 @@
                     <div class="form-panel-body">
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Street <input name="Street" type="text" value=""><br></span>
+                                <span>Street <input name="address1" type="text" value="{{ $client ? $client->address1 : old('address1') }}"><br></span>
                             </div>
                             <div class="col">
-                                <span>Apt / Suite <input name="Apt" type="text" value=""><br></span>
-                            </div>
-                        </div>
-                        <div class="flex-grid">
-                            <div class="col">
-                                <span>City <input name="City" type="text" value=""><br></span>
-                            </div>
-                            <div class="col">
-                                <span>Postal Code <input name="Postal" type="text" value=""><br></span>
+                                <span>Apt / Suite <input name="address2" type="text" value="{{ $client ? $client->address2 : old('address2') }}"><br></span>
                             </div>
                         </div>
                         <div class="flex-grid">
                             <div class="col">
-                                <span>State / Province <select name="state">
-                                    <option value="state">
-                                        Panevėžio apskritis
-                                    </option>
-                                </select></span>
+                                <span>City <input name="city" type="text" value="{{ $client ? $client->city : old('city') }}"><br></span>
                             </div>
                             <div class="col">
-                                <span>Country <select name="country">
-                                    <option value="country">
-                                        Lithuania
-                                    </option>
+                                <span>Postal Code <input name="postal_code" type="text" value="{{ $client ? $client->postal_code : old('postal_code') }}"><br></span>
+                            </div>
+                        </div>
+                        <div class="flex-grid">
+                            <div class="col">
+                                <span>State / Province <input name="state" type="text"><br></span>
+                            </div>
+                            <div class="col">
+                                <span>Country <select id="country_id" name="country_id">
+                                    @foreach($countries as $country)
+                                        <option value="{{ $country->id }}">
+                                            {{ $country->name }}
+                                        </option>
+                                    @endforeach
                                 </select></span>
                             </div>
                         </div>
@@ -111,7 +116,7 @@
                             </div>
                         </div>
                         <div class="new-client-link">
-                            <a href="#">+ Add New Contact</a>
+                            <a href="javascript:addContact()">+ Add New Contact</a>
                         </div>
                     </div>
                 </div>
@@ -158,7 +163,7 @@
                             <div class="col">
                                 <span>Industry <select name="industry">
                                     <option value="industry">
-                                        Professional Services & Consulting
+                                        Professional Services &amp; Consulting
                                     </option>
                                 </select></span>
                             </div>
@@ -263,13 +268,15 @@
             </div>
         </div>
     </div>
+
     <div class="buton-wrapper">
-        <div class="btn btn-primary complete-buton">
+        <button type="submit" class="btn btn-primary complete-buton">
             Save
-        </div>
-        <div class="btn btn-primary complete-buton cancel-buton">
+        </button>
+        <a href="{{ url()->previous() }}" class="btn btn-primary complete-buton cancel-buton">
             Cancel
-        </div>
+        </a>
     </div>
+    {!! Former::close() !!}
 
 @stop
