@@ -17,6 +17,21 @@ html {
     padding: 12px 0 4px !important;
 }
 
+.breadcrumb a {
+    text-decoration: none;
+    color: #01a8fe;
+}
+
+.breadcrumb {
+    font-size: 18px;
+    margin-top: 9px;
+    margin-bottom: 21px;
+}
+
+.breadcrumb, .breadcrumb > .active {
+    color: #373737;
+}
+
 hr.separator {
   margin: 6px 0;
   border: 0;

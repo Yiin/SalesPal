@@ -10,7 +10,8 @@
         <li>
             <a class="fa fa-home" href="/"></a>
         </li>
-        <li class="active">Clients / New Client</li>
+        <li>Clients</li>
+        <li class="active">New Client</li>
     </ol>
     {!! Former::open($url)
             ->autocomplete('off')

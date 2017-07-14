@@ -1,11 +1,5 @@
 <template>
     <div>
-        <ol class="breadcrumb path">
-            <li>
-                <a class="fa fa-home" href="/"></a>
-            </li>
-            <li class="active">{{ entity_plural_full }}</li>
-        </ol>
         <div class="row table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
@@ -962,21 +956,6 @@
 
     .entities-count-control button {
         min-width: 85px;
-    }
-
-    .breadcrumb a {
-        text-decoration: none;
-        color: #01a8fe;
-    }
-
-    .breadcrumb {
-        font-size: 18px;
-        margin-top: 9px;
-        margin-bottom: 21px;
-    }
-
-    .breadcrumb, .breadcrumb > .active {
-        color: #373737;
     }
 
     .devel-dropdown-toggle {
