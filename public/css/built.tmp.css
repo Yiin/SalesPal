@@ -14903,7 +14903,7 @@ div.dataTables_length select {
         overflow: auto;
 
         width: 183px;
-        height: 500px; /*calc(100vh - 260px);*/
+        height: calc(100vh - 260px);
 
         list-style: none;
     }
