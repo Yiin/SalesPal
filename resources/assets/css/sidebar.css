@@ -119,6 +119,7 @@
     #left-sidebar-wrapper .sidebar-nav li
     {
         line-height: 20px;
+        margin-right: 11px;
     }
 
     #left-sidebar-wrapper .sidebar-nav li span.badge
@@ -406,7 +407,6 @@
 #left-sidebar-wrapper .sidebar-nav li a
 {
     position: relative;
-    margin-right: 11px;
 }
 #left-sidebar-wrapper .sidebar-nav li a i
 {
