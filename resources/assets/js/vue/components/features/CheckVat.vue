@@ -159,14 +159,14 @@
     }
 
     .status-popup::after {
-        content: '▼';
+        content: '';
         position: absolute;
-        color: white;
-        text-shadow: 0 2px 3px #aaaaaa;
-        top: 39px;
-        left: 50%;
-        transform: scale(0.6732, 0.3332);
-        line-height: 1;
+        background: url(/img/icons/triangle.svg);
+        top: 45px;
+        left: 265px;
+        width: 12px;
+        height: 6px;
+        filter: drop-shadow(0 3px 1px rgba(0, 0, 3, 0.1));
     }
 
 
