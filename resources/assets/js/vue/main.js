@@ -3,6 +3,7 @@ require('./bootstrap');
 // partials
 Vue.component('child-dropdown-menu', require('./components/partials/ChildDropdownMenu.vue'));
 Vue.component('contacts-panel', require('./components/partials/ContactsPanel.vue'));
+Vue.component('client-vat-checker', require('./components/partials/ClientVatChecker.vue'));
 
 // features
 Vue.component('feature-check-vat', require('./components/features/CheckVat.vue'));

@@ -14569,7 +14569,7 @@ div.dataTables_length select {
     display: inline-block;
 }
 
-.vat-panel-body-header span > input
+.vat-panel-body-header input
 {
     font-size: 16px;
     font-weight: normal;
@@ -14670,7 +14670,10 @@ div.dataTables_length select {
 .flex-grid
 {
     display: flex;
+
+    margin-bottom: 20px;
 }
+
 .col
 {
     padding-right: 18px;
@@ -14679,16 +14682,21 @@ div.dataTables_length select {
     flex-grow: 1;
 }
 
-
-.col > span
-{
-    display: grid;
-}
-
 .col > span
 {
     font-size: 14px;
     font-weight: 500;
+}
+
+.input-error
+{
+    font-size: 13px;
+
+    display: inline;
+
+    padding-left: 13px;
+
+    color: #f40000;
 }
 
 .col span > input
@@ -14713,7 +14721,6 @@ div.dataTables_length select {
     width: 100%;
     height: 44px;
     margin-top: 5px;
-    margin-bottom: 10px;
     padding-left: 15px;
 
     border: 1px solid #cecece;
@@ -14729,8 +14736,10 @@ div.dataTables_length select {
     font-size: 16px;
     font-weight: normal;
 
+    display: block;
     overflow: hidden;
 
+    width: 100%;
     height: auto;
     min-height: 114px;
     margin-top: 5px;
