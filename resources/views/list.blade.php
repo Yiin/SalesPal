@@ -1,3 +1,10 @@
+<ol class="breadcrumb path">
+    <li>
+        <a class="fa fa-home" href="/"></a>
+    </li>
+    <li class="active">{{ Utils::getEntityName($entityType) }}s</li>
+</ol>
+
 {!! Former::open(Utils::pluralizeEntityType($entityType) . '/bulk')->addClass('listForm_' . $entityType) !!}
     {!! Former::hidden('action')->id('action_' . $entityType) !!}
     {!! Former::hidden('public_id')->id('public_id_' . $entityType) !!}

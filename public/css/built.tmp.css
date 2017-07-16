@@ -11920,7 +11920,22 @@ html {
 
 /*a:hover { text-decoration: none; color: #0a3857;}*/
 .breadcrumb {
-    padding: 3px 0 !important;
+    padding: 12px 0 4px !important;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #01a8fe;
+}
+
+.breadcrumb {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.breadcrumb, .breadcrumb > .active {
+    color: #373737;
 }
 
 hr.separator {
@@ -14408,6 +14423,7 @@ div.dataTables_length select {
     color: #01a8fe;
     font-size: ;
 }
+<<<<<<< HEAD
 
 .radio hr { 
     margin-top: 16px;
@@ -14498,10 +14514,15 @@ div.dataTables_length select {
 
 
 .path {
+=======
+.path
+{
+>>>>>>> 68526f0d2218d555edf4cf9b1966d8e1f0642a3d
     font-size: 18px;
 }
 
-.fa-home {
+.fa-home
+{
     color: #01a8fe;
 }
 
@@ -14513,7 +14534,7 @@ div.dataTables_length select {
     padding-left: 20px;
 
     background: #fff;
-    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
 }
 
 .new-clients-col
@@ -14559,6 +14580,7 @@ div.dataTables_length select {
     font-size: 16px;
     font-weight: 500;
 
+    cursor: pointer;
     text-decoration: none;
 
     color: #01a8fe;
@@ -14621,7 +14643,7 @@ div.dataTables_length select {
     padding-left: 20px;
 
     background: #fff;
-    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
 }
 
 .vat-wrapper div > hr
@@ -14646,22 +14668,22 @@ div.dataTables_length select {
     font-weight: 500;
 
     display: inline-block;
-
 }
 
-.vat-panel-body-header span > input
+.vat-panel-body-header input
 {
     font-size: 16px;
     font-weight: normal;
 
+    width: 100%;
     height: 44px;
     margin-top: 5px;
     margin-top: 5px;
     padding-left: 15px;
-    border: 1px solid #e2e2e2;
-    border-radius: 2px;
-    width: 100%;
     padding-left: 13px;
+
+    border: 1px solid #cecece;
+    border-radius: 2px;
 }
 
 .check-button
@@ -14721,8 +14743,10 @@ div.dataTables_length select {
     font-weight: 500;
 }
 
-.buton-wrapper {
+.buton-wrapper
+{
     display: inline-block;
+
     margin-top: 7px;
     padding-left: 15px;
 }
@@ -14747,7 +14771,10 @@ div.dataTables_length select {
 .flex-grid
 {
     display: flex;
+
+    margin-bottom: 20px;
 }
+
 .col
 {
     padding-right: 18px;
@@ -14756,16 +14783,21 @@ div.dataTables_length select {
     flex-grow: 1;
 }
 
-
-.col > span
-{
-    display: grid;
-}
-
 .col > span
 {
     font-size: 14px;
     font-weight: 500;
+}
+
+.input-error
+{
+    font-size: 13px;
+
+    display: inline;
+
+    padding-left: 13px;
+
+    color: #f40000;
 }
 
 .col span > input
@@ -14778,7 +14810,7 @@ div.dataTables_length select {
     margin-top: 5px;
     padding-left: 15px;
 
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
 }
 
@@ -14790,10 +14822,9 @@ div.dataTables_length select {
     width: 100%;
     height: 44px;
     margin-top: 5px;
-    margin-bottom: 10px;
     padding-left: 15px;
 
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
 
     -webkit-appearance: none;
@@ -14806,8 +14837,10 @@ div.dataTables_length select {
     font-size: 16px;
     font-weight: normal;
 
+    display: block;
     overflow: hidden;
 
+    width: 100%;
     height: auto;
     min-height: 114px;
     margin-top: 5px;
@@ -14815,7 +14848,7 @@ div.dataTables_length select {
 
     resize: none;
 
-    border: 1px solid #e2e2e2;
+    border: 1px solid #cecece;
     border-radius: 2px;
 }
 
@@ -14824,55 +14857,70 @@ div.dataTables_length select {
     flex-grow: 2.07;
 }
 
-.show-blade-task {
+.show-blade-task
+{
     margin-top: 12px !important;
-    padding-left: 20px;
-    border-left: 1px solid #e1e1e1;
     padding-top: 5px;
     padding-bottom: 5px;
+    padding-left: 20px;
+
+    border-left: 1px solid #e1e1e1;
 }
 
-.show-blade-task span > a {
+.show-blade-task span > a
+{
     text-decoration: none;
+
     color: #333;
 }
 
-.table-invoices span > a {
+.table-invoices span > a
+{
     margin-right: 19px;
 }
-.table-heading {
+.table-heading
+{
     border-bottom: 4px solid #e2e2e2;
 }
 
-.show-blade-navbar {
+.show-blade-navbar
+{
     margin-left: 20px;
 }
 
-.show-blade-navbar li > a {
-    text-decoration: none;
+.show-blade-navbar li > a
+{
     font-weight: 500;
+
+    text-decoration: none;
+
     color: #333;
 }
 
-.show-blade-navbar .active {
-    border-bottom: 4px;
+.show-blade-navbar .active
+{
     color: #01a8fe;
+    border-bottom: 4px;
 }
 
-.table-wrapper {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+.table-wrapper
+{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
 }
 
-.table-body {
+.table-body
+{
     padding-right: 20px;
     padding-left: 20px;
 }
 
-.show-wrapper-img-header {
+.show-wrapper-img-header
+{
     margin-left: -20px;
 }
 
+<<<<<<< HEAD
 .invoice-new-col-first
 {
     width: calc(100% * 895 / 1598 );
@@ -14963,6 +15011,8 @@ div.dataTables_length select {
 .invoices-wrapper {
     padding-bottom: 25px;
 }
+=======
+>>>>>>> 68526f0d2218d555edf4cf9b1966d8e1f0642a3d
 /*!
  * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
  * Copyright 2013-2016 Start Bootstrap
@@ -14992,7 +15042,7 @@ div.dataTables_length select {
 
     #wrapper.toggled-left
     {
-        padding-left: 220px;
+        padding-left: 211px;
     }
 
     #wrapper.toggled-right
@@ -15075,7 +15125,7 @@ div.dataTables_length select {
     {
         overflow: auto;
 
-        width: 182px;
+        width: 183px;
         height: calc(100vh - 260px);
 
         list-style: none;
@@ -15084,6 +15134,7 @@ div.dataTables_length select {
     #left-sidebar-wrapper .sidebar-nav li
     {
         line-height: 20px;
+        margin-right: 11px;
     }
 
     #left-sidebar-wrapper .sidebar-nav li span.badge
@@ -15214,7 +15265,7 @@ div.dataTables_length select {
     #wrapper
     {
         padding-right: 0;
-        padding-left: 220px;
+        padding-left: 208px;
     }
 
     #wrapper.toggled-left
@@ -15254,7 +15305,7 @@ div.dataTables_length select {
     {
         position: relative;
 
-        padding: 20px 26px 200px 20px;
+        padding: 20px 28px 200px 30px;
     }
 
     #wrapper.toggled-left #page-content-wrapper
@@ -15431,7 +15482,7 @@ div.dataTables_length select {
     margin-top: 6px;
 
     border-radius: 5px;
-    background-color: #f3f3f3;
+    background-color: transparent;
 }
 
 .sidebar-nav::-webkit-scrollbar
@@ -15444,6 +15495,17 @@ div.dataTables_length select {
 .sidebar-nav::-webkit-scrollbar-thumb
 {
     border-radius: 5px;
+    background-color: transparent;
+}
+
+
+.sidebar-nav:hover::-webkit-scrollbar-track
+{
+    background-color: #f3f3f3;
+}
+
+.sidebar-nav:hover::-webkit-scrollbar-thumb
+{
     background-color: #01a8fe;
 }
 
