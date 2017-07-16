@@ -14415,11 +14415,13 @@ div.dataTables_length select {
     color: #01a8fe;
     font-size: ;
 }
-.path {
+.path
+{
     font-size: 18px;
 }
 
-.fa-home {
+.fa-home
+{
     color: #01a8fe;
 }
 
@@ -14431,7 +14433,7 @@ div.dataTables_length select {
     padding-left: 20px;
 
     background: #fff;
-    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
 }
 
 .new-clients-col
@@ -14477,6 +14479,7 @@ div.dataTables_length select {
     font-size: 16px;
     font-weight: 500;
 
+    cursor: pointer;
     text-decoration: none;
 
     color: #01a8fe;
@@ -14539,7 +14542,7 @@ div.dataTables_length select {
     padding-left: 20px;
 
     background: #fff;
-    box-shadow:  -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
 }
 
 .vat-wrapper div > hr
@@ -14564,7 +14567,6 @@ div.dataTables_length select {
     font-weight: 500;
 
     display: inline-block;
-
 }
 
 .vat-panel-body-header span > input
@@ -14572,14 +14574,15 @@ div.dataTables_length select {
     font-size: 16px;
     font-weight: normal;
 
+    width: 100%;
     height: 44px;
     margin-top: 5px;
     margin-top: 5px;
     padding-left: 15px;
+    padding-left: 13px;
+
     border: 1px solid #cecece;
     border-radius: 2px;
-    width: 100%;
-    padding-left: 13px;
 }
 
 .check-button
@@ -14639,8 +14642,10 @@ div.dataTables_length select {
     font-weight: 500;
 }
 
-.buton-wrapper {
+.buton-wrapper
+{
     display: inline-block;
+
     margin-top: 7px;
     padding-left: 15px;
 }
@@ -14742,54 +14747,69 @@ div.dataTables_length select {
     flex-grow: 2.07;
 }
 
-.show-blade-task {
+.show-blade-task
+{
     margin-top: 12px !important;
-    padding-left: 20px;
-    border-left: 1px solid #e1e1e1;
     padding-top: 5px;
     padding-bottom: 5px;
+    padding-left: 20px;
+
+    border-left: 1px solid #e1e1e1;
 }
 
-.show-blade-task span > a {
+.show-blade-task span > a
+{
     text-decoration: none;
+
     color: #333;
 }
 
-.table-invoices span > a {
+.table-invoices span > a
+{
     margin-right: 19px;
 }
-.table-heading {
+.table-heading
+{
     border-bottom: 4px solid #e2e2e2;
 }
 
-.show-blade-navbar {
+.show-blade-navbar
+{
     margin-left: 20px;
 }
 
-.show-blade-navbar li > a {
-    text-decoration: none;
+.show-blade-navbar li > a
+{
     font-weight: 500;
+
+    text-decoration: none;
+
     color: #333;
 }
 
-.show-blade-navbar .active {
-    border-bottom: 4px;
+.show-blade-navbar .active
+{
     color: #01a8fe;
+    border-bottom: 4px;
 }
 
-.table-wrapper {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+.table-wrapper
+{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
 }
 
-.table-body {
+.table-body
+{
     padding-right: 20px;
     padding-left: 20px;
 }
 
-.show-wrapper-img-header {
+.show-wrapper-img-header
+{
     margin-left: -20px;
 }
+
 /*!
  * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
  * Copyright 2013-2016 Start Bootstrap

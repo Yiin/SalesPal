@@ -76,7 +76,7 @@
                         </div>
                         <div class="flex-grid">
                             <div class="col">
-                                <span>State / Province <input name="state" type="text"><br></span>
+                                <span>State / Province <input name="state" type="text" value="{{ $client ? $client->state : old('state') }}"><br></span>
                             </div>
                             <div class="col">
                                 <span>Country <select id="country_id" name="country_id">
@@ -91,36 +91,12 @@
                     </div>
                 </div>
             </div>
-            <div class="new-clients-wrapper">
-                <div class="form-wrapper">
-                    <div class="contacts-panel-header new-clients-header">
-                        Contacts
-                    </div>
-                    <div class="form-panel-body">
-                        <div class="flex-grid">
-                            <div class="col">
-                                <span>First Name <input name="Registration" type="text" value=""><br></span>
-                            </div>
-                            <div class="col">
-                                <span>Last Name <input name="Website" type="text" value=""><br></span>
-                            </div>
-                            <div class="col item">
-                                <span>Job Position <input name="Website" type="text" value=""><br></span>
-                            </div>
-                        </div>
-                        <div class="flex-grid">
-                            <div class="col">
-                                <span>Email <input name="Vat" type="text" value=""><br></span>
-                            </div>
-                            <div class="col">
-                                <span>Phone <input name="Phone" type="text" value=""><br></span>
-                            </div>
-                        </div>
-                        <div class="new-client-link">
-                            <a href="javascript:addContact()">+ Add New Contact</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="new-clients-wrapper vue-app" id="vueapp_{{ str_random() }}">
+                <contacts-panel
+                    @if(isset($client))
+                        :contacts="{{ $client->contacts }}"
+                    @endif
+                ></contacts-panel>
             </div>
             <div class="new-clients-wrapper">
                 <div class="form-wrapper">
@@ -130,49 +106,59 @@
                     <div class="form-panel-body">
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Currency <select name="currency">
-                                    <option value="euros">
-                                        Euros
-                                    </option>
+                                <span>Currency <select name="currency_id">
+                                    @foreach($currencies as $currency)
+                                        <option value="{{ $currency->id }}" {{ $client && $client->currency_id === $currency->id ? 'selected' : '' }}>
+                                            {{ $currency->name }} ({{ $currency->code }})
+                                        </option>
+                                    @endforeach
                                 </select></span>
                             </div>
                         </div>
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Language <select name="language">
-                                    <option value="language">
-                                        Lithuanian
-                                    </option>
+                                <span>Language <select name="language_id">
+                                    @foreach($languages as $language)
+                                        <option value="{{ $language->id }}" {{ $client && $client->language_id === $language->id ? 'selected' : '' }}>
+                                            {{ $language->name }}
+                                        </option>
+                                    @endforeach
                                 </select></span>
                             </div>
                             <div class="col">
-                                <span>Payment-Terms <select name="payment">
-                                    <option value="payment">
-                                        Net 90
-                                    </option>
+                                <span>Payment-Terms <select name="payment_terms">
+                                    @foreach($paymentTerms as $paymentTerm)
+                                        <option value="{{ $paymentTerm->id }}" {{ $client && $client->payment_terms === $paymentTerm->id ? 'selected' : '' }}>
+                                            {{ $paymentTerm->name }}
+                                        </option>
+                                    @endforeach
                                 </select></span>
                             </div>
                         </div>
                         <div class="flex-grid">
                             <div class="col">
-                                <span>Company Size <select name="company">
-                                    <option value="company">
-                                        101 - 500
-                                    </option>
+                                <span>Company Size <select name="size_id">
+                                    @foreach($sizes as $companySize)
+                                        <option value="{{ $companySize->id }}" {{ $client && $client->size_id == $companySize->id ? 'selected' : '' }}>
+                                            {{ $companySize->name }}
+                                        </option>
+                                    @endforeach
                                 </select></span>
                             </div>
                             <div class="col">
                                 <span>Industry <select name="industry">
-                                    <option value="industry">
-                                        Professional Services &amp; Consulting
-                                    </option>
+                                    @foreach($industries as $industry)
+                                        <option value="{{ $industry->id }}" {{ $client && $client->industry_id == $industry->id ? 'selected' : '' }}>
+                                            {{ $industry->name }}
+                                        </option>
+                                    @endforeach
                                 </select></span>
                             </div>
                         </div>
                         <div class="flex-grid">
                             <div class="col">
                                 <span>Private Notes 
-                                <textarea id="input-message" name="message"></textarea></span>
+                                <textarea name="private_notes">{{ $client ? $client->private_notes : old('private_notes') }}</textarea></span>
                             </div>
                         </div>
                     </div>
@@ -180,93 +166,11 @@
             </div>
         </div>
         <div class="vat-col">
-            <div class="vat-clients-wrapper">
-                <div class="vat-wrapper">
-                    <div class="vat-panel-header">
-                        Check Your Vat Number
-                        <hr>
-                    </div>
-                    <div class="vat-panel-body">
-                        <div class="vat-panel-body-header">
-                            <span>Vat Number <input name="Check" type="text" value=""><br></span>
-                            <div class="btn-primary btn check-button">
-                                Check
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="vat-result">
-                            <div class="border"></div>
-                            <div class="details">
-                                <div class="detail">
-                                    VAT: <span>IE156548987456123155</span>
-                                </div>
-                                <div class="detail green-text">
-                                    Status: <span>Correct</span>
-                                </div>
-                                <div class="detail">
-                                    Checkedat: <span>Now</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="vat-result">
-                            <div class="border"></div>
-                            <div class="details">
-                                <div class="detail">
-                                    VAT: <span>IE156548987456123155</span>
-                                </div>
-                                <div class="detail green-text">
-                                    Status: <span>Correct</span>
-                                </div>
-                                <div class="detail">
-                                    Checkedat: <span>Now</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="vat-result">
-                            <div class="border"></div>
-                            <div class="details">
-                                <div class="detail">
-                                    VAT: <span>IE156548987456123155</span>
-                                </div>
-                                <div class="detail green-text">
-                                    Status: <span>Correct</span>
-                                </div>
-                                <div class="detail">
-                                    Checkedat: <span>Now</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="vat-result">
-                            <div class="border red-border"></div>
-                            <div class="details">
-                                <div class="detail">
-                                    VAT: <span>IE156548987456123155</span>
-                                </div>
-                                <div class="detail red-text">
-                                    Status: <span>Incorect</span>
-                                </div>
-                                <div class="detail">
-                                    Checkedat: <span>Now</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="vat-result">
-                            <div class="border red-border"></div>
-                            <div class="details">
-                                <div class="detail">
-                                    VAT: <span>IE156548987456123155</span>
-                                </div>
-                                <div class="detail red-text">
-                                    Status: <span>Incorect</span>
-                                </div>
-                                <div class="detail">
-                                    Checkedat: <span>Now</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <client-vat-checker
+                @if(isset($client))
+                    :vatChecks="{{ $client->vatChecks()->limit(12)->get() }}"
+                @endif
+            ></client-vat-checker>
         </div>
     </div>
 

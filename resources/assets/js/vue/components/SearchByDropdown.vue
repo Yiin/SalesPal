@@ -66,12 +66,9 @@ export default {
 
 
         setValue(optionName, value) {
-            console.log('setValue', optionName, value, this.options);
-
             this.$refs.textItem.forEach(ref => {
                 if (ref.option.name === optionName) {
                     ref.setValue(value);
-                    console.log('value set', ref.option);
                 }
             });
         },

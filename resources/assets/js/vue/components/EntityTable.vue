@@ -517,19 +517,13 @@
 
 
             handleError(err) {
-                this.ignore_watchers = true;
                 this.table_state.loading = false;
                 this.entities_loaded = true;
-                // console.error(err);
             },
 
 
 
             searchByHandler() {
-                if (this.ignore_watchers) {
-                    this.ignore_watchers = false;
-                    return;
-                }
                 this._loadEntities({
                     resetPage: true
                 });
@@ -808,7 +802,7 @@
                         let key = parts[0].split('[');
                         let type = key[0];
                         let typeKey = key[1].split(']')[0];
-                        // console.log(parts, key, type, typeKey);
+                        console.log(parts, key, type, typeKey);
 
                         let value = decodeURIComponent(parts[1]);
 
@@ -835,6 +829,15 @@
                             case 'searchBy':
                                 this.$refs.searchByDropdown.setValue(typeKey, value);
                                 break;
+                            case 'orderBy':
+                                switch (typeKey) {
+                                    case '0':
+                                        this.orderBy = value;
+                                        break;
+                                    case '1':
+                                        this.orderDirection = value;
+                                        break;
+                                }
                         }
                     });
 

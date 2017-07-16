@@ -56,19 +56,17 @@ export default {
         },
 
         clear() {
-            if (this.medium.value().trim().length) {
-                this.medium.value('');
-                this.option.value = '';
+            this.medium.value('');
+            this.option.value = '';
 
-                this.$forceUpdate();
-                this.$emit('changed');
-            }
+            this.$forceUpdate();
+            this.$emit('changed');
         },
 
         setValue(value) {
             this.option.value = value;
             this.medium.value(value);
-            console.log('updating', this.option.name, 'value to', value);
+            this.$forceUpdate();
         }
     },
 
@@ -103,13 +101,23 @@ export default {
 
 .clear-input {
     position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 0;
+    right: 4px;
+    cursor: pointer;
+    padding: 16px;
+}
+
+.clear-input::before {
+    position: absolute;
     background: url(/img/icons/cross.svg) no-repeat;
     background-size: contain;
     width: 12px;
     height: 12px;
+    content: "";
     top: 11px;
-    right: 15px;
-    cursor: pointer;
+    right: 9px;
 }
 
 [contenteditable="true"]:focus + .clear-input {
