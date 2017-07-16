@@ -373,3 +373,94 @@
 .show-wrapper-img-header {
     margin-left: -20px;
 }
+
+.invoice-new-col-first
+{
+    width: calc(100% * 895 / 1598 );
+    margin-right: 33px;
+    float: left;
+}
+
+.invoice-new-col-secound
+{
+    width: calc(100% * 670 / 1598);
+    float: right;
+}
+
+.invoices-form {
+    display: flex;
+}
+
+.invoices-form-first{
+    flex-grow: 2;
+    padding-bottom: 45px;
+}
+
+.invoices-form-secound{
+    flex-grow: 3.87;
+}
+
+.second-invoice-form {
+    padding-top: 35px;
+    min-height: 753px;
+}
+
+
+.invoice-hr {
+    width: 96%;
+    margin-right: 20px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+
+.invoices-col-decor {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    width: 72px;
+    height: 30px;
+    line-height: 26px;
+    text-align: center;
+    display: inline-block;
+}
+
+.invoices-small-color {
+    border: 1px solid #23b820;
+    background-color: #23b820;
+}
+
+
+.invoices-big-color {
+    border: 1px solid #E30B0C;
+    background-color: #E30B0C;
+}
+
+.right-side-nav {
+    float: right;
+    font-size: 16px;
+    line-height: 50px;
+    margin-right: 18px;
+}
+
+.right-side-nav span >a {
+    text-decoration: none !important;
+    color: #333 !important;
+}
+
+.select-without-name {
+    margin-top: 20px;
+}
+
+.margin-fix {
+    margin-bottom: -5px;
+
+}
+
+.textarea-height {
+    min-height:102px !important;
+}
+
+.invoices-wrapper {
+    padding-bottom: 25px;
+}

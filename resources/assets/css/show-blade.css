@@ -53,10 +53,21 @@
     background-color: #fe6c01;
 }
 
+.green-header {
+    border-color: #23b820;
+    background-color: #23b820;
+}
+
 .green-color {
     border-color: #23b820;
     background-color: #23b820;
 }
+
+.blue-header {
+    border-color: #01a8fe;
+    background-color: #01a8fe; 
+}
+
 .show-wrapper-body {
     margin-top: -1px;
 }
@@ -73,9 +84,6 @@
     margin-top: 5px;
 }
 
-.grid-col > span:nth-child(2) {
-    color: blue;
-}
 
 .grid-col > hr {
     width: 30px;
@@ -90,3 +98,91 @@
     color: #01a8fe;
     font-size: ;
 }
+
+.radio hr { 
+    margin-top: 16px;
+    margin-bottom: 13px;  
+}
+.selector-incoives {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.radio  {
+    padding-right: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    }
+
+.radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+.radio input[type="radio"] + .radio-label:before {
+    content: '';
+    background: #fff;
+    border-radius: 100%;
+    border: 2px solid #333;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    -webkit-transition: all 250ms ease;
+    transition: all 250ms ease;
+    margin-bottom: -3px;
+    margin-right: 20px;
+}
+.radio input[type="radio"]:checked + .radio-label:before {
+  background-color: #01a8fe;
+    box-shadow: inset 0 0 0 3px #fff;
+}
+.radio input[type="radio"]:focus + .radio-label:before {
+  outline: none;
+  border-color: #333;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+.radio input[type="radio"]:disabled + .radio-label:before {
+  box-shadow: inset 0 0 0 3px #fff;
+  border-color: #333;
+  background: #01a8fe;
+}
+.radio input[type="radio"] + .radio-label:empty:before {
+  margin-right: 0;
+}
+
+.radio label {
+    min-height: 20px;
+    padding-left: 0px;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 1px;
+}
+
+.scrollbar
+{
+    overflow-y: scroll;
+    height: 233px;
+    margin-right: 13px;
+    margin-bottom: 5px;
+    margin-top: 4px;
+}
+
+
+.style-2::-webkit-scrollbar-track
+{
+    border-radius: 2px;
+    background-color: #e2e2e2;
+}
+
+.style-2::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: #e2e2e2;
+}
+
+.style-2::-webkit-scrollbar-thumb
+{
+    border-radius: 2px;
+    background-color: #01a8fe;
+}
+

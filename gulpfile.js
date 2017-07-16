@@ -59,6 +59,7 @@ elixir(function(mix) {
         'style.css',
         'show-blade.css',
         'new-entity-form.css',
+        'edit-blade.css'
         'sidebar.css',
         'colors.css',
         'fonts.css',
