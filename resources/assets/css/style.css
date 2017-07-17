@@ -2300,7 +2300,11 @@ div.dataTables_length select {
 .textanimation:visited {
     color: #fff;
     background-color: #01a8fe;
-}    
+}
+
+// .vue-dropdown-option > label {
+//     margin-bottom: 0px;
+// }
 
 
 .table-heading-controls > .create-btn-wrapper,
