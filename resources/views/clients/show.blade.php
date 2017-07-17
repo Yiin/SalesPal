@@ -12,16 +12,16 @@
                 </div>
                 <div class="show-wrapper-body">
                     <div class="grid-col text-color">
-                        Paid to date
+                        {{ trans('texts.paid_to_date') }}
                         <span>
-                            $ 154,577.99
+                            {{ Utils::formatMoney($client->paid_to_date, $client->getCurrencyId()) }}
                         </span>
                         <hr>
                     </div>
                     <div class="grid-col text-color">
-                        Outstanding
+                        {{ trans('texts.balance') }}
                         <span>
-                            $ 541,874,99.87
+                            {{ Utils::formatMoney($client->balance, $client->getCurrencyId()) }}
                         </span>
                     </div>
                 </div>

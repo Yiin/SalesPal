@@ -214,10 +214,6 @@
     padding-bottom: 15px;
 }
 
-.detail
-{
-    margin-bottom: 5px;
-}
 
 .detail > span
 {
@@ -253,7 +249,7 @@
 {
     display: flex;
 
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .col
@@ -399,4 +395,13 @@
 .show-wrapper-img-header
 {
     margin-left: -20px;
+}
+
+.invoices-buton-wrapper {
+    display: inline-block;
+}
+
+.sent-buton {
+    background-color: #23b820; 
+    border-color: #23b820;
 }

@@ -53,10 +53,21 @@
     background-color: #fe6c01;
 }
 
+.green-header {
+    border-color: #23b820;
+    background-color: #23b820;
+}
+
 .green-color {
     border-color: #23b820;
     background-color: #23b820;
 }
+
+.blue-header {
+    border-color: #01a8fe;
+    background-color: #01a8fe; 
+}
+
 .show-wrapper-body {
     margin-top: -1px;
 }
@@ -73,9 +84,6 @@
     margin-top: 5px;
 }
 
-.grid-col > span:nth-child(2) {
-    color: blue;
-}
 
 .grid-col > hr {
     width: 30px;
@@ -90,3 +98,4 @@
     color: #01a8fe;
     font-size: ;
 }
+
