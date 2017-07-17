@@ -11,7 +11,7 @@
             <a class="fa fa-home" href="/"></a>
         </li>
         <li>Clients</li>
-        <li class="active">New Client</li>
+        <li class="active">{{ $client ? 'Edit' : 'Create' }} Client</li>
     </ol>
     {!! Former::open($url)
             ->autocomplete('off')
@@ -80,7 +80,7 @@
                                     <span>State / Province <input name="state" type="text" value="{{ $client ? $client->state : old('state') }}"><br></span>
                                 </div>
                                 <div class="col">
-                                    <span>Country <select id="country_id" name="country_id">
+                                    <span>Country <select class="form-select" id="country_id" name="country_id">
                                         @foreach($countries as $country)
                                             <option value="{{ $country->id }}">
                                                 {{ $country->name }}
@@ -94,7 +94,7 @@
                 </div>
                 <div class="new-clients-wrapper">
                     <contacts-panel
-                        @if(isset($client))
+                        @if($client)
                             :contacts="{{ $client->contacts }}"
                         @endif
                     ></contacts-panel>
@@ -107,7 +107,7 @@
                         <div class="form-panel-body">
                             <div class="flex-grid">
                                 <div class="col">
-                                    <span>Currency <select name="currency_id">
+                                    <span>Currency <select class="form-select" name="currency_id">
                                         @foreach($currencies as $currency)
                                             <option value="{{ $currency->id }}" {{ $client && $client->currency_id === $currency->id ? 'selected' : '' }}>
                                                 {{ $currency->name }} ({{ $currency->code }})
@@ -118,7 +118,7 @@
                             </div>
                             <div class="flex-grid">
                                 <div class="col">
-                                    <span>Language <select name="language_id">
+                                    <span>Language <select class="form-select" name="language_id">
                                         @foreach($languages as $language)
                                             <option value="{{ $language->id }}" {{ $client && $client->language_id === $language->id ? 'selected' : '' }}>
                                                 {{ $language->name }}
@@ -127,7 +127,7 @@
                                     </select></span>
                                 </div>
                                 <div class="col">
-                                    <span>Payment-Terms <select name="payment_terms">
+                                    <span>Payment-Terms <select class="form-select" name="payment_terms">
                                         @foreach($paymentTerms as $paymentTerm)
                                             <option value="{{ $paymentTerm->id }}" {{ $client && $client->payment_terms === $paymentTerm->id ? 'selected' : '' }}>
                                                 {{ $paymentTerm->name }}
@@ -138,7 +138,7 @@
                             </div>
                             <div class="flex-grid">
                                 <div class="col">
-                                    <span>Company Size <select name="size_id">
+                                    <span>Company Size <select class="form-select" name="size_id">
                                         @foreach($sizes as $companySize)
                                             <option value="{{ $companySize->id }}" {{ $client && $client->size_id == $companySize->id ? 'selected' : '' }}>
                                                 {{ $companySize->name }}
@@ -147,7 +147,7 @@
                                     </select></span>
                                 </div>
                                 <div class="col">
-                                    <span>Industry <select name="industry">
+                                    <span>Industry <select class="form-select" name="industry">
                                         @foreach($industries as $industry)
                                             <option value="{{ $industry->id }}" {{ $client && $client->industry_id == $industry->id ? 'selected' : '' }}>
                                                 {{ $industry->name }}
@@ -168,9 +168,11 @@
             </div>
             <div class="vat-col">
                 <client-vat-checker
-                    @if(isset($client))
-                        :vatChecks="{{ $client->vatChecks()->limit(12)->get() }}"
+                    @if($client)
+                        :vat-checks="{{ $client->vatChecks()->limit(12)->get() }}"
+                        :client="{{ $client }}"
                     @endif
+                    :countries="{{ $countries }}"
                 ></client-vat-checker>
             </div>
         </div>

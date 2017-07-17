@@ -118,7 +118,6 @@
     float: right;
 
     width: 100%;
-    height: 1620px;
     padding-top: 15px;
     padding-right: 20px;
     padding-bottom: 20px;
@@ -296,7 +295,7 @@
     border-radius: 2px;
 }
 
-.col span > select
+.form-select
 {
     font-size: 16px;
     font-weight: normal;

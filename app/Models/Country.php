@@ -20,6 +20,7 @@ class Country extends Eloquent
     protected $visible = [
         'id',
         'name',
+        'iso_3166_2',
         'swap_postal_code',
         'swap_currency_symbol',
         'thousand_separator',
