@@ -60,6 +60,7 @@ elixir(function(mix) {
         'show-blade.css',
         'new-entity-form.css',
         'edit-blade.css',
+        'show-blade-invoices.css',        
         'sidebar.css',
         'colors.css',
         'fonts.css',

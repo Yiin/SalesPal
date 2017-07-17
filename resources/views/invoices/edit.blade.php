@@ -16,233 +16,170 @@
 @stop
 
 @section('content')
-<div class="invoice-new-wrapper">
-        <div class="invoice-new-col-first">
-            <div class="panel-wrapper">
-                <div class="show-wrapper">
-                    <div class="right-side-nav">
-                        <span><a href="#">Add New Client</a></span>
+<div class="invoices-page-wrapper">
+    <div class="invoices-page-col">
+        <div class="panel-wrapper">
+            <div class="show-wrapper">
+                <div class="show-wrapper-header blue-header">
+                    Status  
+                </div>
+                <div class="show-wrapper-body">
+                    <div class="grid-col">
+                        Status
+                        <span>
+                            Viewied
+                        </span>
+                        <hr>
                     </div>
-                    <div class="show-wrapper-header blue-header">
+                    <div class="grid-col text-color">
+                        Amount
+                        <span>
+                            $ 100,852,941.99
+                        </span>
+                        <hr>
+                    </div>
+                    <div class="grid-col text-color-orange">
+                        Paid In
+                        <span>
+                            $ 0.00
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-wrapper">
+            <div class="show-wrapper">
+                <div class="show-wrapper-header orange-header">
+                    Details  
+                </div>
+                <div class="show-wrapper-body">
+                    <div class="grid-col">
                         Client
+                        <span>
+                            DYNAMIX - IT Solution
+                        </span>
+                        <hr>
                     </div>
-                    <div class="show-wrapper-body selector-invoices">
-                        <div class="scrollbar style-2">
-                            <div class="radio">
-                                <div>
-                                    <input id="radio-1" name="radio" type="radio"> <label class="radio-label" for="radio-1">DYNAMIX - IT Solutions</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-2" name="radio" type="radio"> <label class="radio-label" for="radio-2">UAB “AKA Juventus Panevežys”</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-3" name="radio" type="radio"> <label class="radio-label" for="radio-3">UAB “NORFA XL”</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-4" name="radio" type="radio"> <label class="radio-label" for="radio-4">UAB “MAXIMA LT”</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-5" name="radio" type="radio"> <label class="radio-label" for="radio-5">AB “Swedbank”</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-6" name="radio" type="radio"> <label class="radio-label" for="radio-6">AB “Swedbank”</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-7" name="radio" type="radio"> <label class="radio-label" for="radio-7">AB “Swedbank”</label>
-                                </div>
-                                <hr>
-                                <div class="radio">
-                                    <input id="radio-8" name="radio" type="radio"> <label class="radio-label" for="radio-8">AB “Swedbank”</label>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="grid-col">
+                        Invoice #
+                        <span>
+                            NN8547267
+                        </span>
+                        <hr>
                     </div>
-                </div>
-            </div>
-            <div class="double-pannel invoices-form">
-                <div class="panel-wrapper invoices-form-first">
-                    <div class="show-wrapper">
-                        <div class="show-wrapper-header orange-header">
-                            Items
-                        </div>
-                        <div class="show-wrapper-body">
-                            <div class="form-panel-body">
-                                <div class="flex-grid margin-fix">
-                                    <div class="col">
-                                        <span>Item <input name="Vat" type="text" value=""><br></span>
-                                    </div>
-                                    <div class="col">
-                                        <span>Unit Cost <input name="Phone" type="text" value=""><br></span>
-                                    </div>
-                                </div>
-                                <div class="flex-grid margin-fix">
-                                    <div class="col">
-                                        <span>Quantity <input name="Vat" type="text" value=""><br></span>
-                                    </div>
-                                    <div class="col">
-                                        <span>Tax Rate <select name="country">
-                                            <option value="country">
-                                                Small
-                                            </option>
-                                        </select></span>
-                                    </div>
-                                </div>
-                                <div class="flex-grid margin-fix">
-                                    <div class="col">
-                                        <span>Description 
-                                        <textarea class="textarea-height" id="input-message" name="message"></textarea></span>
-                                    </div>
-                                </div>
-                                <hr class="invoice-hr">
-                                <div class="flex-grid margin-fix">
-                                    <div class="col">
-                                        <span>Item <input name="Vat" type="text" value=""><br></span>
-                                    </div>
-                                    <div class="col">
-                                        <span>Unit Cost <input name="Phone" type="text" value=""><br></span>
-                                    </div>
-                                </div>
-                                <div class="flex-grid margin-fix">
-                                    <div class="col">
-                                        <span>Quantity <input name="Vat" type="text" value=""><br></span>
-                                    </div>
-                                    <div class="col">
-                                        <span>Tax Rate <select name="country">
-                                            <option value="country">
-                                                Small
-                                            </option>
-                                        </select></span>
-                                    </div>
-                                </div>
-                                <div class="flex-grid margin-fix">
-                                    <div class="col">
-                                        <span>Description 
-                                        <textarea class="textarea-height" id="input-message" name="message"></textarea></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="grid-col">
+                        PO #
+                        <span>
+                            87574468
+                        </span>
+                        <hr>
                     </div>
-                </div>
-                <div class="invoices-form-secound">
-                    <div class="panel-wrapper second-invoice-form">
-                        <div class="show-wrapper-body">
-                            <div class="grid-col">
-                                Subtotal <span>€ 75.99</span>
-                                <hr>
-                            </div>
-                            <div class="grid-col">
-                                Tax
-                                <div>
-                                    <span></span>
-                                    <div class="invoices-col-decor invoices-small-color">
-                                        <span>SMALL</span>
-                                    </div><span>2.78 %</span> <span>€ 999.000</span>
-                                </div>
-                                <hr>
-                            </div>
-                            <div class="grid-col">
-                                Other Tax
-                                <div>
-                                    <span></span>
-                                    <div class="invoices-col-decor invoices-big-color">
-                                        <span>BIG</span>
-                                    </div><span>52.78 %</span> <span>€ 999,999.000</span>
-                                </div>
-                                <hr>
-                            </div>
-                            <div class="grid-col">
-                                Paid to Date <span>€ 0.00</span>
-                                <hr>
-                            </div>
-                            <div class="grid-col">
-                                Balance Due <span>€ 1,000,085.97</span>
-                            </div>
-                        </div>
+                    <div class="grid-col">
+                        Invoice Date
+                        <span>
+                            17 Apr, 2017
+                        </span>
+                        <hr>
+                    </div>
+                    <div class="grid-col">
+                        Invoice Due Date
+                        <span>
+                            24 Apr, 2017
+                        </span>
+                        <hr>
+                    </div>
+                    <div class="grid-col text-color">
+                        Discount
+                        <span>
+                            100 %
+                        </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-wrapper table-wrapper">
+        </div>
+    </div>
+
+    <div class="invoices-page-col-second">
+        <div class="completed-invoices-form">
+            <div class="invoices-page-first">
+                <div class="panel-wrapper table-wrapper">
                 <div class="nav table-heading">
                     <ul class="nav navbar-nav navbar-left show-blade-navbar">
                         <li class="active">
+                            <a href="#">Items</a>
+                        </li>
+                        <li>
                             <a href="#">Documents</a>
                         </li>
                         <li>
-                            <a href="#">Note to Client</a>
+                            <a href="#">Note</a>
                         </li>
                         <li>
                             <a href="#">Terms</a>
                         </li>
-                        <li>
-                            <a href="#">Footer</a>
-                        </li>
                     </ul>
                 </div>
-                <div class="show-wrapper-body">
-                    <div class="drag-and-drop"></div>
+                <div class="invoices-page-wrapper-body">
+                    <div class="scrollbar style-2">
+                    <div class="flex-grid">
+                        <div class="grid-col">
+                            Item Name
+                            <br>
+                                <span>
+                                    Adidas SPORTBOOST Running Shoes
+                                </span>
+                            <hr>
+                        </div>
+                        <div class="grid-col">
+                            Unit Cost
+                            <br>
+                                <span>
+                                    $ 79.99
+                                </span>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="flex-grid">
+                        <div class="grid-col">
+                            Quantity
+                            <br>
+                                <span>
+                                    1
+                                </span>
+                            <hr>
+                        </div>
+                        <div class="grid-col">
+                            Tax Rate
+                            <br>
+                                <span>
+                                    SMALL
+                                </span>
+                        </div>
+                    </div>
+                    <div class="flex-grid">
+                        <div class="grid-col description-hr">
+                            Description
+                            <br>
+                                <span>
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
+                                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
+                                    excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.
+                                </span>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
-        <div class="invoice-new-col-secound">
-            <div class="panel-wrapper invoices-wrapper">
-                <div class="show-wrapper">
-                    <div class="show-wrapper-header green-header">
-                        Details
-                    </div>
-                    <div class="show-wrapper-body">
-                        <div class="flex-grid margin-fix">
-                            <div class="col">
-                                <span>Invoice Date <input name="Vat" type="text" value=""><br></span>
-                            </div>
-                            <div class="col">
-                                <span>Invoice # <input name="Phone" type="text" value=""><br></span>
-                            </div>
-                        </div>
-                        <div class="flex-grid margin-fix">
-                            <div class="col">
-                                <span>Invoice Due Date <input name="Vat" type="text" value=""><br></span>
-                            </div>
-                            <div class="col">
-                                <span>Po # <input name="Phone" type="text" value=""><br></span>
-                            </div>
-                        </div>
-                        <div class="flex-grid margin-fix">
-                            <div class="col invoices-col-partial">
-                                <span>Partial / Deposit <input name="Vat" type="text" value=""><br></span>
-                            </div>
-                            <div class="col invoices-col-discount">
-                                <span>Discount <input name="Phone" type="text" value=""><br></span>
-                            </div>
-                            <div class="col invoices-col-percent">
-                                <span><select class="select-without-name" name="percent">
-                                    <option value="percent">
-                                        Percent
-                                    </option>
-                                </select></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="invoices-page-scond">
             <div class="panel-wrapper">
-                <div class="show-wrapper">
-                    <div class="show-wrapper-header purple-header">
-                        Invoice Preview
-                    </div>
-                </div>
+                <div> kazkas</div>
             </div>
-        </div>
     </div>
-    <div class="invoices-buton-wrapper">
-        <button class="btn btn-primary complete-buton sent-buton" type="submit">Mark Sent</button>
-        <button class="btn btn-primary complete-buton" type="submit">Email Invoice</button> 
-        <button class="btn btn-primary complete-buton cancel-buton" type="submit">Save Draft</button>
-    </div>
+ </div>
+ </div>
+ </div>
 @stop

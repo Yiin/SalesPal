@@ -1,0 +1,13 @@
+.invoices-page-col
+{
+    width: calc(100% * 312 / 1598);
+    margin-right: 33px;
+    float: left;
+}
+
+.invoices-page-col-second
+{
+    width: calc(100% * 1253 / 1598);
+    float: right;
+}
+
