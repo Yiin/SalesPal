@@ -59,7 +59,7 @@
 }
 
 .green-color {
-    border-color: #23b820;
+    border-color: #23b820 !important;
     background-color: #23b820;
 }
 
