@@ -46,18 +46,12 @@
         <div class="product-block-details details-padding">
           <div class="product-block-details__block-l-m">
             <div class="product-block-details__block-static details-small-margin">Product Name</div>
-            <!--<input class="p-details-input full-w" type="text" name="" value="Adidas ULTRABOOST Men's Running Shoes">-->
-            <div class="p-details-input full-w">
-              Adidas ULTRABOOST Men's Running Shoes
-            </div>
+            <input class="p-details-input full-w" type="text" name="" value="Adidas ULTRABOOST Men's Running Shoes">
           </div>
           <div class="product-block-details__block-l-m">
             <div class="product-block-details__block-static details-small-margin">Price</div>
             <div>
-              <!--<input class="p-details-input input-space" type="text" name="" value="39.99"><input class="p-details-input input-small" type="text" name="" value="39.99">-->
-              <div class="p-details-input input-space">
-                39.99
-              </div>
+              <input class="p-details-input input-space" type="text" name="" value="39.99"><!--<input class="p-details-input input-small" type="text" name="" value="&euro;">-->
               <div class="p-details-input input-small">
                 &euro;<i class="fa fa-caret-down" aria-hidden="true"></i>
               </div>
@@ -65,10 +59,7 @@
           </div>
           <div class="product-block-details__block-l-m">
             <div class="product-block-details__block-static details-small-margin">Quantity</div>
-            <!-- <input class="p-details-input full-w" type="text" name="" value="500"> -->
-            <div class="p-details-input full-w">
-              500
-            </div>
+            <input class="p-details-input full-w" type="text" name="" value="500">
           </div>
         </div>
       </div><!-- end of .product-block -->

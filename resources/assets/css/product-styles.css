@@ -2,6 +2,10 @@
 Start of product styles
 ***********/
 
+.product-row {
+  display: flex;
+}
+
 .product-page-left {
   float: left;
   width: 431px;
@@ -388,8 +392,8 @@ New Product styles
 
 .p-details-input {
   border: 1px solid #E1E1E1;
-  padding: 15px 15px;
-  line-height: 0.5;
+  padding: 13px 15px;
+  line-height: 1.2;
   box-shadow: inset 0 0 2px rgba(161, 161, 161, 0.2);
   border-radius: 2px;
 }
@@ -411,10 +415,9 @@ New Product styles
 
 .p-details-input i {
   font-size: 12px;
-  line-height: 0.3;
   padding-top: 0;
   float: right;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .details-small-margin {
