@@ -2,13 +2,14 @@
     <div class="panel panel-dashboard">
         <div class="nav dashboard-heading">
             <ul class="nav navbar-nav navbar-left dashboard-nav">
-                <li @click.prevenmt="setType(0)" :class="{ active: type === 0 }"><a href="#">All Activity</a></li>
-                <li @click.prevenmt="setType(1)" :class="{ active: type === 1 }"><a href="#">Payments</a></li>
-                <li @click.prevenmt="setType(2)" :class="{ active: type === 2 }"><a href="#">Expenses</a></li>
-                <li @click.prevenmt="setType(3)" :class="{ active: type === 3 }"><a href="#">Upcoming Invoices</a></li>
-                <li @click.prevenmt="setType(4)" :class="{ active: type === 4 }"><a href="#">Invoices Past Due</a></li>
-                <li @click.prevenmt="setType(5)" :class="{ active: type === 5 }"><a href="#">Tasks</a></li>
-                <li @click.prevenmt="setType(6)" :class="{ active: type === 6 }"><a href="#">Projects</a></li>
+                <li v-for="(title, index) in tabs"
+                    @click.prevent="setType(index)" 
+                    :class="{ active: type === index }"
+                >
+                    <a :title="title" href="#">
+                        {{ title }}
+                    </a>
+                </li>
             </ul>
             <div class="new-activity">
                 <span class="amount">{{ newToday }}</span>
@@ -62,6 +63,18 @@
         },
 
         computed: {
+
+            tabs() {
+                return [
+                    'All Activity',
+                    'Payments',
+                    'Expenses',
+                    'Upcoming Invoices',
+                    'Invoices Past Due',
+                    'Tasks',
+                    'Projects'
+                ];
+            },
 
             days() {
                 let days = [];

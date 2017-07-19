@@ -80,7 +80,8 @@ export default {
     },
 
     mounted() {
-        this.selected = this.options.filter(option => option.name === this.default || option.value === this.default)[0];
+        let defaultOption = this.options.filter(option => option.name === this.default || option.value === this.default);
+        this.selected = defaultOption.length ? defaultOption[0] : this.options.length ? this.options[0] : null;
     }
 
 }
@@ -94,6 +95,7 @@ export default {
         position: relative;
 
         display: inline-block;
+        vertical-align: top;
 
         margin: 0 15px;
     }

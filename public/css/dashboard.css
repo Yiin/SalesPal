@@ -131,7 +131,19 @@
   background-color: #fff;
 }
 
+.dashboard-nav li > a:focus::after,
+.dashboard-nav li > a::after {
+  font-weight: 500;
+  display: block;
+  visibility: hidden;
+  overflow: hidden;
+  height: 0px;
+  content: attr(title);
+  color: transparent;
+}
+
 .dashboard-nav li > a:hover {
+  font-weight: 500;
   color: #fff;
   background-color: #333;
 }
@@ -143,7 +155,11 @@
   background-color: #01a8fe;
 }
 
-.day {
+.panel-days-holder {
+  padding-right: 0;
+}
+
+.panel-days-holder .day {
   position: relative;
   display: -webkit-box;
   display: flex;
@@ -152,44 +168,44 @@
   align-items: stretch;
 }
 
-.day:first-child {
+.panel-days-holder .day:first-child {
   margin-top: -5px;
 }
 
-.day:nth-child(2) > .day-number {
+.panel-days-holder .day:nth-child(2) > .day-number {
   background-color: #23b820;
 }
 
-.day:nth-child(2) > .border {
+.panel-days-holder .day:nth-child(2) > .border {
   background-color: #23b820;
 }
 
-.day:nth-child(3) > .day-number {
+.panel-days-holder .day:nth-child(3) > .day-number {
   background-color: #fe6c01;
 }
 
-.day:nth-child(3) > .border {
+.panel-days-holder .day:nth-child(3) > .border {
   background-color: #fe6c01;
 }
 
-.day:nth-child(4) > .day-number {
+.panel-days-holder .day:nth-child(4) > .day-number {
   background-color: #9e33d6;
 }
 
-.day:nth-child(4) > .border {
+.panel-days-holder .day:nth-child(4) > .border {
   background-color: #9e33d6;
 }
 
-.day.static > .day-number {
+.panel-days-holder .day.static > .day-number {
   cursor: pointer;
   background-color: #01a8fe;
 }
 
-.day.static > .border {
+.panel-days-holder .day.static > .border {
   background-color: #01a8fe;
 }
 
-.day-number {
+.panel-days-holder .day-number {
   font-size: 12px;
   font-weight: bold;
   line-height: 40px;
@@ -202,47 +218,43 @@
   border-radius: 2px;
 }
 
-.border {
+.panel-days-holder .border {
   width: 3px;
   min-height: 40px;
   margin-bottom: 15px;
   margin-left: 54px;
 }
 
-.events {
+.panel-days-holder .events {
   width: 100%;
   margin: 0 20px 10px 20px;
   padding-bottom: 5px;
 }
 
-.event {
+.panel-days-holder .event {
   font-size: 15px;
   line-height: .9;
   padding: 19px 0;
 }
 
-.event:not(:last-child) {
+.panel-days-holder .event:not(:last-child) {
   border-bottom: 1px solid #e2e2e2;
 }
 
-.event a {
+.panel-days-holder .event a {
   font-weight: bold;
   text-decoration: none;
   color: #373737;
 }
 
-.event a[href] {
+.panel-days-holder .event a[href] {
   color: #01a8fe;
 }
 
-.event > .time {
+.panel-days-holder .event > .time {
   font-weight: bold;
   margin-left: -1px;
   padding-right: 10px;
-}
-
-.panel-days-holder {
-  padding-right: 0;
 }
 
 .breadcrumb > li.active {

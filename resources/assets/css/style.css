@@ -2302,9 +2302,9 @@ div.dataTables_length select {
     background-color: #01a8fe;
 }
 
-// .vue-dropdown-option > label {
-//     margin-bottom: 0px;
-// }
+.vue-dropdown-option > label {
+    margin-bottom: 0px;
+}
 
 
 .table-heading-controls > .create-btn-wrapper,

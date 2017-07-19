@@ -19,7 +19,7 @@
                         <hr>
                     </div>
                     <div class="grid-col text-color">
-                        {{ trans('texts.balance') }}
+                        {{ trans('texts.outstanding') }}
                         <span>
                             {{ Utils::formatMoney($client->balance, $client->getCurrencyId()) }}
                         </span>
@@ -34,46 +34,61 @@
                 </div>
                 <div class="show-wrapper-body">
                     <div class="grid-col">
-                        Company
+                        {{ trans('texts.company') }}
                         <span>
-                            DYNAMIX - IT Paslaugos
+                            {{ $client->getDisplayName() }}
                         </span>
                     <hr>
                     </div>
-                    <div class="grid-col">
-                        Vat Number
-                        <span>
-                            IE411755871512
-                        </span>
-                    <hr>
-                    </div>
-                    <div class="grid-col">
-                        Webstie
-                        <span>
-                            tomass.lt
-                        </span>
-                    <hr>
-                    </div>
-                    <div class="grid-col">
-                        Phone
-                        <span>
-                            +370 673 31871
-                        </span>
-                    <hr>
-                    </div>
-                    <div class="grid-col">
-                        Industry
-                        <span>
-                            Professional Services & Consulting
-                        </span>
-                    <hr>
-                    </div>
-                    <div class="grid-col">
-                        Payment Terms
-                        <span>
-                            Net 90
-                        </span>
-                    </div>
+
+                    @if ($client->vat_number)
+                        <div class="grid-col">
+                            {{ trans('texts.vat_number') }}
+                            <span>
+                                {{ $client->vat_number }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if ($client->website)
+                        <div class="grid-col">
+                            {{ trans('texts.website') }}
+                            <span>
+                                {!! Utils::formatWebsite($client->website) !!}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if ($client->work_phone)
+                        <div class="grid-col">
+                            {{ trans('texts.phone') }}
+                            <span>
+                                {{ $client->work_phone }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if ($client->client_industry)
+                        <div class="grid-col">
+                            {{ trans('texts.industry') }}
+                            <span>
+                                {{ $client->client_industry->name }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if ($client->payment_terms)
+                        <div class="grid-col">
+                            {{ trans('texts.payment_terms') }}
+                            <span>
+                                {{ $client->present()->paymentTerms }}
+                            </span>
+                        </div>
+                    @endif
 
                 </div>
             </div>

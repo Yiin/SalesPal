@@ -34,6 +34,7 @@ class Contact extends EntityModel implements AuthenticatableContract, CanResetPa
     protected $fillable = [
         'first_name',
         'last_name',
+        'job_position',
         'email',
         'phone',
         'send_invoice',

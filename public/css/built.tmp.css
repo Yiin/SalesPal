@@ -14208,9 +14208,9 @@ div.dataTables_length select {
     background-color: #01a8fe;
 }
 
-// .vue-dropdown-option > label {
-//     margin-bottom: 0px;
-// }
+.vue-dropdown-option > label {
+    margin-bottom: 0px;
+}
 
 
 .table-heading-controls > .create-btn-wrapper,
@@ -14416,7 +14416,7 @@ div.dataTables_length select {
 
 
 .grid-col > hr {
-    width: 30px;
+    width: 31px;
     margin-left: 0px;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -14837,6 +14837,61 @@ div.dataTables_length select {
     background-color: #23b820; 
     border-color: #23b820;
 }
+
+
+.invoices-page-col
+{
+    width: calc(100% * 312 / 1598);
+    margin-right: 33px;
+    float: left;
+}
+
+.invoices-page-col-second
+{
+    width: calc(100% * 1253 / 1598);
+    float: right;
+}
+
+.text-color-orange > span {
+    color: #fe6c01;
+    font-weight: bold;
+}
+
+.completed-invoices-form {
+    display: flex;
+}
+
+.invoices-page-first {
+    flex-grow: 1.32;
+}
+
+.invoices-page-scond {
+    flex-grow: 1.40;
+    width: 100%;
+}
+
+.invoices-page-wrapper-body {
+    padding-top: 40px;
+    padding-left: 20px;
+    padding-bottom: 40px;
+}
+
+.invoices-page-wrapper-body > .scrollbar {
+    min-height: 780px;
+    margin-right: 20px;
+}
+
+.invoices-page-wrapper-body .flex-grid > .grid-col {
+    padding-right: 20px;
+
+    flex: 1;
+    flex-grow: 1;
+}
+
+.description-hr > hr {
+    width: 100%;
+}
+
 
 /**********
 Start of product styles
@@ -15489,6 +15544,20 @@ New Product styles
 {
     border-radius: 2px;
     background-color: #01a8fe;
+}
+
+
+.invoices-page-col
+{
+    width: calc(100% * 312 / 1598);
+    margin-right: 33px;
+    float: left;
+}
+
+.invoices-page-col-second
+{
+    width: calc(100% * 1253 / 1598);
+    float: right;
 }
 
 

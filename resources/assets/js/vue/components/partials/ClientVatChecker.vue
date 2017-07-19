@@ -23,7 +23,7 @@
                         </span>
                     </span>
                     <div class="input-row">
-                        <input type="text" name="vat_number" v-model="vat_number">
+                        <input type="text" v-model="vat_number">
                         <div @click="check" class="btn-primary btn check-button">
                             <i v-if="is_loading" class="fa fa-spinner fa-pulse fa-fw"></i>
                             <template v-else>

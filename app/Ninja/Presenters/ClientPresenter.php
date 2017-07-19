@@ -33,6 +33,6 @@ class ClientPresenter extends EntityPresenter
             return '';
         }
 
-        return sprintf('%s: %s %s', trans('texts.payment_terms'), trans('texts.payment_terms_net'), $client->defaultDaysDue());
+        return sprintf('%s %s', trans('texts.payment_terms_net'), $client->defaultDaysDue());
     }
 }
