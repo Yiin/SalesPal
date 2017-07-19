@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\ActivityListener@createdClient',
             'App\Listeners\SubscriptionListener@createdClient',
         ],
+        'App\Events\ClientWasUpdated' => [
+            'App\Listeners\ActivityListener@updatedClient',
+        ],
         'App\Events\ClientWasArchived' => [
             'App\Listeners\ActivityListener@archivedClient',
         ],

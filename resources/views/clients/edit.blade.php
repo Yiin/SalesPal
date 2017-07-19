@@ -20,13 +20,17 @@
             )->addClass('recieve-vat warn-on-exit')
             ->method($method) !!}
 
+    @if ($client)
+        <input type="hidden" name="public_id" value="{{ $client->public_id }}">
+    @endif
+
     <div class="vue-app" id="vueapp_{{ str_random() }}">
         <div class="new-client-panels-wrapper">
             <div class="new-clients-col">
                 <div class="new-clients-wrapper">
                     <div class="form-wrapper">
                         <div class="organization-panel-header new-clients-header">
-                            Organization
+                            {{ trans('texts.organization')}}
                         </div>
                         <div class="form-panel-body">
                             <div class="flex-grid">
@@ -56,7 +60,7 @@
                 <div class="new-clients-wrapper">
                     <div class="form-wrapper">
                         <div class="address-panel-header new-clients-header">
-                            Address
+                            {{ trans('texts.address') }}
                         </div>
                         <div class="form-panel-body">
                             <div class="flex-grid">
@@ -80,9 +84,9 @@
                                     <span>State / Province <input name="state" type="text" value="{{ $client ? $client->state : old('state') }}"><br></span>
                                 </div>
                                 <div class="col">
-                                    <span>Country <select class="form-select" id="country_id" name="country_id">
+                                    <span>Country <select class="form-select" name="country_id">
                                         @foreach($countries as $country)
-                                            <option value="{{ $country->id }}">
+                                            <option value="{{ $country->id }}" {{ $client && $client->country_id === $country->id ? 'selected' : '' }}>
                                                 {{ $country->name }}
                                             </option>
                                         @endforeach

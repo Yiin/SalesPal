@@ -132,7 +132,7 @@ class Activity extends EntityModel
             'user' => $isSystem ? '<i>' . trans('texts.system') . '</i>' : '<a>' . $user->getDisplayName() . '</a>',
             'invoice' => $invoice ? link_to($invoice->getRoute(), $invoice->getDisplayName()) : null,
             'quote' => $invoice ? link_to($invoice->getRoute(), $invoice->getDisplayName()) : null,
-            'contact' => $contactId ? $client->getDisplayName() : $user->getDisplayName(),
+            'contact' => '<a>' . ($contactId ? $client->getDisplayName() : $user->getDisplayName()) . '</a>',
             'payment' => $payment ? link_to($payment->getRoute(), $payment->transaction_reference) : null,
             'payment_amount' => $payment ? $account->formatMoney($payment->amount, $payment) : null,
             'adjustment' => $this->adjustment ? $account->formatMoney($this->adjustment, $this) : null,

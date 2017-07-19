@@ -7,12 +7,14 @@ use App\Http\Requests\ClientRequest;
 use App\Http\Requests\CreateClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Models\Account;
+use App\Models\Activity;
 use App\Models\Client;
 use App\Models\Credit;
 use App\Models\Invoice;
 use App\Models\Task;
 use App\Ninja\Datatables\ClientDatatable;
 use App\Ninja\Repositories\ClientRepository;
+use App\Services\ActivityService;
 use App\Services\ClientService;
 use Auth;
 use Cache;
@@ -29,12 +31,17 @@ class ClientController extends BaseController
     protected $clientRepo;
     protected $entityType = ENTITY_CLIENT;
 
-    public function __construct(ClientRepository $clientRepo, ClientService $clientService, ClientDatatable $clientDatatable)
-    {
+    public function __construct(
+        ClientRepository $clientRepo, 
+        ClientService $clientService, 
+        ClientDatatable $clientDatatable,
+        ActivityService $activityService
+    ) {
         //parent::__construct();
         
         $this->clientRepo = $clientRepo;
         $this->clientService = $clientService;
+        $this->activityService = $activityService;
 
         $this->entityQuery = Client::query();
         $this->datatable = $clientDatatable;
@@ -119,6 +126,7 @@ class ClientController extends BaseController
             'actionLinks' => $actionLinks,
             'showBreadcrumbs' => false,
             'client' => $client,
+            'activities' => (object)$this->activityService->getItems(ACTIVITY_TYPE_ALL, 0, $client->public_id),
             'credit' => $client->getTotalCredit(),
             'title' => trans('texts.view_client'),
             'hasRecurringInvoices' => Invoice::scope()->recurring()->withArchived()->whereClientId($client->id)->count() > 0,

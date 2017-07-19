@@ -5,9 +5,105 @@
     float: left;
 }
 
-.invoices-page-col-second
+.invoices-page-col-second 
 {
     width: calc(100% * 1253 / 1598);
     float: right;
+
 }
 
+.text-color-orange > span {
+    color: #fe6c01;
+    font-weight: bold;
+    margin-top: 5px
+}
+
+.completed-invoices-form {
+    display: flex;
+}
+
+.invoices-page:nth-child(1) {
+    flex-grow: 1.32;
+}
+
+.invoices-page:nth-child(2) {
+    flex-grow: 1.40;
+    height: 936px;
+}
+
+.invoices-page-wrapper-body {
+    padding-top: 40px;
+    padding-left: 20px;
+}
+
+.invoices-page-wrapper-body > .scrollbar {
+    min-height: 780px;
+    margin-right: 20px;
+    margin-top: 0px;
+}
+
+.invoices-page-wrapper-body .scrollbar > .flex-grid {
+    margin-bottom: 0px;
+}
+.invoices-page-wrapper-body .flex-grid > .grid-col {
+    padding-right: 19px;
+
+    flex: 1;
+    flex-grow: 1;
+}
+
+.description-hr > hr {
+    width: 100%;
+}
+
+.invoice-row {
+    flex: 1;
+}
+
+.invoice-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.invoice-label > span {
+    display: inline-flex;
+    margin-top: 10px;
+    font-weight: bold;
+
+}
+
+.invoice-label > hr {
+    width: 31px;
+    margin-left: 0px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.invoice-taxes {
+    display: inline-block !important;
+}
+
+.taxes-border {
+    border: 1px solid;
+    height: 30px;
+    width: 72px;
+    display: inline-flex;
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    margin-right: 4px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.red-color {
+    border-color: #E30B0C;
+    background-color: #E30B0C;
+}
+
+.invoice-taxes > span:nth-child(2) {
+    color: #01a8fe;
+    font-weight:bold;
+}

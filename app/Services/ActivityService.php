@@ -34,7 +34,7 @@ class ActivityService extends BaseService
         $this->datatableService = $datatableService;
     }
 
-    public function getItems($type, $from = 0)
+    public function getItems($type, $from = 0, $client_id = null)
     {
         $limit = 12;
 
@@ -91,18 +91,20 @@ class ActivityService extends BaseService
         else {
             $query = Activity::whereIn('activity_type_id', $type);
         }
+        if ($client_id) {
+            $query = $query->whereHas('client', function ($query) use ($client_id) {
+                $query->where('public_id', $client_id);
+            });
+        }
         $count = $query->count();
-
-        // dd([$type, $from]);
 
         $items = $query->skip($from)->limit($limit)->orderBy('id', 'desc')->get()->map(function ($model) {
             return [
                 'created_at' => $model->created_at,
+                'type_id' => $model->activity_type_id,
                 'message' => $model->getMessage()
             ];
         });
-
-        // dd([$count, $from + $limit]);
 
         return [
             'first' => $from == 0,

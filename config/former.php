@@ -4,7 +4,7 @@
     ////////////////////////////////////////////////////////////////////
 
     // Whether labels should be automatically computed from name
-    'automatic_label'         => false,
+    'automatic_label'         => true,
 
     // The default form type
     'default_form_type'       => 'horizontal',

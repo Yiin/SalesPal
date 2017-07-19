@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\ClientWasArchived;
 use App\Events\ClientWasCreated;
+use App\Events\ClientWasUpdated;
 use App\Events\ClientWasDeleted;
 use App\Events\ClientWasRestored;
 use App\Events\ClientVatWasChecked;
@@ -74,6 +75,17 @@ class ActivityListener
         $this->activityRepo->create(
             $event->client,
             ACTIVITY_TYPE_CREATE_CLIENT
+        );
+    }
+
+    /**
+     * @param ClientWasUpdated $event
+     */
+    public function updatedClient(ClientWasUpdated $event)
+    {
+        $this->activityRepo->create(
+            $event->client,
+            ACTIVITY_TYPE_UPDATE_CLIENT
         );
     }
 

@@ -2,6 +2,7 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
+    overflow-y: scroll;
 }
 
 html {
@@ -2420,4 +2421,21 @@ div.dataTables_length select {
   border-top: 4px solid transparent;
   border-left: 4px solid transparent;
   top: 5px;
+}
+
+table.table {
+    margin-bottom: 0 !important;
+}
+
+.nav > li > a:focus {
+    background: none;
+}
+
+.show-blade-navbar .active::after {
+    width: 100%;
+    display: block;
+    height: 4px;
+    background: #01a8fe;
+    content: '';
+    margin-bottom: -4px;
 }

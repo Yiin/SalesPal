@@ -172,13 +172,13 @@
 .style-2::-webkit-scrollbar-track
 {
     border-radius: 2px;
-    background-color: #e2e2e2;
+    background-color: #eee;
 }
 
 .style-2::-webkit-scrollbar
 {
     width: 10px;
-    background-color: #e2e2e2;
+    background-color: #eee;
 }
 
 .style-2::-webkit-scrollbar-thumb

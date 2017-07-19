@@ -27,10 +27,10 @@
                 </div>
             </div>
         </div>
-     <div class="panel-wrapper">   
-        <div class="show-wrapper">
+        <div class="panel-wrapper">   
+            <div class="show-wrapper">
                 <div class="show-wrapper-img-header">
-                <img src="https://images.freecreatives.com/wp-content/uploads/2015/04/logo033.png" alt="Mountain View" style="width:331px;height:135px;">
+                    <img src="https://images.freecreatives.com/wp-content/uploads/2015/04/logo033.png" alt="Mountain View" style="width:331px;height:135px;">
                 </div>
                 <div class="show-wrapper-body">
                     <div class="grid-col">
@@ -94,204 +94,181 @@
             </div>
         </div>
 
-    <div class="panel-wrapper">
-        <div class="show-wrapper">
-                <div class="show-wrapper-header orange-header">
-                    Contact  
-                </div>
-                <div class="show-wrapper-body">
-                    <div class="grid-col">
-                        <span>
-                            Tomas Skvireckas
-                        </span>
-                        <hr>
+        @if ($client->contacts)
+            <div class="panel-wrapper">
+                <div class="show-wrapper">
+                    <div class="show-wrapper-header orange-header">
+                        {{ trans('texts.contact') }}  
                     </div>
-                    <div class="grid-col">
-                        Job Postion
-                        <span>
-                            Manager
-                        </span>
-                        <hr>
-                    </div>
-                    <div class="grid-col">
-                        Email
-                        <span>
-                            info@tomass.lt
-                        </span>
-                        <hr>
-                    </div>
-                    <div class="grid-col">
-                        Phone
-                        <span>
-                            +370 673 31871
-                        </span>
+                    <div class="show-wrapper-body">
+                        <div class="grid-col">
+                            <span>
+                                {{ $client->contacts->first()->getDisplayName() }}
+                            </span>
+                            <hr>
+                        </div>
+
+                        @if ($client->contacts->first()->job_position)
+                            <div class="grid-col">
+                                Job Postion
+                                <span>
+                                    {{ $client->contacts->first()->job_position }}
+                                </span>
+                                <hr>
+                            </div>
+                        @endif
+
+                        @if ($client->contacts->first()->email)
+                            <div class="grid-col">
+                                Email
+                                <span>
+                                    {{ $client->contacts->first()->email }}
+                                </span>
+                                <hr>
+                            </div>
+                        @endif
+
+                        @if ($client->contacts->first()->phone)
+                            <div class="grid-col">
+                                Phone
+                                <span>
+                                    {{ $client->contacts->first()->phone }}
+                                </span>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
 
-    <div class="panel-wrapper">
-        <div class="show-wrapper">
+        <div class="panel-wrapper">
+            <div class="show-wrapper">
                 <div class="show-wrapper-header green-color">
-                    Address  
+                    {{ trans('texts.address') }}  
                 </div>
                 <div class="show-wrapper-body">
-                    <div class="grid-col">
-                        Country
+
+                    @if($client->country)
+                        <div class="grid-col">
+                            Country
+                            <span>
+                                {{ $client->country->name }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if($client->state)
+                        <div class="grid-col">
+                            {{ trans('texts.state') }}
+                            <span>
+                                {{ $client->state }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if($client->city)
+                        <div class="grid-col">
+                            {{ trans('texts.city') }}
+                            <span>
+                                {{ $client->city }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if($client->address1)
+                        <div class="grid-col">
+                        {{ trans('texts.address1') }}
                         <span>
-                            Lithuania
+                            {{ $client->address1 }}
                         </span>
                         <hr>
                     </div>
-                    <div class="grid-col">
-                        City
-                        <span>
-                            Panevežys
-                        </span>
-                        <hr>
-                    </div>
-                    <div class="grid-col">
-                        Street
-                        <span>
-                            Basanavičiaus g.
-                        </span>
-                        <hr>
-                    </div>
-                    <div class="grid-col">
-                        Apt / Suite
-                        <span>
-                            24 - 11
-                        </span>
-                        <hr>
-                    </div>
-                    <div class="grid-col">
-                        Postal Code
-                        <span>
-                            32108
-                        </span>
-                    </div>
+                    @endif
+
+                    @if($client->address2)
+                        <div class="grid-col">
+                            {{ trans('texts.address2') }}
+                            <span>
+                                {{ $client->address2 }}
+                            </span>
+                            <hr>
+                        </div>
+                    @endif
+
+                    @if($client->postal_code)
+                        <div class="grid-col">
+                            {{ trans('texts.postal_code') }}
+                            <span>
+                                {{ $client->postal_code }}
+                            </span>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
     <div class="show-blade-col">
-        <div class="panel-wrapper table-wrapper">
-            <div class="nav table-heading">
-            <ul class="nav navbar-nav navbar-left show-blade-navbar">
-                <li class="active"><a href="#">Invoices</a></li>
-                <li><a href="#">Payment</a></li>
-                <li><a href="#">Credit</a></li>
-            </ul>
-            <div class="new-activity show-blade-task table-invoices">
-                <span><a href="#">New Invoices</a></span>
-                <span><a href="#">Enter Payment</a></span>
-                <span><a href="#">Enter Credit</a></span>
-            </div>
-            </div>
-                <div class="table-body">
-                <div class="vue-app btn-client" id="vueapp_{{ str_random() }}">
-        <entity-table 
-            entity="{{ ENTITY_CLIENT }}"
-            client-id="{{ $clientId ?? $vendorId ?? '' }}"
-        ></entity-table>
-    </div>
+        <div class="vue-app" id="vueapp_{{ str_random() }}">
+            <div class="panel-wrapper table-wrapper">
+                <div class="nav table-heading">
+                    <ul class="nav navbar-nav navbar-left show-blade-navbar">
+                        <li class="active"><a href="#invoices" role="tab" data-toggle="tab">{{ trans('texts.invoices') }}</a></li>
+                        <li><a href="#payments" role="tab" data-toggle="tab">{{ trans('texts.payments') }}</a></li>
+                        <li><a href="#credits" role="tab" data-toggle="tab">{{ trans('texts.credits') }}</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right show-blade-navbar">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Actions <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @foreach ($actionLinks as $action)
+                                    @if ($action === DropdownButton::DIVIDER)
+                                        <li role="separator" class="divider"></li>
+                                    @else
+                                        <li><a href="{{ $action['url'] }}">{{ $action['label'] }}</a></li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-       
-        <div class="panel panel-dashboard">
-        <div class="nav dashboard-heading">
-            <ul class="nav navbar-nav navbar-left dashboard-nav">
-                <li class="active"><a href="#">Activity</a></li>
-                <li><a href="#">Task</a></li>
-            </ul>
-            <div class="new-activity show-blade-task">
-                <span><a href="#">Add New Task</a></span>
-            </div>
-        </div>
-        <div class="panel-body panel-days-holder">
-            <div class="day">
-                <div class="day-number">
-                    27th
-                </div>
-                <div class="border"></div>
-                <div class="events">
-                    <div class="event">
-                        <span class="time">12:50</span>
-                         <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
+                <div class="tab-content">
+                    <div role="tabpanel" class="table-body tab-pane active" id="invoices">
+                        <entity-table 
+                            entity="{{ ENTITY_INVOICE }}"
+                            client-id="{{ $clientId ?? $vendorId ?? '' }}"
+                            :disable-shadows="true"
+                            :disable-state="true"
+                        ></entity-table>
                     </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                         <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
+                    <div role="tabpanel" class="table-body tab-pane" id="payments">
+                        <entity-table 
+                            entity="{{ ENTITY_PAYMENT }}"
+                            client-id="{{ $clientId ?? $vendorId ?? '' }}"
+                            :disable-shadows="true"
+                            :disable-state="true"
+                        ></entity-table>
                     </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                         <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                         <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                         <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
+                    <div role="tabpanel" class="table-body tab-pane" id="credits">
+                        <entity-table 
+                            entity="{{ ENTITY_CREDIT }}"
+                            client-id="{{ $clientId ?? $vendorId ?? '' }}"
+                            :disable-shadows="true"
+                            :disable-state="true"
+                        ></entity-table>
                     </div>
                 </div>
             </div>
-
-            <div class="day">
-                <div class="day-number">
-                    27th
-                </div>
-                <div class="border"></div>
-                <div class="events">
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day">
-                <div class="day-number">
-                    27th
-                </div>
-                <div class="border"></div>
-                <div class="events">
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                    <div class="event">
-                        <span class="time">12:50</span>
-                        <a href="#">Tomas</a> deleted invoice <a href="#">NN4552159</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day">
-                <div class="day-number">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                </div>
-                <div class="border"></div>
-            </div>
-        </div>
-    </div>
+           
+            <dashboard-activities
+                :activities="{{ $activities->items }}"
+                :state="{{ json_encode(['first' => $activities->first, 'last' => $activities->last ]) }}"
+                :client="{{ $client }}"
+            ></dashboard-activities>
         </div>
     </div>
 </div>

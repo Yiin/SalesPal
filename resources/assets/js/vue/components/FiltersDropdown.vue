@@ -190,7 +190,7 @@ export default {
 
         display: inline-block;
 
-        margin: 0 15px;
+        margin-right: 30px;
     }
 
     .vue-dropdown > button
@@ -199,8 +199,6 @@ export default {
 
         width: 268px;
         height: 44px;
-        margin-right: 15px;
-        margin-left: -3px;
         padding: 0 15px;
 
         text-align: left;
@@ -239,7 +237,6 @@ export default {
 
         display: block;
 
-        margin-left: -3px;
         padding-top: 17px;
         padding-bottom: 18px;
 

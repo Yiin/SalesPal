@@ -14,7 +14,7 @@
                         <span>Last Name <input :name.once="`contacts[${index}][last_name]`" type="text" v-model="form.last_name"><br></span>
                     </div>
                     <div class="col item">
-                        <span>Job Position <input readonly type="text" v-model="form.job_position"><br></span>
+                        <span>Job Position <input :name.once="`contacts[${index}][job_position]`" type="text" v-model="form.job_position"><br></span>
                     </div>
                 </div>
                 <div class="flex-grid">

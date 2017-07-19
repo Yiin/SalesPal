@@ -2,7 +2,7 @@
     <div class="panel panel-dashboard">
         <div class="nav dashboard-heading">
             <ul class="nav navbar-nav navbar-left dashboard-nav">
-                <li v-for="(title, index) in tabs"
+                <li v-for="(index, title) in tabs"
                     @click.prevent="setType(index)" 
                     :class="{ active: type === index }"
                 >
@@ -48,8 +48,17 @@
 </template>
 
 <script>
+    const 
+        TAB_ALL = 0,
+        TAB_PAYMENTS = 1,
+        TAB_EXPENSES = 2,
+        TAB_UPCOMING_INVOICES = 3,
+        TAB_PAST_DUE = 4,
+        TAB_TASKS = 5,
+        TAB_PROJECTS = 6
+    ;
     export default {
-        props: ['activities', 'state'],
+        props: ['activities', 'state', 'client'],
 
         data() {
             return {
@@ -58,23 +67,23 @@
                 last: false,
                 type: 0,
                 from: 0,
-                items: []
+                items: [],
+                tabs: this.client ? {
+                        'All Activity': TAB_ALL,
+                        'Tasks': TAB_TASKS,
+                    } : {
+                        'All Activity': TAB_ALL,
+                        'Payments': TAB_PAYMENTS,
+                        'Expenses': TAB_EXPENSES,
+                        'Upcoming Invoices': TAB_UPCOMING_INVOICES,
+                        'Invoices Past Due': TAB_PAST_DUE,
+                        'Tasks': TAB_TASKS,
+                        'Projects': TAB_PROJECTS
+                    }
             };
         },
 
         computed: {
-
-            tabs() {
-                return [
-                    'All Activity',
-                    'Payments',
-                    'Expenses',
-                    'Upcoming Invoices',
-                    'Invoices Past Due',
-                    'Tasks',
-                    'Projects'
-                ];
-            },
 
             days() {
                 let days = [];
@@ -127,14 +136,7 @@
             setType(type) {
                 this.type = type;
                 this.from = 0;
-
-                this.$http.get(`/api/activities-list/${this.type}/${this.from}`)
-                    .then(response => response.data)
-                    .then(data => {
-                        this.first = data.first;
-                        this.last = data.last;
-                        this.items = data.items;
-                    });
+                this.load();
             },
 
             previous() {
@@ -142,20 +144,22 @@
                 if (this.from < 0) {
                     this.from = 0;
                 }
-
-                this.$http.get(`/api/activities-list/${this.type}/${this.from}`)
-                    .then(response => response.data)
-                    .then(data => {
-                        this.first = data.first;
-                        this.last = data.last;
-                        this.items = data.items;
-                    });
+                this.load();
             },
 
             next() {
                 this.from += 12;
+                this.load();
+            },
 
-                this.$http.get(`/api/activities-list/${this.type}/${this.from}`)
+            load() {
+                let url = `/api/activities-list/${this.type}/${this.from}`;
+
+                if (this.client) {
+                    url += `/${this.client.public_id}`;
+                }
+
+                this.$http.get(url)
                     .then(response => response.data)
                     .then(data => {
                         this.first = data.first;

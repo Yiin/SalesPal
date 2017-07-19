@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="row table-heading-controls">
+    <div :class="{ 'no-shadows': disableShadows }">
+        <div class="table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
             <filters-dropdown ref="filtersDropdown" class="nocontextmenu" v-if="filters.length" :options="filters"></filters-dropdown>
@@ -167,7 +167,9 @@
             'entity',
             'entities',
             'create',
-            'clientId'
+            'clientId',
+            'disableShadows',
+            'disableState'
         ],
 
 
@@ -792,7 +794,7 @@
             },
 
             table_data_url(options = {}) {
-                if (this.url_state) {
+                if (this.url_state && !this.disableState) {
                     let query = this.url_state.split(':').join('&');
 
                     let components = this.url_state.split(':');
@@ -890,17 +892,19 @@
                 query.push(`orderBy[0]=${this.orderBy}`);
                 query.push(`orderBy[1]=${this.orderDirection}`);
 
-                let visible_url = `?state=` + query.map(component => {
-                    let parts = component.split('=');
-                    let key = parts.shift();
-                    let value = parts.join('=');
+                if (!this.disableState) {
+                    let visible_url = `?state=` + query.map(component => {
+                        let parts = component.split('=');
+                        let key = parts.shift();
+                        let value = parts.join('=');
 
-                    return key + '=' + encodeURIComponent(value).replace(/[=:!'()*]/g, function (c) {
-                        return '%' + c.charCodeAt(0).toString(16);
-                    });
-                }).join(':');
+                        return key + '=' + encodeURIComponent(value).replace(/[=:!'()*]/g, function (c) {
+                            return '%' + c.charCodeAt(0).toString(16);
+                        });
+                    }).join(':');
 
-                history.replaceState(visible_url, null, visible_url);
+                    history.replaceState(visible_url, null, visible_url);
+                }
 
                 let request_url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
 
@@ -937,6 +941,28 @@
         top: 10px;
         color: #878787;
     }
+
+    .no-shadows * {
+        box-shadow: none !important;
+    }
+
+    .no-shadows button,
+    .no-shadows .page-count,
+    .no-shadows .calculator-button,
+    .no-shadows .context-menu,
+    .no-shadows .table-wrapper,
+    .no-shadows .vue-dropdown-menu,
+    .no-shadows .entities-count-control select,
+    .no-shadows .pagination > .active > input, 
+    .no-shadows .pagination > .active > input:hover, 
+    .no-shadows .pagination > .active > input:focus, 
+    .no-shadows .pagination > .active > span, 
+    .no-shadows .pagination > .active > span:hover, 
+    .no-shadows .pagination > .active > span:focus {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: #e2e2e2 !important;
+    }
 </style>
 <style scoped>
     td {
@@ -956,6 +982,9 @@
         padding-bottom: 15px;
     }
 
+    .table-heading-controls {
+        font-size: 0;
+    }
 
     .entities-count-control button {
         min-width: 85px;
@@ -967,7 +996,6 @@
 
     .page-count {
         border: none;
-        box-shadow: 0px 3px 5px 0px rgba(161, 161, 161, 0.2);
         font-family: 'Open Sans', sans-serif;
         font-size: 16px;
         box-shadow: -3px 2px rgba(0, 0, 0, 0.05), 3px 2px 5px rgba(0, 0, 0, 0.05), 0px 5px 5px rgba(0, 0, 0, 0.05);
@@ -1039,7 +1067,7 @@
 
     .create-btn-wrapper {
         display: inline-block;
-        margin: 0 15px;
+        margin-right: 30px;
     }
 
     th {
