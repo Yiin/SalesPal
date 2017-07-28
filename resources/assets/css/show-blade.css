@@ -70,6 +70,21 @@
     background-color: #01a8fe; 
 }
 
+.black-blue-header {
+    border-color: #0E02FE;
+    background-color: #0E02FE;
+}
+
+.black-header {
+    border-color:  #333;
+    background-color: #333;
+}
+
+.red-header {
+    border-color: #E30B0C;
+    background-color: #E30B0C;
+}
+
 .show-wrapper-body {
     margin-top: -1px;
 }

@@ -1,0 +1,59 @@
+.new-credit-wrapper
+{
+    display: flex;
+}
+
+.new-credit-col
+{
+    width: calc(100% * 398 / 1598);
+    margin-right: 33px;
+}
+
+.new-credit-col:nth-child(2)
+{
+    width: calc(100% * 374 / 1598);
+    margin-right: 33px;
+}
+
+.new-credit-col:nth-child(3)
+{
+    width: calc(100% * 819 / 1598);
+    margin-right: 0px;
+}
+
+.section-panel
+{
+    margin-bottom: 20px;
+    padding-right: 2px;
+    padding-bottom: 35px;
+    padding-left: 20px;
+
+    background: #fff;
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+}
+
+.new-credit-textarea span > textarea
+{
+    height: 210px;
+}
+
+.new-credit-input 
+{
+    flex: 2;
+}
+
+.new-credit-input:nth-child(2)
+{
+    flex: 0.86;;
+    margin-top: 20px;
+}
+
+.credit-panel 
+{
+    margin-bottom: 20px;
+    padding-right: 2px;
+    padding-bottom: 25px;
+    padding-left: 20px;
+    background: #fff;
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+}

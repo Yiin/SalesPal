@@ -20,7 +20,7 @@
 
 .completed-invoices-form {
     display: flex;
-}
+}   
 
 .invoices-page:nth-child(1) {
     flex-grow: 1.32;
