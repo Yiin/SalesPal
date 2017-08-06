@@ -4,6 +4,7 @@ require('./bootstrap');
 Vue.component('child-dropdown-menu', require('./components/partials/ChildDropdownMenu.vue'));
 Vue.component('contacts-panel', require('./components/partials/ContactsPanel.vue'));
 Vue.component('client-vat-checker', require('./components/partials/ClientVatChecker.vue'));
+Vue.component('autocomplete-input', require('./components/partials/AutocompleteInput.vue'));
 
 // features
 Vue.component('feature-check-vat', require('./components/features/CheckVat.vue'));
@@ -20,6 +21,7 @@ Vue.component('search-by-dropdown', require('./components/SearchByDropdown.vue')
 // main components
 Vue.component('dashboard-statistics', require('./components/DashboardStatistics.vue'));
 Vue.component('dashboard-activities', require('./components/DashboardActivities.vue'));
+// Vue.component('invoice-form', require('./components/InvoiceForm.vue'));
 Vue.component('entity-table', require('./components/EntityTable.vue'));
 
 Array.prototype.filter.call(document.getElementsByClassName('vue-app'), el => el)

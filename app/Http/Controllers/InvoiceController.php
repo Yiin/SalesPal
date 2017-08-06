@@ -92,7 +92,7 @@ class InvoiceController extends BaseController
             ->where('invitations.deleted_at', '=', null)
             ->select('contacts.public_id')->lists('public_id');
 
-        $clients = Client::scope()->withTrashed()->with('contacts', 'country');
+        $clients = Client::scope()->withTrashed()->with('contacts', 'country', 'currency');
 
         if ($clone) {
             $invoice->id = $invoice->public_id = null;
@@ -299,6 +299,7 @@ class InvoiceController extends BaseController
             'data' => Input::old('data'),
             'account' => Auth::user()->account->load('country'),
             'products' => Product::scope()->with('default_tax_rate')->orderBy('product_key')->get(),
+            'taxRates' => TaxRate::scope()->get(),
             'taxRateOptions' => $taxRateOptions,
             'defaultTax' => $account->default_tax_rate,
             'currencies' => Cache::get('currencies'),

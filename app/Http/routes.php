@@ -11,6 +11,10 @@
 |
 */
 //
+//
+Route::get('/test', function (Illuminate\Events\Dispatcher $x) {
+    $x->hasListeners('asd');
+});
 
 // Vatchecker get post
 Route::post('/vat', 'VatHelperController@VatRequest');

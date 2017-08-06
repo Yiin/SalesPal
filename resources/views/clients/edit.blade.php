@@ -133,7 +133,7 @@
                                 <div class="col">
                                     <span>Payment-Terms <select class="form-select" name="payment_terms">
                                         @foreach($paymentTerms as $paymentTerm)
-                                            <option value="{{ $paymentTerm->id }}" {{ $client && $client->payment_terms === $paymentTerm->id ? 'selected' : '' }}>
+                                            <option value="{{ $paymentTerm->num_days }}" {{ $client && $client->payment_terms === $paymentTerm->num_days ? 'selected' : '' }}>
                                                 {{ $paymentTerm->name }}
                                             </option>
                                         @endforeach

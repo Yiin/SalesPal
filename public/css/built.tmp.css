@@ -14728,6 +14728,7 @@ table.table {
     color: #f40000;
 }
 
+.form-input,
 .col span > input
 {
     font-size: 16px;
@@ -14760,6 +14761,11 @@ table.table {
             appearance: none;
 }
 
+.textarea-wrapper {
+    padding: 10px 15px;
+}
+
+.textarea,
 .col span > textarea
 {
     font-size: 16px;
@@ -14814,18 +14820,19 @@ table.table {
 .show-blade-navbar
 {
     margin-left: 20px;
-
 }
 
-.show-blade-navbar li > a
+.show-blade-navbar li > a,
+.show-blade-navbar li > span
 {
     font-weight: 500;
+
+    padding-top: 16px;
+    padding-bottom: 16px;
 
     text-decoration: none;
 
     color: #333;
-        padding-top: 16px;
-    padding-bottom: 16px;
 }
 
 .show-blade-navbar .active
@@ -14851,15 +14858,16 @@ table.table {
     margin-left: -20px;
 }
 
-.invoices-buton-wrapper {
+.invoices-buton-wrapper
+{
     display: inline-block;
 }
 
-.sent-buton {
-    background-color: #23b820; 
+.sent-buton
+{
     border-color: #23b820;
+    background-color: #23b820;
 }
-
 
 /**********
 Start of product styles
@@ -15327,193 +15335,458 @@ New Product styles
 
 .invoice-new-col-first
 {
+    float: left;
+
     width: calc(100% * 895 / 1598 );
     margin-right: 33px;
-    float: left;
 }
 
 .invoice-new-col-secound
 {
-    width: calc(100% * 670 / 1598);
     float: right;
+
+    width: calc(100% * 670 / 1598);
 }
 
-.invoices-form {
+.invoices-form
+{
     display: flex;
 }
 
-.invoices-form-first{
+.invoices-form-first
+{
+    padding-bottom: 13px;
+
     flex-grow: 2;
-    padding-bottom: 25px;
 }
 
-.invoices-form-secound{
+.invoices-form-secound
+{
     flex-grow: 3.87;
 }
 
-.second-invoice-form {
-    padding-top: 35px;
+.second-invoice-form
+{
     min-height: 758px;
+    padding-top: 35px;
 }
 
 
-.invoice-hr {
+.invoice-hr
+{
     width: 96%;
-    margin-right: 20px;
     margin-top: 25px;
+    margin-right: 20px;
     margin-bottom: 15px;
 }
 
 
-.invoices-col-decor {
-    color: #fff;
+.invoices-col-decor
+{
     font-size: 14px;
     font-weight: bold;
+    line-height: 26px;
+
+    display: inline-block;
+
     width: 72px;
     height: 30px;
-    line-height: 26px;
+
     text-align: center;
-    display: inline-block;
+
+    color: #fff;
 }
 
-.invoices-small-color {
+.invoices-small-color
+{
     border: 1px solid #23b820;
     background-color: #23b820;
 }
 
 
-.invoices-big-color {
-    border: 1px solid #E30B0C;
-    background-color: #E30B0C;
+.invoices-big-color
+{
+    border: 1px solid #e30b0c;
+    background-color: #e30b0c;
 }
 
-.right-side-nav {
-    float: right;
+.right-side-nav
+{
     font-size: 16px;
     line-height: 50px;
+
+    float: right;
+
     margin-right: 18px;
 }
 
-.right-side-nav span >a {
+.right-side-nav span > a
+{
     text-decoration: none !important;
+
     color: #333 !important;
 }
 
-.select-without-name {
+.select-without-name
+{
     margin-top: 25px !important;
 }
 
 
-.textarea-height {
-    min-height:102px !important;
+.textarea-height
+{
+    min-height: 102px !important;
 }
 
-.invoices-wrapper {
+.invoices-wrapper
+{
     padding-bottom: 25px;
 }
 
-.invoices-col-partial {
+.invoices-col-partial
+{
     flex: 1;
     flex-grow: 2;
 }
 
-.invoices-col-discount {
+.invoices-col-discount
+{
     flex: 1;
     flex-grow: 1.14;
 }
 
-.invoices-col-percent {
+.invoices-col-percent
+{
     flex: 1;
-    flex-grow: 0.76;
+    flex-grow: .76;
 }
 
-.radio hr { 
-    margin-top: 16px;
-    margin-bottom: 13px;  
+.radio hr
+{
+    margin-top: 0;
+    margin-bottom: 0;
 }
-.selector-incoives {
+
+.selector-incoives
+{
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-.radio  {
+.radio
+{
+    margin-top: 42px;
+    margin-bottom: 0;
     padding-right: 15px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    }
-
-.radio input[type="radio"] {
-  position: absolute;
-  opacity: 0;
 }
-.radio input[type="radio"] + .radio-label:before {
-    content: '';
-    background: #fff;
-    border-radius: 100%;
-    border: 2px solid #333;
+
+.radio input[type='radio']
+{
+    position: absolute;
+
+    opacity: 0;
+}
+.radio input[type='radio'] + .radio-label:before
+{
     display: inline-block;
+
     width: 16px;
     height: 16px;
-    text-align: center;
-    -webkit-transition: all 250ms ease;
-    transition: all 250ms ease;
-    margin-bottom: -3px;
     margin-right: 20px;
+    margin-bottom: -3px;
+
+    content: '';
+    -webkit-transition: all 250ms ease;
+            transition: all 250ms ease;
+    text-align: center;
+
+    border: 2px solid #333;
+    border-radius: 100%;
+    background: #fff;
 }
-.radio input[type="radio"]:checked + .radio-label:before {
-  background-color: #01a8fe;
+.radio input[type='radio']:checked + .radio-label:before
+{
+    background-color: #01a8fe;
     box-shadow: inset 0 0 0 3px #fff;
 }
-.radio input[type="radio"]:focus + .radio-label:before {
-  outline: none;
-  border-color: #333;
-  box-shadow: inset 0 0 0 3px #fff;
+.radio input[type='radio']:focus + .radio-label:before
+{
+    border-color: #333;
+    outline: none;
+    box-shadow: inset 0 0 0 3px #fff;
 }
-.radio input[type="radio"]:disabled + .radio-label:before {
-  box-shadow: inset 0 0 0 3px #fff;
-  border-color: #333;
-  background: #01a8fe;
+.radio input[type='radio']:disabled + .radio-label:before
+{
+    border-color: #333;
+    background: #01a8fe;
+    box-shadow: inset 0 0 0 3px #fff;
 }
-.radio input[type="radio"] + .radio-label:empty:before {
-  margin-right: 0;
+.radio input[type='radio'] + .radio-label:empty:before
+{
+    margin-right: 0;
 }
 
-.radio label {
-    min-height: 20px;
-    padding-left: 0px;
+.radio label
+{
     font-size: 16px;
     font-weight: normal;
+    line-height: 1;
+
+    width: 100%;
+    min-height: 20px;
     margin-top: 1px;
+    padding-top: 13px;
+    padding-bottom: 16px;
+    padding-left: 0;
 }
 
-.scrollbar
+.clients-list
 {
+    position: relative;
+
     overflow-y: scroll;
-    height: 233px;
+
+    max-height: 233px;
+    margin-top: 4px;
     margin-right: 13px;
     margin-bottom: 5px;
-    margin-top: 4px;
 }
 
-
-.style-2::-webkit-scrollbar-track
+.client-search-wrapper
 {
-    border-radius: 2px;
-    background-color: #eee;
+    position: absolute;
+    z-index: 1;
+
+    width: 100%;
+
+    background: white;
 }
 
-.style-2::-webkit-scrollbar
+.clients-list-item.--search::before
 {
-    width: 10px;
-    background-color: #eee;
+    font-size: 18px;
+    font-weight: normal;
+
+    text-transform: capitalize;
+
+    color: #b1b1b1 !important;
+    background: white;
 }
 
-.style-2::-webkit-scrollbar-thumb
+.clients-list-item.--search:empty::before
 {
-    border-radius: 2px;
-    background-color: #01a8fe;
+    content: attr(data-placeholder);
 }
 
+.clients-list-item.--search:not(:empty)::before
+{
+    color: #333;
+}
+
+.clients-list-item.--search
+{
+    font-size: 18px;
+    font-weight: 600;
+
+    display: block;
+
+    width: 90%;
+    margin: 0 0 17px 0;
+    padding: 0;
+}
+
+.clients-list-item.--search:focus
+{
+    font-weight: normal;
+
+    color: #333 !important;
+    outline: none;
+    background: #fff !important;
+}
+
+.clients-list-item.--search:hover
+{
+    background: white;
+}
+
+.show-wrapper-body.--invoice-client
+{
+    position: relative;
+}
+
+
+.form-input-group-addon + .form-input
+{
+    padding-left: 60px;
+}
+
+.form-input-group-addon:first-child
+{
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 42px;
+
+    position: absolute;
+
+    width: 50px;
+
+    text-align: center;
+
+    border: 1px solid #cecece;
+    background: #f3f3f3;
+}
+
+.form-input-group
+{
+    position: relative;
+}
+
+.form-list
+{
+    overflow-y: scroll;
+
+    max-height: 585px;
+    margin-right: 20px;
+    padding-right: 20px;
+    padding-bottom: 107px;
+}
+
+.form-list-row
+{
+    display: flex;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #e1e1e1;
+
+    align-items: center;
+}
+
+.form-list-field .form-input
+{
+    margin-top: 0;
+}
+
+.form-list-field
+{
+    line-height: 0;
+}
+
+.form-list-field:not(:first-child)
+{
+    margin-left: 20px;
+}
+
+.form-list-field > div {
+    position: relative;
+}
+
+.form-list-field.--name > div
+{
+    width: 250px;
+}
+
+.form-list-field.--tax-rate > div
+{
+    width: 110px;
+}
+
+.suggestions
+{
+    position: absolute;
+}
+
+.form-list-field label
+{
+    font-weight: 600;
+    line-height: .78;
+
+    margin-bottom: 10px;
+}
+
+.remove-item
+{
+    position: relative;
+    top: 10px;
+    left: 0;
+
+    padding: 16px;
+
+    cursor: pointer;
+}
+
+.remove-item::before
+{
+    position: absolute;
+    top: 12px;
+    right: 10px;
+
+    width: 14px;
+    height: 14px;
+
+    content: '';
+
+    background: url(/img/icons/cross.svg) no-repeat;
+    background-size: contain;
+}
+
+.form-list-footer
+{
+    position: absolute;
+    bottom: 0;
+
+    display: flex;
+
+    width: 95%;
+    height: 108px;
+    padding-top: 38px;
+
+    border-top: 1px solid #e1e1e1;
+    background: #fff;
+
+    justify-content: flex-end;
+}
+
+.form-panel-body
+{
+    position: relative;
+}
+
+.value-block label
+{
+    font-weight: 600;
+
+    display: block;
+
+    margin-bottom: 16px;
+}
+
+.value-block
+{
+    line-height: .7;
+
+    width: 170px;
+    height: 38px;
+    padding-left: 19px;
+}
+
+.value-block:not(:last-child)
+{
+    border-right: 1px solid #e1e1e1;
+}
+
+.currency
+{
+    font-size: 16px;
+    font-weight: bold;
+    line-height: .9;
+}
+
+.currency.--value
+{
+    color: #02a8fe;
+}
 
 .invoices-page-col
 {

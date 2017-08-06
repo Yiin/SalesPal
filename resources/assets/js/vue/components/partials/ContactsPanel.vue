@@ -47,7 +47,8 @@
                         first_name: contact.first_name,
                         last_name: contact.last_name,
                         email: contact.email,
-                        phone: contact.phone
+                        phone: contact.phone,
+                        job_position: contact.job_position
                     });
                 });
             }

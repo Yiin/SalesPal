@@ -1,4 +1,5 @@
 window._ = require('lodash');
+window.numeral = require('numeral');
 window.Medium = require('./medium.patched.js');
 
 /**

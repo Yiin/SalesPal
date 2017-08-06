@@ -40,7 +40,7 @@ class TranslationComposer
         }));
 
         $view->with('paymentTerms', Cache::get('paymentTerms')->sortBy(function ($pTerm) {
-            return $pTerm->name;
+            return $pTerm->id;
         }));
 
         $view->with('languages', Cache::get('languages')->each(function ($lang) {

@@ -153,7 +153,6 @@
 
 <script>
     import { mixin as clickaway } from '../mixins/clickaway';
-    import numeral from 'numeral';
 
     export default {
         mixins: [

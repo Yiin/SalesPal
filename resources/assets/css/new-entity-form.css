@@ -277,6 +277,7 @@
     color: #f40000;
 }
 
+.form-input,
 .col span > input
 {
     font-size: 16px;
@@ -309,6 +310,11 @@
             appearance: none;
 }
 
+.textarea-wrapper {
+    padding: 10px 15px;
+}
+
+.textarea,
 .col span > textarea
 {
     font-size: 16px;
@@ -363,18 +369,19 @@
 .show-blade-navbar
 {
     margin-left: 20px;
-
 }
 
-.show-blade-navbar li > a
+.show-blade-navbar li > a,
+.show-blade-navbar li > span
 {
     font-weight: 500;
+
+    padding-top: 16px;
+    padding-bottom: 16px;
 
     text-decoration: none;
 
     color: #333;
-        padding-top: 16px;
-    padding-bottom: 16px;
 }
 
 .show-blade-navbar .active
@@ -400,12 +407,13 @@
     margin-left: -20px;
 }
 
-.invoices-buton-wrapper {
+.invoices-buton-wrapper
+{
     display: inline-block;
 }
 
-.sent-buton {
-    background-color: #23b820; 
+.sent-buton
+{
     border-color: #23b820;
+    background-color: #23b820;
 }
-
