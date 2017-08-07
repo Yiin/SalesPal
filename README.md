@@ -21,7 +21,7 @@ git, composer ir node/npm executives turi būti pridėti į PATH.
 5. `npm i`
 6. `npm i -g gulp bower`
 7. `bower install`
-8. `mkdir storage/sessions storage/views`
+8. `mkdir storage\framework\sessions storage\framework\views`
 9. `cp .env.example .env`
 10. Atsidaryti MySQL, sukurti naują duomenų bazę su norimu pavadinimu (pvz "salespal")
 10. Atsidaryti .env failą su kokiu nors text editoriumi.
