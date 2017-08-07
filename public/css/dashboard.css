@@ -59,7 +59,7 @@
 
 .total-panel {
   width: calc(100% / 3);
-  padding: 20px 15px 14px;
+  padding: 19px 15px 15px;
   background: #fff;
   box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.05), 1px 2px 5px rgba(0, 0, 0, 0.05), 0 3px 5px rgba(0, 0, 0, 0.05);
 }
@@ -82,7 +82,7 @@
   font-size: 38px;
   font-weight: bold;
   line-height: 26px;
-  margin-top: 21px;
+  margin-top: 20px;
   margin-bottom: 9px;
 }
 

@@ -11904,10 +11904,8 @@ body.swal2-iosfix {
 
 }
 
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
-
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', serif;
     overflow-y: scroll;
 }
 

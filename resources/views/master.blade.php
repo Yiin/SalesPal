@@ -11,7 +11,7 @@
         <meta name="description" content="{{ isset($description) ? $description : trans('texts.app_description') }}"/>
         <link href="{{ asset('favicon-v2.png') }}" rel="shortcut icon" type="image/png">
 
-        <meta property="og:site_name" content="Invoice Ninja"/>
+        <meta property="og:site_name" content="SalesPal"/>
         <meta property="og:url" content="{{ SITE_URL }}"/>
         <meta property="og:title" content="Sales Pal"/>
         <meta property="og:image" content="{{ SITE_URL }}/images/round_logo.png"/>
@@ -24,10 +24,12 @@
         <link rel="manifest" href="{{ url('manifest.json') }}">
         <link rel="mask-icon" href="{{ url('safari-pinned-tab.svg') }}" color="#3bc65c">
         <link rel="shortcut icon" href="{{ url('favicon.ico') }}">
-        <meta name="apple-mobile-web-app-title" content="Invoice Ninja">
-        <meta name="application-name" content="Invoice Ninja">
+        <meta name="apple-mobile-web-app-title" content="SalesPal">
+        <meta name="application-name" content="SalesPal">
         <meta name="theme-color" content="#ffffff">
     @endif
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
 
     <!-- http://stackoverflow.com/questions/19012698/browser-cache-issues-in-laravel-4-application -->
     <meta http-equiv="cache-control" content="max-age=0"/>
