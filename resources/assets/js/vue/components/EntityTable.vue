@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ 'no-shadows': disableShadows }">
+    <div ref="tbody" :class="{ 'no-shadows': disableShadows }" style="position: relative; user-select:none" @mousedown="onMouseDown">
         <div class="table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
@@ -12,9 +12,9 @@
         <div ref="table_wrapper" class="dataTables_wrapper form-inline no-footer">
             <div class="table-wrapper nocontextmenu">
                 <table class="table table-striped data-table dataTable no-footer">
-                    <!-- 
+                    <!--
                         Table Columns
-                     -->
+                    -->
                     <thead>
                         <tr v-if="!columns_loaded">
                             <th>
@@ -28,22 +28,22 @@
                                     <label></label>
                                 </div>
                             </th>
-                            <th v-for="column in table_columns" 
+                            <th v-for="column in table_columns"
                                 @click="order(column.field)"
-                                :class="{ 
-                                    sorting_asc: orderBy === column.field && orderDirection === 'ASC', 
+                                :class="{
+                                    sorting_asc: orderBy === column.field && orderDirection === 'ASC',
                                     sorting_desc: orderBy === column.field && orderDirection === 'DESC'
                                 }"
                                 :style="{ width: column.width }"
-                            >
+                                >
                                 {{ column.label }}
                             </th>
                         </tr>
                     </thead>
 
-                    <!-- 
+                    <!--
                         Table Rows
-                     -->
+                    -->
                     <tbody>
                         <tr v-if="!entities_loaded">
                             <td valign="top" :colspan="colspan" class="dataTables_empty">
@@ -55,10 +55,11 @@
                                 No data available in table
                             </td>
                         </tr>
-                        <tr v-for="row in table_rows" 
+                        <tr v-for="(row, index) in table_rows"
                             @click="rowClickHandler($event, row)"
                             @contextmenu.prevent="showContextMenu($event, row)"
-                            :class="{ hover: row === contextMenu.row }"
+                            :class="{ hover: row === contextMenu.row || (dragToSelect.mouseDown && isItemSelected($refs.rows[index])) }"
+                            ref="rows"
                         >
                             <td v-if="bulkEdit">
                                 <div v-if="row.__checkbox.show" class="custom-checkbox custom-checkbox-datatable">
@@ -78,76 +79,77 @@
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            <!-- 
-                Table Controls
-             -->
-            <div v-show="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
+        <!--
+            Table Controls
+        -->
+        <div v-show="!table_state.is_empty && entities_loaded" class="table-controls-wrapper">
 
-                <div v-if="calculator.value" class="calculator">
-                    <div class="block">
-                        <span>Total</span>
-                        <dropdown class="calculator-show nocontextmenu" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
-                        <span>for selected is</span>
-                    </div>
-                    <div class="block calculatormargin">
-                        <span v-for="(value, key) in calculator_result" class="result">
-                            {{ key }} {{ value }}
-                        </span>
-                    </div>
+            <div v-if="calculator.value" class="calculator">
+                <div class="block">
+                    <span>Total</span>
+                    <dropdown class="calculator-show nocontextmenu" :default="calculator.default" :options="calculator.options" @change="calculate" width="158px"></dropdown>
+                    <span>for selected is</span>
                 </div>
-
-                <div class="table-controls">
-                    <div class="block">
-                        <span>Page</span>
-                        <div class="pagination nocontextmenu">
-                            <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
-                                <a>«</a>
-                            </li>
-                            <li>
-                                <input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active page-count">
-                            </li>
-                            <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
-                                <a>»</a>
-                            </li>
-                        </div>
-                        <span>
-                            <template v-if="table_state.entities_count > 0">
-                                <template v-if="table_state.entities_per_page && table_state.entities_per_page < table_state.entities_count">
-                                    Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
-                                </template>
-                                <template v-else>
-                                    Showing all entries
-                                </template>
-                            </template>
-                            <template v-else>
-                                Showing 0 entries
-                            </template>
-                        </span>
-                        <dropdown class="entities-count-control nocontextmenu" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
-                        <span>rows</span>
-                    </div>
+                <div class="block calculatormargin">
+                    <span v-for="(value, key) in calculator_result" class="result">
+                        {{ key }} {{ value }}
+                    </span>
                 </div>
             </div>
 
-            <!-- 
-                Context Menu
-             -->
-            <ul v-on-clickaway="clickAway" 
-                @contextmenu.prevent
-                ref="contextmenu" 
-                v-if="contextMenu.visible" 
-                :style="{ top: contextMenu.position.top, left: contextMenu.position.left }" 
-                class="context-menu"
-            >
-                <div @click="clickAway" class="context-menu-close"></div>
-                <li v-for="element in contextMenu.elements" 
-                    v-html="element.title" 
-                    :class="[{ divider: element === '', passive: !element.action }, element.class]"
-                    @click="contextMenuClickHandler(element)"
-                ></li>
-            </ul>
+            <div class="table-controls">
+                <div class="block">
+                    <span>Page</span>
+                    <div class="pagination nocontextmenu">
+                        <li v-if="table_state.page > 1" @click="previousPage()" :disabled="table_state.loading" class="prev">
+                            <a>«</a>
+                        </li>
+                        <li>
+                            <input type="text" min="1" :max="table_state.page_count" v-model.number="table_state.page" :disabled="table_state.loading" class="page active page-count">
+                        </li>
+                        <li v-if="table_state.page < table_state.page_count" @click="nextPage()" :disabled="table_state.loading" class="next">
+                            <a>»</a>
+                        </li>
+                    </div>
+                    <span>
+                        <template v-if="table_state.entities_count > 0">
+                            <template v-if="table_state.entities_per_page && table_state.entities_per_page < table_state.entities_count">
+                                Showing {{ showing_from }} to {{ showing_to }} out of {{ showing_out_of }} entries
+                            </template>
+                            <template v-else>
+                                Showing all entries
+                            </template>
+                        </template>
+                        <template v-else>
+                            Showing 0 entries
+                        </template>
+                    </span>
+                    <dropdown class="entities-count-control nocontextmenu" :default="table_state.entities_per_page" :options="entities_per_page" @change="updateEntitiesPerPage" width="83px"></dropdown>
+                    <span>rows</span>
+                </div>
+            </div>
         </div>
+
+        <!--
+            Context Menu
+        -->
+        <ul v-on-clickaway="clickAway"
+            @contextmenu.prevent
+            ref="contextmenu"
+            v-if="contextMenu.visible"
+            :style="{ top: contextMenu.position.top, left: contextMenu.position.left }"
+            class="context-menu"
+            >
+            <div @click="clickAway" class="context-menu-close"></div>
+            <li v-for="element in contextMenu.elements"
+            v-html="element.title"
+            :class="[{ divider: element === '', passive: !element.action }, element.class]"
+            @click="contextMenuClickHandler(element)"
+            ></li>
+        </ul>
+        <div v-if="dragToSelect.mouseDown" class="vue-drag-select-box" :style="selectionBoxStyling"></div>
     </div>
 </template>
 
@@ -156,19 +158,19 @@
 
     export default {
         mixins: [
-            clickaway
+        clickaway
         ],
 
 
 
         props: [
-            'urlstate',
-            'entity',
-            'entities',
-            'create',
-            'clientId',
-            'disableShadows',
-            'disableState'
+        'urlstate',
+        'entity',
+        'entities',
+        'create',
+        'clientId',
+        'disableShadows',
+        'disableState'
         ],
 
 
@@ -209,6 +211,12 @@
                 table_columns: [],
                 table_rows: [],
 
+                dragToSelect: {
+                    mouseDown: false,
+                    startPoint: null,
+                    endPoint: null
+                },
+
                 calculator: {
                     default: '',
                     options: [],
@@ -216,10 +224,10 @@
                 },
 
                 entities_per_page: [
-                    { label: '10', value: 10},
-                    { label: '20', value: 20},
-                    { label: '50', value: 50},
-                    { label: 'All', value: 0},
+                { label: '10', value: 10},
+                { label: '20', value: 20},
+                { label: '50', value: 50},
+                { label: 'All', value: 0},
                 ],
 
                 promise: {
@@ -233,6 +241,46 @@
 
 
         computed: {
+
+            selectionBox () {
+                // Only set styling when necessary
+                if (!this.dragToSelect.mouseDown || !this.dragToSelect.startPoint || !this.dragToSelect.endPoint) {
+                    return {};
+                }
+
+                const clientRect = this.$refs.tbody.getBoundingClientRect();
+
+                // Calculate position and dimensions of the selection box
+                const left = Math.min(this.dragToSelect.startPoint.x, this.dragToSelect.endPoint.x) - clientRect.left;
+                const top = Math.min(this.dragToSelect.startPoint.y, this.dragToSelect.endPoint.y) - clientRect.top;
+                const width = Math.abs(this.dragToSelect.startPoint.x - this.dragToSelect.endPoint.x);
+                const height = Math.abs(this.dragToSelect.startPoint.y - this.dragToSelect.endPoint.y);
+
+                // Return the styles to be applied
+                return {
+                    left,
+                    top,
+                    width,
+                    height
+                };
+            },
+
+            selectionBoxStyling () {
+                // Only set styling when necessary
+                if (!this.dragToSelect.mouseDown || !this.dragToSelect.startPoint || !this.dragToSelect.endPoint) {
+                    return {};
+                }
+
+                const { left, top, width, height } = this.selectionBox
+
+                // Return the styles to be applied
+                return {
+                    left: `${left}px`,
+                    top: `${top}px`,
+                    width: `${width}px`,
+                    height: `${height}px`
+                };
+            },
 
             all_rows_are_checked() {
                 if (! this.selected_entities.length) {
@@ -255,9 +303,9 @@
 
             showing_to() {
                 let count = this.table_state.entities_count;
-                let max = this.table_state.entities_per_page > 0 
-                    ? this.table_state.page * this.table_state.entities_per_page 
-                    : count;
+                let max = this.table_state.entities_per_page > 0
+                ? this.table_state.page * this.table_state.entities_per_page
+                : count;
 
                 return max > count ? count : max;
             },
@@ -298,7 +346,7 @@
             entity_singular() {
                 switch (this.entity) {
                     case 'recurring_invoice':
-                        return 'Invoice';
+                    return 'Invoice';
                 }
                 return this.entity.split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
@@ -306,7 +354,7 @@
             entity_plural() {
                 switch (this.entity) {
                     case 'recurring_invoice':
-                        return 'Invoices';
+                    return 'Invoices';
                 }
                 return (this.entities || this.entity + 's').split('_').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
             },
@@ -372,90 +420,90 @@
                 Promise.all([
                     this.loadFilters({ ignoreWatchers: true }),
                     this.loadSearchBy({ ignoreWatchers: true })
-                ]).then(() => {
-                    this.$nextTick(this.loadEntities);
-                });
-            },
+                    ]).then(() => {
+                        this.$nextTick(this.loadEntities);
+                    });
+                },
 
 
-            registerListeners() {
-                window.addEventListener('contextmenu', e => {
-                    e.preventDefault();
+                registerListeners() {
+                    window.addEventListener('contextmenu', e => {
+                        e.preventDefault();
 
-                    let show = Array.from(document.getElementsByClassName('nocontextmenu')).filter(el => {
-                        return el.contains(e.target);
-                    }).length === 0;
-                    
-                    if (show) {
-                        this.showContextMenu(e);
-                    }
-                });
-                window.addEventListener('keydown', e => {
-                    switch(e.keyCode) {
-                        /* esc */ case 27:
+                        let show = Array.from(document.getElementsByClassName('nocontextmenu')).filter(el => {
+                            return el.contains(e.target);
+                        }).length === 0;
+
+                        if (show) {
+                            this.showContextMenu(e);
+                        }
+                    });
+                    window.addEventListener('keydown', e => {
+                        switch(e.keyCode) {
+                            /* esc */ case 27:
                             this.clickAway();
                             break;
-                        /* <- */ case 37:
+                            /* <- */ case 37:
                             this.previousPage();
                             break;
-                        /* -> */ case 39:
+                            /* -> */ case 39:
                             this.nextPage();
                             break;
-                        /* del */ case 46:
+                            /* del */ case 46:
                             this.deleteSelected();
                             break;
-                    }
-                });
-            },
+                        }
+                    });
+                },
 
 
-            calculate(option) {
-                this.$set(this.calculator, 'value', option.name);
-            },
+                calculate(option) {
+                    this.$set(this.calculator, 'value', option.name);
+                },
 
 
-            updateEntitiesPerPage(option) {
-                this.$set(this.table_state, 'entities_per_page', parseInt(option.value));
-            },
+                updateEntitiesPerPage(option) {
+                    this.$set(this.table_state, 'entities_per_page', parseInt(option.value));
+                },
 
 
-            loadFilters(settings = {}) {
-                let {
-                    ignoreWatchers = false
-                } = settings;
+                loadFilters(settings = {}) {
+                    let {
+                        ignoreWatchers = false
+                    } = settings;
 
-                return this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
+                    return this.$http.get(`/api/${this.entities || this.entity + 's'}-filters`)
                     .then(response => response.data)
                     .then(this.handleFilters)
                     .catch(this.handleError);
-            },
+                },
 
 
-            loadSearchBy(settings = {}) {
-                let {
-                    ignoreWatchers = false
-                } = settings;
+                loadSearchBy(settings = {}) {
+                    let {
+                        ignoreWatchers = false
+                    } = settings;
 
-                return this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
+                    return this.$http.get(`/api/${this.entities || this.entity + 's'}-searchby`)
                     .then(response => response.data)
                     .then(this.handleSearchBy)
                     .catch(this.handleError);
-            },
+                },
 
 
-            loadColumns() {
-                this.$http.get(`/api/${this.entities || this.entity + 's'}-columns/${this.clientId}`)
+                loadColumns() {
+                    this.$http.get(`/api/${this.entities || this.entity + 's'}-columns/${this.clientId}`)
                     .then(response => response.data)
                     .then(this.handleColumns)
                     .then(() => this.columns_loaded = true)
                     .catch(this.handleError);
-            },
+                },
 
 
-            loadEntities(options = {}) {
-                if (typeof this.$refs.filtersDropdown === 'undefined' ||
-                    typeof this.$refs.searchByDropdown === 'undefined') {
-                    return;
+                loadEntities(options = {}) {
+                    if (typeof this.$refs.filtersDropdown === 'undefined' ||
+                        typeof this.$refs.searchByDropdown === 'undefined') {
+                        return;
                 }
 
                 this.table_state.loading = true;
@@ -467,24 +515,24 @@
                       // abort previous request, if exists
                       if (this.promise.loadEntities) {
                         this.promise.loadEntities.abort();
-                      }
+                    }
 
                       // set previous request on Vue instance
                       this.promise.loadEntities = request;
-                    }
+                  }
 
-                })
-                    .then(response => response.data)
-                    .then(this.handleEntities)
-                    .then(() => this.table_state.loading = false)
-                    .then(() => this.entities_loaded = true)
-                    .then(() => this.url_state = false)
-                    .catch(this.handleError);
+              })
+                .then(response => response.data)
+                .then(this.handleEntities)
+                .then(() => this.table_state.loading = false)
+                .then(() => this.entities_loaded = true)
+                .then(() => this.url_state = false)
+                .catch(this.handleError);
             },
 
 
             /*
-                Handlers
+            Handlers
             */
             handleFilters(filters) {
                 this.filters = filters;
@@ -595,16 +643,16 @@
             toggleSelectAll() {
                 if (this.all_rows_are_checked) {
                     this.table_rows
-                        .filter(row => this.selected_entities.indexOf(row.__id) !== -1)
-                        .forEach(row => {
-                            let index = this.selected_entities.indexOf(row.__id);
-                            this.selected_entities.splice(index, 1);
-                        });
+                    .filter(row => this.selected_entities.indexOf(row.__id) !== -1)
+                    .forEach(row => {
+                        let index = this.selected_entities.indexOf(row.__id);
+                        this.selected_entities.splice(index, 1);
+                    });
                 }
                 else {
                     this.table_rows
-                        .filter(row => this.selected_entities.indexOf(row.__id) === -1)
-                        .forEach(row => this.selected_entities.push(row.__id));
+                    .filter(row => this.selected_entities.indexOf(row.__id) === -1)
+                    .forEach(row => this.selected_entities.push(row.__id));
                 }
 
                 this.$forceUpdate();
@@ -647,12 +695,12 @@
                             title: `Multi - Selected: <span class="valuecolor">${this.selected_entities.length}</span>`,
                         });
                         this.contextMenu.elements.push({
-                            title: 'Archive', 
+                            title: 'Archive',
                             action: `javascript:submitForm_${this.entity}('archive');`,
                             icon: 'icon-dropdown-archive'
                         });
                         this.contextMenu.elements.push({
-                            title: 'Delete', 
+                            title: 'Delete',
                             action: `javascript:submitForm_${this.entity}('delete');`,
                             icon: 'icon-dropdown-delete'
                         });
@@ -675,7 +723,7 @@
                         title: `${this.entity_plural_full} Table`
                     });
                     this.contextMenu.elements.push({
-                        title: 'New ' + this.entity_singular, 
+                        title: 'New ' + this.entity_singular,
                         action: `javascript:;`,
                         icon: 'icon-new-client-btn-icon',
                         before: () => {
@@ -762,7 +810,7 @@
 
                 top += scrollTop;
                 left += scrollLeft;
-                
+
                 if (top > largestHeight) top = largestHeight;
                 if (left > largestWidth) left = largestWidth;
 
@@ -803,42 +851,41 @@
                         let key = parts[0].split('[');
                         let type = key[0];
                         let typeKey = key[1].split(']')[0];
-                        console.log(parts, key, type, typeKey);
 
                         let value = decodeURIComponent(parts[1]);
 
                         switch (type) {
                             case 'state':
-                                this.table_state[typeKey] = value;
-                                break;
+                            this.table_state[typeKey] = value;
+                            break;
                             case 'filter':
-                                this.filters.forEach(filter => {
-                                    if (filter.type === 'dropdown') {
-                                        filter.options.forEach(_filter => {
-                                            if (value === _filter.value) {
-                                                _filter.selected = true;
-                                            }
-                                        });
-                                    }
-                                    else {
-                                        if (value === filter.value) {
-                                            filter.selected = true;
+                            this.filters.forEach(filter => {
+                                if (filter.type === 'dropdown') {
+                                    filter.options.forEach(_filter => {
+                                        if (value === _filter.value) {
+                                            _filter.selected = true;
                                         }
-                                    }
-                                });
-                                break;
-                            case 'searchBy':
-                                this.$refs.searchByDropdown.setValue(typeKey, value);
-                                break;
-                            case 'orderBy':
-                                switch (typeKey) {
-                                    case '0':
-                                        this.orderBy = value;
-                                        break;
-                                    case '1':
-                                        this.orderDirection = value;
-                                        break;
+                                    });
                                 }
+                                else {
+                                    if (value === filter.value) {
+                                        filter.selected = true;
+                                    }
+                                }
+                            });
+                            break;
+                            case 'searchBy':
+                            this.$refs.searchByDropdown.setValue(typeKey, value);
+                            break;
+                            case 'orderBy':
+                            switch (typeKey) {
+                                case '0':
+                                this.orderBy = value;
+                                break;
+                                case '1':
+                                this.orderDirection = value;
+                                break;
+                            }
                         }
                     });
 
@@ -908,6 +955,74 @@
                 let request_url = `/api/${this.entities || this.entity + 's'}/${this.clientId}` + '?' + query.join('&');
 
                 return request_url;
+            },
+
+            onMouseDown (event) {
+                // Ignore right clicks
+                if (event.button === 2) {
+                    // return;
+                }
+
+                // Register begin point
+                this.dragToSelect.mouseDown = true;
+                this.dragToSelect.startPoint = {
+                    x: event.pageX,
+                    y: event.pageY
+                };
+                // Start listening for mouse move and up events
+                window.addEventListener('mousemove', this.onMouseMove);
+                window.addEventListener('mouseup', this.onMouseUp);
+            },
+
+            onMouseMove (event) {
+                // Update the end point position
+                if (this.dragToSelect.mouseDown) {
+                    this.dragToSelect.endPoint = {
+                        x: event.pageX,
+                        y: event.pageY
+                    };
+                    const children = this.$refs.rows;
+
+                    if (children) {
+                        let selectedItems = Array.from(children).filter((item) => {
+                            return this.isItemSelected(item.$el || item);
+                        });
+
+                        selectedItems.forEach(row => {
+                            let checkbox = $(row).find('input[type="checkbox"]');
+
+                            if (checkbox && checkbox.is(':not(:checked)')) {
+                                $(row).click();
+                            }
+                        })
+                    }
+                }
+            },
+
+            onMouseUp (event) {
+                // Clean up event listeners
+                window.removeEventListener('mousemove', this.onMouseMove);
+                window.removeEventListener('mouseup', this.onMouseUp);
+                // Reset state
+                this.dragToSelect.mouseDown = false;
+                this.dragToSelect.startPoint = null;
+                this.dragToSelect.endPoint = null;
+            },
+
+            isItemSelected (el) {
+                const boxA = this.selectionBox
+                const boxB = {
+                    top: el.offsetTop + 80,
+                    left: el.offsetLeft,
+                    width: el.clientWidth,
+                    height: el.clientHeight
+                };
+                return !!(
+                    boxA.left <= boxB.left + boxB.width &&
+                    boxA.left + boxA.width >= boxB.left &&
+                    boxA.top <= boxB.top + boxB.height &&
+                    boxA.top + boxA.height >= boxB.top
+                );
             }
 
         },
@@ -952,11 +1067,11 @@
     .no-shadows .table-wrapper,
     .no-shadows .vue-dropdown-menu,
     .no-shadows .entities-count-control select,
-    .no-shadows .pagination > .active > input, 
-    .no-shadows .pagination > .active > input:hover, 
-    .no-shadows .pagination > .active > input:focus, 
-    .no-shadows .pagination > .active > span, 
-    .no-shadows .pagination > .active > span:hover, 
+    .no-shadows .pagination > .active > input,
+    .no-shadows .pagination > .active > input:hover,
+    .no-shadows .pagination > .active > input:focus,
+    .no-shadows .pagination > .active > span,
+    .no-shadows .pagination > .active > span:hover,
     .no-shadows .pagination > .active > span:focus {
         border-width: 1px !important;
         border-style: solid !important;
@@ -964,6 +1079,12 @@
     }
 </style>
 <style scoped>
+    .vue-drag-select-box {
+        position: absolute;
+        background: rgba(0, 162, 255, .4);
+        z-index: 99;
+    }
+
     td {
         position: relative;
     }
@@ -1045,7 +1166,7 @@
         margin-right: -4px;
     }
 
-     .calculator-button {
+    .calculator-button {
         width: 160px !important;
         border: #fff;
         width: 160px;

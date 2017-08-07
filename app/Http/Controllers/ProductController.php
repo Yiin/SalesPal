@@ -38,7 +38,7 @@ class ProductController extends BaseController
     public function __construct(ProductService $productService, ProductRepository $productRepo, ProductDatatable $productDatatable)
     {
         //parent::__construct();
-        
+
         $this->productService = $productService;
         $this->productRepo = $productRepo;
         $this->datatable = $productDatatable;
@@ -66,9 +66,18 @@ class ProductController extends BaseController
 
     public function show($publicId)
     {
-        Session::reflash();
+        $account = Auth::user()->account;
+        $product = Product::scope($publicId)->withTrashed()->firstOrFail();
 
-        return Redirect::to("products/$publicId/edit");
+        $data = [
+          'account' => $account,
+          'taxRates' => $account->invoice_item_taxes ? TaxRate::scope()->whereIsInclusive(false)->get(['id', 'name', 'rate']) : null,
+          'product' => $product,
+          'entity' => $product,
+          'title' => trans('texts.product'),
+        ];
+
+        return View::make('accounts.show-product', $data);
     }
 
     /**

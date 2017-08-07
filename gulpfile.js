@@ -61,7 +61,7 @@ elixir(function(mix) {
         'new-entity-form.css',
         'product-styles.css',
         'edit-blade.css',
-        'show-blade-invoices.css',        
+        'show-blade-invoices.css',
         'sidebar.css',
         'colors.css',
         'fonts.css',
@@ -69,7 +69,7 @@ elixir(function(mix) {
     ], 'public/css/built.tmp.css');
 
     mix.sass([
-        'dashboard.scss',
+        'main.scss',
     ], 'public/css/dashboard.css');
 
     mix.styles([
