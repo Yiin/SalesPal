@@ -1,7 +1,55 @@
 
 .dashboard-dropdowns
 {
+    font-size: 0;
+
+    padding-top: 12px;
+
     text-align: right;
+    > .vue-dropdown
+    {
+        margin: 0 16px;
+        > button
+        {
+            line-height: 46px;
+
+            padding: 0 15px;
+            .caret
+            {
+                top: 20px;
+                &.active
+                {
+                    top: 16px;
+                }
+            }
+        }
+    }
+}
+
+.daterange
+{
+    font-size: 16px;
+    line-height: 46px;
+
+    display: inline-block;
+
+    width: 308px;
+    height: 44px;
+    margin: -3px 0 0 16px;
+    padding: 0 16px;
+
+    cursor: pointer;
+    text-align: left;
+
+    color: #373737;
+    border: none;
+    border-radius: 2px;
+    background: white;
+    box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+    span
+    {
+        padding-left: 4px;
+    }
 }
 
 .totals-wrapper
@@ -9,7 +57,7 @@
     display: flex;
     flex-direction: row;
 
-    margin: 27px 0;
+    margin: 38px 0 28px;
 
     justify-content: space-between;
     > .total-panel ~ .total-panel
@@ -21,7 +69,7 @@
 .total-panel
 {
     width: calc(100% / 3);
-    padding: 19px 15px 15px;
+    padding: 20px 15px 14px;
 
     background: #fff;
     box-shadow: -1px 2px 5px rgba(0, 0, 0, .05), 1px 2px 5px rgba(0, 0, 0, .05), 0 3px 5px rgba(0, 0, 0, .05);
@@ -42,7 +90,7 @@
             font-weight: bold;
             line-height: 26px;
 
-            margin-top: 20px;
+            margin-top: 21px;
             margin-bottom: 9px;
         }
         .total-meta
@@ -159,7 +207,7 @@
         visibility: hidden;
         overflow: hidden;
 
-        height: 0px;
+        height: 0;
 
         content: attr(title);
 

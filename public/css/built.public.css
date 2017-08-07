@@ -9793,11 +9793,11 @@ fieldset[disabled] .btn-success.active {
     font-weight: normal;
     font-style: normal;
 
-    src: url('../fonts/icomoon.eot?dnr7kl');
+    src: url('../../fonts/icomoon.eot?dnr7kl');
     src: url('../fonts/icomoon.eot?dnr7kl#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?dnr7kl') format('truetype'),
-    url('../fonts/icomoon.woff?dnr7kl') format('woff'),
-    url('../fonts/icomoon.svg?dnr7kl#icomoon') format('svg');
+    url('../../fonts/icomoon.ttf?dnr7kl') format('truetype'),
+    url('../../fonts/icomoon.woff?dnr7kl') format('woff'),
+    url('../../fonts/icomoon.svg?dnr7kl#icomoon') format('svg');
 }
 
 [class^='icon-'],
@@ -9816,6 +9816,18 @@ fieldset[disabled] .btn-success.active {
     /* Better Font Rendering ========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+[class^='icon-dropdown-'] {
+    color: #808080;
+}
+
+[class^='icon-new-'] {
+    color: #fff;
+}
+
+[class^='icon-pagination-'] {
+    color: #949494;
 }
 
 .icon-create-btn
@@ -9838,265 +9850,152 @@ fieldset[disabled] .btn-success.active {
     color: rgba(0, 0, 0, 0.6);
 }
 
-.icon-dropdown-archive::before
-{
-    content: '\e900';
-
-    color: #808080;
+.icon-calendar-weekly:before {
+  content: "\e930";
 }
-.icon-dropdown-clone::before
-{
-    content: '\e901';
-
-    color: #808080;
+.icon-sidebar-clients:before {
+  content: "\e900";
 }
-.icon-dropdown-clone_quote::before
-{
-    content: '\e902';
-
-    color: #808080;
+.icon-sidebar-credits:before {
+  content: "\e901";
 }
-.icon-dropdown-convert::before
-{
-    content: '\e903';
-
-    color: #808080;
+.icon-sidebar-expenses:before {
+  content: "\e902";
 }
-.icon-dropdown-credit::before
-{
-    content: '\e904';
-
-    color: #808080;
+.icon-sidebar-invoices:before {
+  content: "\e903";
 }
-.icon-dropdown-delete::before
-{
-    content: '\e905';
-
-    color: #808080;
+.icon-sidebar-overview:before {
+  content: "\e904";
 }
-.icon-dropdown-download::before
-{
-    content: '\e906';
-
-    color: #808080;
+.icon-sidebar-payments:before {
+  content: "\e905";
 }
-.icon-dropdown-edit::before
-{
-    content: '\e907';
-
-    color: #808080;
+.icon-sidebar-products:before {
+  content: "\e906";
 }
-.icon-dropdown-email::before
-{
-    content: '\e908';
-
-    color: #808080;
+.icon-sidebar-quotes:before {
+  content: "\e907";
 }
-.icon-dropdown-expense::before
-{
-    content: '\e909';
-
-    color: #808080;
+.icon-sidebar-reccuring:before {
+  content: "\e908";
 }
-.icon-dropdown-history::before
-{
-    content: '\e90a';
-
-    color: #808080;
+.icon-sidebar-reports:before {
+  content: "\e909";
 }
-.icon-dropdown-history_qoute::before
-{
-    content: '\e90b';
-
-    color: #808080;
+.icon-sidebar-settings:before {
+  content: "\e90a";
 }
-.icon-dropdown-mark::before
-{
-    content: '\e90c';
-
-    color: #808080;
+.icon-sidebar-tasks:before {
+  content: "\e90b";
 }
-.icon-dropdown-new_invoice::before
-{
-    content: '\e90d';
-
-    color: #808080;
+.icon-sidebar-vendors:before {
+  content: "\e90c";
 }
-.icon-dropdown-new_task::before
-{
-    content: '\e90e';
-
-    color: #808080;
+.icon-dropdown-archive:before {
+  content: "\e90d";
 }
-.icon-dropdown-payment::before
-{
-    content: '\e90f';
-
-    color: #808080;
+.icon-dropdown-clone:before {
+  content: "\e90e";
 }
-.icon-dropdown-preview::before
-{
-    content: '\e910';
-
-    color: #808080;
+.icon-dropdown-clone_qoute:before {
+  content: "\e90f";
 }
-.icon-dropdown-quote::before
-{
-    content: '\e911';
-
-    color: #808080;
+.icon-dropdown-convert:before {
+  content: "\e910";
 }
-.icon-dropdown-refund::before
-{
-    content: '\e912';
-
-    color: #808080;
+.icon-dropdown-credit:before {
+  content: "\e911";
 }
-.icon-home_icon::before
-{
-    content: '\e913';
-
+.icon-dropdown-delete:before {
+  content: "\e912";
+}
+.icon-dropdown-download:before {
+  content: "\e913";
+}
+.icon-dropdown-edit:before {
+  content: "\e914";
+}
+.icon-dropdown-email:before {
+  content: "\e915";
+}
+.icon-dropdown-expense:before {
+  content: "\e916";
+}
+.icon-dropdown-history:before {
+  content: "\e917";
+}
+.icon-dropdown-history_qoute:before {
+  content: "\e918";
+}
+.icon-dropdown-mark:before {
+  content: "\e919";
+}
+.icon-dropdown-new_invoice:before {
+  content: "\e91a";
+}
+.icon-dropdown-new_task:before {
+  content: "\e91b";
+}
+.icon-dropdown-payment:before {
+  content: "\e91c";
+}
+.icon-dropdown-preview:before {
+  content: "\e91d";
+}
+.icon-dropdown-quote:before {
+  content: "\e91e";
+}
+.icon-dropdown-refund:before {
+  content: "\e91f";
+}
+.icon-home_icon:before {
+  content: "\e920";
     color: #47a0d9;
 }
-.icon-new-client-btn-icon::before
-{
-    content: '\e914';
-
+.icon-new-client-btn-icon:before {
+  content: "\e921";
+}
+.icon-new-credit-btn-icon:before {
+  content: "\e922";
+}
+.icon-new-invoice-btn-icon:before {
+  content: "\e923";
+}
+.icon-new-payment-btn-icon:before {
+  content: "\e924";
+}
+.icon-new-product-btn-icon:before {
+  content: "\e925";
+}
+.icon-new-quote-btn-icon:before {
+  content: "\e926";
+}
+.icon-new-recurring-btn-icon:before {
+  content: "\e927";
+}
+.icon-new-vendor-btn-icon:before {
+  content: "\e928";
+}
+.icon-pagination_button_left:before {
+  content: "\e929";
+}
+.icon-pagination_button_right:before {
+  content: "\e92a";
+}
+.icon-search-by_inputs_disable_icon:before {
+  content: "\e92b";
+}
+.icon-search-by_inputs_disable_icon_white:before {
+    content: "\e92c";
     color: #fff;
 }
-.icon-new-credit-btn-icon::before
-{
-    content: '\e915';
-
-    color: #fff;
-}
-.icon-new-expense-btn-icon::before
-{
-    content: '\e916';
-
-    color: #fff;
-}
-.icon-new-invoice-btn-icon::before
-{
-    content: '\e917';
-
-    color: #fff;
-}
-.icon-new-payment-btn-icon::before
-{
-    content: '\e918';
-
-    color: #fff;
-}
-.icon-new-product-btn-icon::before
-{
-    content: '\e919';
-
-    color: #fff;
-}
-.icon-new-quote-btn-icon::before
-{
-    content: '\e91a';
-
-    color: #fff;
-}
-.icon-new-recurring-btn-icon::before
-{
-    content: '\e91b';
-
-    color: #fff;
-}
-.icon-new-vendor-btn-icon::before
-{
-    content: '\e91c';
-
-    color: #fff;
-}
-.icon-pagination_button_left::before
-{
-    content: '\e91d';
-
-    color: #949494;
-}
-.icon-pagination_button_right::before
-{
-    content: '\e91e';
-
-    color: #949494;
-}
-.icon-search-by_inputs_disable_icon::before
-{
-    content: '\e91f';
-}
-.icon-search-by_inputs_disable_icon_white::before
-{
-    content: '\e920';
-
-    color: #fff;
-}
-.icon-sidebar-clients::before
-{
-    content: '\e921';
-}
-.icon-sidebar-credits::before
-{
-    content: '\e922';
-}
-.icon-sidebar-expenses::before
-{
-    content: '\e923';
-}
-.icon-sidebar-invoices::before
-{
-    content: '\e924';
-}
-.icon-sidebar-overview::before
-{
-    content: '\e925';
-}
-.icon-sidebar-payments::before
-{
-    content: '\e926';
-}
-.icon-sidebar-products::before
-{
-    content: '\e927';
-}
-.icon-sidebar-quotes::before
-{
-    content: '\e928';
-}
-.icon-sidebar-recurring::before
-{
-    content: '\e929';
-}
-.icon-sidebar-reports::before
-{
-    content: '\e92a';
-}
-.icon-sidebar-settings::before
-{
-    content: '\e92b';
-}
-.icon-sidebar-tasks::before
-{
-    content: '\e92c';
-}
-.icon-sidebar-vendors::before
-{
-    content: '\e92d';
-}
-.icon-warning::before
-{
-    content: '\e92e';
-
+.icon-warning:before {
+  content: "\e92e";
     color: #ed492e;
 }
-.icon-warning_icon::before
-{
-    content: '\e92f';
-
+.icon-warning_icon:before {
+  content: "\e92f";
     color: #ed492e;
 }
-
 /*# sourceMappingURL=built.public.css.map */

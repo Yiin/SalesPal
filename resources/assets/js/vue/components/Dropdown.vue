@@ -1,5 +1,5 @@
 <template>
-    
+
     <div class="vue-dropdown" v-on-clickaway="clickAway">
         <button :class="{ open: is_open }" @click="toggleDropdown" :style="{ 'min-width': width }" type="button">
             {{ selected.label }}
@@ -88,7 +88,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 
     .vue-dropdown
     {

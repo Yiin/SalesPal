@@ -13,14 +13,15 @@
 
 @section('content')
 
-    <!-- 
+    <!--
         Nav Bar?
     -->
-    <div class="dashboard-breadcrumb">
-        <ol class="breadcrumb">
-            <li class="active">Dashboard</li>
-        </ol>
-    </div>
+    <ol class="breadcrumb path">
+        <li>
+            <a class="fa fa-home" href="/"></a>
+        </li>
+        <li class="active">{{ trans('texts.dashboard') }}</li>
+    </ol>
 
     <div class="vue-app" id="vueapp_{{ str_random() }}">
         <!--

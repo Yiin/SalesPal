@@ -1,16 +1,16 @@
 <template>
     <div>
         <div class="dashboard-dropdowns">
-            <dropdown ref="currencyDropdown" :default="currency_id" :options="currencies" @change="updateCurrency" width="158px"></dropdown>
-            <dropdown ref="intervalDropdown" :default="interval" :options="intervals" @change="updateInterval" width="158px"></dropdown>
-            
-            <div ref="daterange" style="display: inline-block; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 308px">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                <span></span> <b class="caret"></b>
+            <dropdown ref="currencyDropdown" :default="currency_id" :options="currencies" @change="updateCurrency" width="128px"></dropdown>
+            <dropdown ref="intervalDropdown" :default="interval" :options="intervals" @change="updateInterval" width="128px"></dropdown>
+
+            <div ref="daterange" class="daterange">
+                <i class="icon-calendar-weekly"></i>&nbsp;
+                <span v-if="start_date">{{ time_frame_start }} - {{ time_frame_end }}</span> <b class="caret"></b>
             </div>
         </div>
 
-        <!-- 
+        <!--
             Totals
         -->
         <div class="totals-wrapper">
@@ -102,13 +102,22 @@
                 balance_in_time_frame: 0
             };
         },
-        
+
 
 
         computed: {
             time_frame() {
                 return 'Last <span class="highlight">30</span> days';
             },
+
+            time_frame_start() {
+                return moment(this.start_date).format(Laravel.dateFormat);
+            },
+
+            time_frame_end() {
+                return moment(this.end_date).format(Laravel.dateFormat);
+            },
+
             total_revenue() {
                 let sum = 0;
                 let revenue;

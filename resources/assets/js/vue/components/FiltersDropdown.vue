@@ -24,14 +24,14 @@
 
                     <template v-if="option.type === 'dropdown'">
 
-                        <!-- 
+                        <!--
                             Dropdown
                          -->
                         <div @mouseover="openChildDropdown(option)" @mouseleave="closeChildDropdown" class="vue-dropdown-option --dropdown">
                             <div class="option-label">{{ option.label }}</div>
                             <span class="caret --right"></span>
-                            <child-dropdown-menu 
-                                :parent="option" 
+                            <child-dropdown-menu
+                                :parent="option"
                                 :class="{ open: openedDropdown === option }"
                                 @toggle="toggle"
                             ></child-dropdown-menu>
@@ -159,7 +159,7 @@ export default {
             this.childDropdownTimeout = {
                 label: this.openedDropdown.label,
                 timeout: setTimeout(() => {
-                    // this.openedDropdown = null;  
+                    // this.openedDropdown = null;
                 }, 300)
             };
         },
@@ -177,7 +177,6 @@ export default {
 <style scoped>
 
     .caret.--right {
-        top: 13px;
         right: 5px;
         border-style: solid;
         border-width: 4px 0 4px 4px;
@@ -254,7 +253,6 @@ export default {
         overflow: hidden;
 
         max-width: 160px;
-        margin-top: 6px;
 
         vertical-align: top;
         white-space: nowrap;
@@ -328,7 +326,6 @@ export default {
 
         width: 22px;
         height: 22px;
-        margin-top: 6px;
     }
 
     .vue-dropdown-option.--checkbox > .checkbox-holder::before

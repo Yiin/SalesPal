@@ -330,7 +330,7 @@ class EntityModel extends Eloquent
             'products' => 'icon-sidebar-products',
             'invoices' => 'icon-sidebar-invoices',
             'payments' => 'icon-sidebar-payments',
-            'recurring_invoices' => 'icon-sidebar-recurring',
+            'recurring_invoices' => 'icon-sidebar-reccuring',
             'credits' => 'icon-sidebar-credits',
             'quotes' => 'icon-sidebar-quotes',
             'tasks' => 'icon-sidebar-tasks',
