@@ -1,2 +1,10 @@
-$box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
-$panel-background: #ffffff;
+// basic
+$default-box-shadow: -3px 2px rgba(0, 0, 0, .05), 3px 2px 5px rgba(0, 0, 0, .05), 0 5px 5px rgba(0, 0, 0, .05);
+
+// text
+$font-weight-semibold: 600;
+$font-size-normal: 16px;
+
+// panels
+$panel-background: #fff;
+$panel-title-height: 52px;

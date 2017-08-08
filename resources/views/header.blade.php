@@ -4,6 +4,7 @@
 @section('head')
 
   <link href="{{ asset('css/built.css') }}" rel="stylesheet" type="text/css"/>
+  <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript">
 
@@ -342,7 +343,7 @@
                     </div>
                 </li>
             </div>
-            
+
             <ul class="dropdown-menu user-accounts" style="display: none">
                 @if (session(SESSION_USER_ACCOUNTS))
                     @foreach (session(SESSION_USER_ACCOUNTS) as $item)
@@ -432,7 +433,7 @@
 
                     @endforeach
 
-                @endforeach                
+                @endforeach
                 <hr>
                 <li class="sidebar-category">Category 3</li>
                 @if ( ! Utils::isNinjaProd())

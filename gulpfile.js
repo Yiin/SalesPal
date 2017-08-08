@@ -35,18 +35,16 @@ elixir(function(mix) {
      * CSS configuration
      */
     mix.styles([
-        bowerDir + '/bootstrap/dist/css/bootstrap.css',
+        bowerDir + '/normalize-css/dist/normalize.css',
         bowerDir + '/font-awesome/css/font-awesome.css',
         '../vendor/datatables/media/css/jquery.dataTables.css',
         bowerDir + '/datatables-bootstrap3/BS3/assets/css/datatables.css',
-        'bootstrap-combobox.css',
-        'public.style.css',
         'fonts.css',
         'icons.css'
     ], 'public/css/built.public.css');
 
     mix.styles([
-        bowerDir + '/bootstrap/dist/css/bootstrap.css',
+        bowerDir + '/normalize-css/dist/normalize.css',
         bowerDir + '/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
         '../vendor/datatables/media/css/jquery.dataTables.css',
         bowerDir + '/datatables-bootstrap3/BS3/assets/css/datatables.css',
@@ -54,28 +52,14 @@ elixir(function(mix) {
         bowerDir + '/dropzone/dist/dropzone.css',
         bowerDir + '/spectrum/spectrum.css',
         bowerDir + '/sweetalert2/dist/sweetalert2.css',
-        'bootstrap-combobox.css',
         'typeahead.js-bootstrap.css',
-        'style.css',
-        'show-blade.css',
-        'new-entity-form.css',
-        'product-styles.css',
-        'edit-blade.css',
-        'show-blade-invoices.css',
-        'sidebar.css',
-        'colors.css',
         'fonts.css',
         'icons.css'
-    ], 'public/css/built.tmp.css');
+    ], 'public/css/built.css');
 
     mix.sass([
         'main.scss',
     ], 'public/css/dashboard.css');
-
-    mix.styles([
-        '../../../public/css/built.tmp.css',
-        '../../../public/css/dashboard.css'
-    ], 'public/css/built.css');
 
     mix.styles([
        'login.css'
@@ -88,12 +72,6 @@ elixir(function(mix) {
     mix.styles([
         bowerDir + '/select2/dist/css/select2.css'
     ], 'public/css/select2.css');
-
-    mix.styles([
-        bowerDir + '/tablesorter/dist/css/theme.bootstrap_3.min.css',
-        bowerDir + '/tablesorter/dist/css/theme.bootstrap.min.css',
-        bowerDir + '/tablesorter/dist/css/widget.grouping.min.css'
-    ], 'public/css/tablesorter.css');
 
 
     /**
