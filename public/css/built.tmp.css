@@ -1000,7 +1000,7 @@ h6,
 .h5,
 .h6 {
   font-family: inherit;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.1;
   color: inherit;
 }
@@ -11102,7 +11102,7 @@ body.swal2-iosfix {
     color: #fff;
     cursor: pointer;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 600;
     margin: 0 5px;
     padding: 10px 32px; }
     .swal2-modal .swal2-styled:not(.swal2-loading)[disabled] {
@@ -11913,6 +11913,10 @@ html {
     /* overflow-y: scroll; */
 }
 
+.noselect {
+    user-select: none;
+}
+
 .bold {
     font-weight: 700;
 }
@@ -12198,7 +12202,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     width: 190px;
     display: inline-flex;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     height: 46px;
 }
 
@@ -13197,7 +13201,7 @@ div.dataTables_length select {
 }
 
 div.dataTables_length label {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 a .glyphicon,
@@ -14374,7 +14378,7 @@ table.table {
 .show-wrapper-header
 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 50px;
 
     display: inline-block;
@@ -14412,7 +14416,7 @@ table.table {
 
 .blue-header {
     border-color: #01a8fe;
-    background-color: #01a8fe; 
+    background-color: #01a8fe;
 }
 
 .show-wrapper-body {
@@ -14420,7 +14424,7 @@ table.table {
 }
 
 .grid-col {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
 }
 
@@ -14477,7 +14481,7 @@ table.table {
 .new-clients-header
 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 50px;
 
     display: inline-block;
@@ -14509,7 +14513,7 @@ table.table {
 .new-client-link a
 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
 
     cursor: pointer;
     text-decoration: none;
@@ -14595,7 +14599,7 @@ table.table {
 
 .vat-panel-body-header > span
 {
-    font-weight: 500;
+    font-weight: 600;
 
     display: inline-block;
 }
@@ -14618,7 +14622,7 @@ table.table {
 
 .check-button
 {
-    font-weight: 500;
+    font-weight: 600;
 
     float: right;
 
@@ -14666,7 +14670,7 @@ table.table {
 
 .detail > span
 {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .buton-wrapper
@@ -14679,7 +14683,7 @@ table.table {
 
 .complete-buton
 {
-    font-weight: 500;
+    font-weight: 600;
 
     width: 173px;
     height: 44px;
@@ -14712,7 +14716,7 @@ table.table {
 .col > span
 {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .input-error
@@ -14823,7 +14827,7 @@ table.table {
 .show-blade-navbar li > a,
 .show-blade-navbar li > span
 {
-    font-weight: 500;
+    font-weight: 600;
 
     padding-top: 16px;
     padding-bottom: 16px;
@@ -15793,7 +15797,7 @@ New Product styles
     float: left;
 }
 
-.invoices-page-col-second 
+.invoices-page-col-second
 {
     width: calc(100% * 1253 / 1598);
     float: right;
@@ -15850,7 +15854,7 @@ New Product styles
 
 .invoice-label {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .invoice-label > span {

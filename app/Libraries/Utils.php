@@ -852,7 +852,7 @@ class Utils
 
     public static function getEntityName($entityType)
     {
-        return ucwords(self::toCamelCase($entityType));
+        return str_replace('_', ' ', $entityType);
     }
 
     public static function getClientDisplayName($model)
@@ -1315,7 +1315,7 @@ class Utils
             if (! $ignoreNull) {
                 // if 0 is in searchable values interval, search for null too
                 if (
-                    ($sign === '<=' && $value >= 0) || 
+                    ($sign === '<=' && $value >= 0) ||
                     ($sign === '>=' && $value <= 0) ||
                      $value === 0
                 ) {
@@ -1338,7 +1338,7 @@ class Utils
         if (! $ignoreNull) {
             // if 0 is in searchable values interval, search for null too
             if (
-                ($sign === '<=' && $value >= 0) || 
+                ($sign === '<=' && $value >= 0) ||
                 ($sign === '>=' && $value <= 0) ||
                  $value === 0
             ) {

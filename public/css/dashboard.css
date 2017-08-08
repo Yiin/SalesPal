@@ -253,7 +253,7 @@
 
 .dashboard-nav li > a:focus::after,
 .dashboard-nav li > a::after {
-  font-weight: 500;
+  font-weight: 600;
   display: block;
   visibility: hidden;
   overflow: hidden;
@@ -263,14 +263,14 @@
 }
 
 .dashboard-nav li > a:hover {
-  font-weight: 500;
+  font-weight: 600;
   color: #fff;
   background-color: #333;
 }
 
 .dashboard-nav li.active > a:focus,
 .dashboard-nav li.active > a {
-  font-weight: 500;
+  font-weight: 600;
   color: #fff;
   background-color: #01a8fe;
 }

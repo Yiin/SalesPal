@@ -1,5 +1,5 @@
 <template>
-    <div ref="tbody" :class="{ 'no-shadows': disableShadows }" style="position: relative; user-select:none" @mousedown="onMouseDown">
+    <div :class="{ 'no-shadows': disableShadows }">
         <div class="table-heading-controls">
             <div v-if="create" v-html="create" class="create-btn-wrapper nocontextmenu" ref="create_entity"></div>
 
@@ -60,10 +60,11 @@
                             @contextmenu.prevent="showContextMenu($event, row)"
                             :class="{ hover: row === contextMenu.row || (dragToSelect.mouseDown && isItemSelected($refs.rows[index])) }"
                             ref="rows"
+                            :id="`entity:${row.__id}`"
                         >
                             <td v-if="bulkEdit">
                                 <div v-if="row.__checkbox.show" class="custom-checkbox custom-checkbox-datatable">
-                                    <input type="checkbox" name="ids[]" :value="row.__checkbox.data.id" v-model="selected_entities" :class="row.__checkbox.data.class">
+                                    <input type="checkbox" name="ids[]" :value="row.__id" v-model="selected_entities" :class="row.__checkbox.data.class">
                                     <label></label>
                                 </div>
                             </td>
@@ -158,19 +159,19 @@
 
     export default {
         mixins: [
-        clickaway
+            clickaway
         ],
 
 
 
         props: [
-        'urlstate',
-        'entity',
-        'entities',
-        'create',
-        'clientId',
-        'disableShadows',
-        'disableState'
+            'urlstate',
+            'entity',
+            'entities',
+            'create',
+            'clientId',
+            'disableShadows',
+            'disableState'
         ],
 
 
@@ -214,7 +215,8 @@
                 dragToSelect: {
                     mouseDown: false,
                     startPoint: null,
-                    endPoint: null
+                    endPoint: null,
+                    selectedEntities: []
                 },
 
                 calculator: {
@@ -248,11 +250,14 @@
                     return {};
                 }
 
-                const clientRect = this.$refs.tbody.getBoundingClientRect();
+                // const clientRect = this.getElementPosition(document.getElementById('wrapper'));
+
+                const paddingLeft = parseInt($('#wrapper').css('padding-left'));
+                const paddingTop = parseInt($('#wrapper').css('padding-top'));
 
                 // Calculate position and dimensions of the selection box
-                const left = Math.min(this.dragToSelect.startPoint.x, this.dragToSelect.endPoint.x) - clientRect.left;
-                const top = Math.min(this.dragToSelect.startPoint.y, this.dragToSelect.endPoint.y) - clientRect.top;
+                const left = Math.min(this.dragToSelect.startPoint.x, this.dragToSelect.endPoint.x) - paddingLeft;
+                const top = Math.min(this.dragToSelect.startPoint.y, this.dragToSelect.endPoint.y) - paddingTop;
                 const width = Math.abs(this.dragToSelect.startPoint.x - this.dragToSelect.endPoint.x);
                 const height = Math.abs(this.dragToSelect.startPoint.y - this.dragToSelect.endPoint.y);
 
@@ -427,6 +432,8 @@
 
 
                 registerListeners() {
+                    window.addEventListener('mousedown', this.onMouseDown.bind(this));
+
                     window.addEventListener('contextmenu', e => {
                         e.preventDefault();
 
@@ -628,15 +635,21 @@
 
             toggleSelectOff(id, is_index = false) {
                 let index = is_index ? id : this.selected_entities.indexOf(id);
+
+                if (index < 0) {
+                    return false;
+                }
                 this.selected_entities.splice(index, 1);
+                return true;
             },
 
 
             toggleSelectOn(id, check_if_exists = true) {
                 if (check_if_exists && this.selected_entities.indexOf(id) !== -1) {
-                    return;
+                    return false;
                 }
                 this.selected_entities.push(id);
+                return true;
             },
 
 
@@ -840,6 +853,7 @@
                 return { top: Math.round(top), left: Math.round(left) };
             },
 
+
             table_data_url(options = {}) {
                 if (this.url_state && !this.disableState) {
                     let query = this.url_state.split(':').join('&');
@@ -957,14 +971,20 @@
                 return request_url;
             },
 
+
+
             onMouseDown (event) {
                 // Ignore right clicks
                 if (event.button === 2) {
                     // return;
                 }
+                if ($(event.target).is('span,a') || $(event.target).parents('span,a').length) {
+                    return;
+                }
 
                 // Register begin point
                 this.dragToSelect.mouseDown = true;
+                this.dragToSelect.selectedEntities = [];
                 this.dragToSelect.startPoint = {
                     x: event.pageX,
                     y: event.pageY
@@ -974,9 +994,12 @@
                 window.addEventListener('mouseup', this.onMouseUp);
             },
 
+
             onMouseMove (event) {
                 // Update the end point position
                 if (this.dragToSelect.mouseDown) {
+                    $('body').addClass('noselect');
+
                     this.dragToSelect.endPoint = {
                         x: event.pageX,
                         y: event.pageY
@@ -984,35 +1007,53 @@
                     const children = this.$refs.rows;
 
                     if (children) {
-                        let selectedItems = Array.from(children).filter((item) => {
-                            return this.isItemSelected(item.$el || item);
-                        });
+                        Array.from(children).forEach(item => {
+                            const checkbox = $(item).find('input[type="checkbox"]');
 
-                        selectedItems.forEach(row => {
-                            let checkbox = $(row).find('input[type="checkbox"]');
-
-                            if (checkbox && checkbox.is(':not(:checked)')) {
-                                $(row).click();
+                            if (! checkbox) {
+                                return;
                             }
-                        })
+
+                            let id = parseInt(item.id.slice(item.id.indexOf(':') + 1));
+
+                            if (this.isItemSelected(item)) {
+                                if (this.toggleSelectOn(id)) {
+                                    this.dragToSelect.selectedEntities.push(id);
+                                }
+                            }
+                            else {
+                                let index = this.dragToSelect.selectedEntities.indexOf(id);
+                                if (index > -1) {
+                                    if (this.toggleSelectOff(id)) {
+                                        this.dragToSelect.selectedEntities.splice(index, 1);
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             },
+
 
             onMouseUp (event) {
                 // Clean up event listeners
                 window.removeEventListener('mousemove', this.onMouseMove);
                 window.removeEventListener('mouseup', this.onMouseUp);
+
+                $('body').removeClass('noselect');
+
                 // Reset state
                 this.dragToSelect.mouseDown = false;
                 this.dragToSelect.startPoint = null;
                 this.dragToSelect.endPoint = null;
+                this.dragToSelect.selectedEntities = [];
             },
+
 
             isItemSelected (el) {
                 const boxA = this.selectionBox
                 const boxB = {
-                    top: el.offsetTop + 80,
+                    top: el.offsetTop + 165,
                     left: el.offsetLeft,
                     width: el.clientWidth,
                     height: el.clientHeight
@@ -1081,7 +1122,7 @@
 <style scoped>
     .vue-drag-select-box {
         position: absolute;
-        background: rgba(0, 162, 255, .4);
+        background: rgba(1, 168, 254, 0.25);
         z-index: 99;
     }
 
@@ -1158,7 +1199,7 @@
     .calculator span {
         vertical-align: top;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         color: #949494;
         margin: 8px 0;
         display: inline-block;

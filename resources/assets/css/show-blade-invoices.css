@@ -5,7 +5,7 @@
     float: left;
 }
 
-.invoices-page-col-second 
+.invoices-page-col-second
 {
     width: calc(100% * 1253 / 1598);
     float: right;
@@ -62,7 +62,7 @@
 
 .invoice-label {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .invoice-label > span {

@@ -7,6 +7,10 @@ html {
     /* overflow-y: scroll; */
 }
 
+.noselect {
+    user-select: none;
+}
+
 .bold {
     font-weight: 700;
 }
@@ -292,7 +296,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     width: 190px;
     display: inline-flex;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     height: 46px;
 }
 
@@ -1291,7 +1295,7 @@ div.dataTables_length select {
 }
 
 div.dataTables_length label {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 a .glyphicon,

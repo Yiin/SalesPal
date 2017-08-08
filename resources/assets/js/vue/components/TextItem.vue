@@ -1,9 +1,9 @@
 <template>
     <div class="text-input">
-        <div ref="input" 
+        <div ref="input"
              @focus="focus"
              @blur="blur"
-             class="animation" 
+             class="animation"
              :data-placeholder="option.label"
         ></div>
 
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    
+
 export default {
 
     props: [
@@ -120,7 +120,7 @@ export default {
     right: 9px;
 }
 
-[contenteditable="true"]:focus + .clear-input {
+[contenteditable="true"]:focus + .clear-input::before {
     background-image: url(/img/icons/white-cross.svg);
 }
 

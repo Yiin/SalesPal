@@ -1000,7 +1000,7 @@ h6,
 .h5,
 .h6 {
   font-family: inherit;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.1;
   color: inherit;
 }
@@ -9469,7 +9469,7 @@ html {
 
 .navbar li a {
     padding-top: 18px;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 15px;
     font-weight: bold;
     margin-left: 16px !important;
@@ -9611,7 +9611,7 @@ table.table thead .sorting_desc_disabled:after { content: '' !important }
 }
 
 .dataTables_length label {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 @media screen and (min-width: 700px) {

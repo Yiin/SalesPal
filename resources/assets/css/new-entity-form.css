@@ -28,7 +28,7 @@
 .new-clients-header
 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 50px;
 
     display: inline-block;
@@ -60,7 +60,7 @@
 .new-client-link a
 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
 
     cursor: pointer;
     text-decoration: none;
@@ -146,7 +146,7 @@
 
 .vat-panel-body-header > span
 {
-    font-weight: 500;
+    font-weight: 600;
 
     display: inline-block;
 }
@@ -169,7 +169,7 @@
 
 .check-button
 {
-    font-weight: 500;
+    font-weight: 600;
 
     float: right;
 
@@ -217,7 +217,7 @@
 
 .detail > span
 {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .buton-wrapper
@@ -230,7 +230,7 @@
 
 .complete-buton
 {
-    font-weight: 500;
+    font-weight: 600;
 
     width: 173px;
     height: 44px;
@@ -263,7 +263,7 @@
 .col > span
 {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .input-error
@@ -374,7 +374,7 @@
 .show-blade-navbar li > a,
 .show-blade-navbar li > span
 {
-    font-weight: 500;
+    font-weight: 600;
 
     padding-top: 16px;
     padding-bottom: 16px;

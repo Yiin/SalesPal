@@ -29,7 +29,7 @@
 .show-wrapper-header
 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 50px;
 
     display: inline-block;
@@ -67,7 +67,7 @@
 
 .blue-header {
     border-color: #01a8fe;
-    background-color: #01a8fe; 
+    background-color: #01a8fe;
 }
 
 .show-wrapper-body {
@@ -75,7 +75,7 @@
 }
 
 .grid-col {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
 }
 
